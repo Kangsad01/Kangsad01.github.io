@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Laporan Data</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+  :root { --bg:#0f172a; --card:#1e293b; --text:#e2e8f0; --accent:#38bdf8; }
+  body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; }
+  h1 { text-align: center; color: var(--accent); }
+ .card { background: var(--card); padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+ .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+  input, select, button { padding: 10px; border-radius: 8px; border: none; margin: 5px; background: #334155; color: var(--text); }
+  button { background: var(--accent); color: #0f172a; font-weight: bold; cursor: pointer; }
+  button:hover { opacity: 0.8; }
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+  th, td { padding: 12px; border-bottom: 1px solid #334155; text-align: left; }
+  th { background: #334155; }
+  tr:hover { background: #334155; }
+</style>
+</head>
+<body>
+
+<h1>📊 Dashboard Laporan Data</h1>
+
+<div class="grid">
+  <div class="card">
+    <h3>Total Data</h3>
+    <h2 id="totalData">0</h2>
+  </div>
+  <div class="card">
+    <h3>Total Penjualan</h3>
+    <h2 id="totalPenjualan">Rp 0</h2>
+  </div>
+  <div class="card">
+    <h3>Produk Terlaris</h3>
+    <h2 id="produkTerlaris">-</h2>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Filter & Aksi</h3>
+  <input type="text" id="search" placeholder="Cari nama/produk...">
+  <select id="filterBulan">
+    <option value="">Semua Bulan</option>
+  </select>
+  <button onclick="exportExcel()">Export Excel</button>
+  <button onclick="tambahData()">+ Tambah Data</button>
+</div>
+
+<div class="card">
+  <h3>Grafik Penjualan</h3>
+  <canvas id="chartPenjualan"></canvas>
+</div>
+
+<div class="card">
+  <h3>Tabel Data</h3>
+  <table id="tabelData">
+    <thead>
+      <tr>
+        <th>No</th><th>Tanggal</th><th>Nama</th><th>Produk</th><th>Qty</th><th>Harga</th><th>Total</th><th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<script>
+// === DATA CONTOH. GANTI DENGAN DATA KAMU ===
+let data = JSON.parse(localStorage.getItem('laporanData')) || [
+  {tgl: '2026-01-05', nama: 'Budi', produk: 'Laptop', qty: 2, harga: 8000000},
+  {tgl: '2026-01-12', nama: 'Siti', produk: 'Mouse', qty: 5, harga: 150000},
+  {tgl: '2026-02-03', nama: 'Andi', produk: 'Keyboard', qty: 3, harga: 400000},
+  {tgl: '2026-02-20', nama: 'Budi', produk: 'Laptop', qty: 1, harga: 8000000},
+];
+
+// === FUNGSI UTAMA ===
+function simpanData() {
+  localStorage.setItem('laporanData', JSON.stringify(data));
+  render();
+}
+
+function render() {
+  const search = document.getElementById('search').value.toLowerCase();
+  const bulan = document.getElementById('filterBulan').value;
+
+  let filtered = data.filter(d => {
+    const matchSearch = d.nama.toLowerCase().includes(search) || d.produk.toLowerCase().includes(search);
+    const matchBulan = bulan === '' || d.tgl.startsWith(bulan);
+    return matchSearch && matchBulan;
+  });
+
+  // Render Tabel
+  const tbody = document.querySelector('#tabelData tbody');
+  tbody.innerHTML = '';
+  filtered.forEach((d, i) => {
+    const total = d.qty * d.harga;
+    tbody.innerHTML += `
+      <tr>
+        <td>${i+1}</td>
+        <td>${d.tgl}</td>
+        <td>${d.nama}</td>
+        <td>${d.produk}</td>
+        <td>${d.qty}</td>
+        <td>Rp ${d.harga.toLocaleString('id-ID')}</td>
+        <td>Rp ${total.toLocaleString('id-ID')}</td>
+        <td><button onclick="hapusData(${i})">Hapus</button></td>
+      </tr>
+    `;
+  });
+
+  // Render Statistik
+  document.getElementById('totalData').innerText = filtered.length;
+  const totalPenjualan = filtered.reduce((a,b) => a + (b.qty*b.harga), 0);
+  document.getElementById('totalPenjualan').innerText = 'Rp ' + totalPenjualan.toLocaleString('id-ID');
+
+  const produkCount = {};
+  filtered.forEach(d => produkCount[d.produk] = (produkCount[d.produk]||0) + d.qty);
+  const terlaris = Object.keys(produkCount).sort((a,b) => produkCount[b]-produkCount[a])[0] || '-';
+  document.getElementById('produkTerlaris').innerText = terlaris;
+
+  // Render Chart
+  renderChart(filtered);
+  renderFilterBulan();
+}
+
+function renderChart(filtered) {
+  const ctx = document.getElementById('chartPenjualan');
+  const perBulan = {};
+  filtered.forEach(d => {
+    const bulan = d.tgl.slice(0,7); // YYYY-MM
+    perBulan[bulan] = (perBulan[bulan]||0) + (d.qty*d.harga);
+  });
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: Object.keys(perBulan),
+      datasets: [{
+        label: 'Total Penjualan',
+        data: Object.values(perBulan),
+        backgroundColor: '#38bdf8'
+      }]
+    },
+    options: { responsive: true, scales: { y: { beginAtZero: true } } }
+  });
+}
+
+function renderFilterBulan() {
+  const select = document.getElementById('filterBulan');
+  const bulan = [...new Set(data.map(d => d.tgl.slice(0,7)))];
+  select.innerHTML = '<option value="">Semua Bulan</option>' + bulan.map(b => `<option value="${b}">${b}</option>`).join('');
+}
+
+function tambahData() {
+  const tgl = prompt('Tanggal YYYY-MM-DD');
+  const nama = prompt('Nama Pembeli');
+  const produk = prompt('Nama Produk');
+  const qty = parseInt(prompt('Jumlah'));
+  const harga = parseInt(prompt('Harga Satuan'));
+  if(tgl && nama && produk && qty && harga) {
+    data.push({tgl,nama,produk,qty,harga});
+    simpanData();
+  }
+}
+
+function hapusData(i) {
+  if(confirm('Hapus data ini?')) {
+    data.splice(i,1);
+    simpanData();
+  }
+}
+
+function exportExcel() {
+  const ws = XLSX.utils.json_to_sheet(data);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Laporan");
+  XLSX.writeFile(wb, "laporan_data.xlsx");
+}
+
+// Event
+document.getElementById('search').addEventListener('input', render);
+document.getElementById('filterBulan').addEventListener('change', render);
+
+render(); // pertama kali load
+</script>
+</body>
+  </html>
