@@ -3,188 +3,168 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Laporan Data</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<title>Nama Kamu | Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
 <style>
-  :root { --bg:#0f172a; --card:#1e293b; --text:#e2e8f0; --accent:#38bdf8; }
-  body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; }
-  h1 { text-align: center; color: var(--accent); }
- .card { background: var(--card); padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
- .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-  input, select, button { padding: 10px; border-radius: 8px; border: none; margin: 5px; background: #334155; color: var(--text); }
-  button { background: var(--accent); color: #0f172a; font-weight: bold; cursor: pointer; }
-  button:hover { opacity: 0.8; }
-  table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-  th, td { padding: 12px; border-bottom: 1px solid #334155; text-align: left; }
-  th { background: #334155; }
-  tr:hover { background: #334155; }
+  :root{
+    --bg: #0a0a0a;
+    --card: #111;
+    --text: #e5e5e5;
+    --muted: #888;
+    --accent: linear-gradient(90deg, #a855f7, #38bdf8);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);overflow-x:hidden}
+
+  /* NAVBAR */
+  nav{position:fixed;top:0;width:100%;padding:20px 10%;display:flex;justify-content:space-between;align-items:center;
+    background:rgba(10,10,10,0.7);backdrop-filter:blur(10px);z-index:100}
+  nav.logo{font-weight:700;font-size:22px;background:var(--accent);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  nav ul{list-style:none;display:flex;gap:30px}
+  nav ul li a{color:var(--muted);text-decoration:none;transition:0.3s}
+  nav ul li a:hover{color:var(--text)}
+
+  /* SECTION */
+  section{padding:120px 10%;min-height:100vh}
+ .fade-in{opacity:0;transform:translateY(30px);transition:1s}
+ .fade-in.show{opacity:1;transform:translateY(0)}
+
+  /* HERO */
+  #home{display:flex;align-items:center;justify-content:space-between;gap:40px}
+ .hero-text h1{font-size:3.5rem;line-height:1.2}
+ .gradient-text{background:var(--accent);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+ .hero-text p{color:var(--muted);margin:20px 0;font-size:1.1rem}
+ .btn{padding:12px 24px;border-radius:8px;background:var(--accent);color:#fff;border:none;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block}
+ .hero-img img{width:300px;border-radius:20px;box-shadow:0 0 40px rgba(56,189,248,0.3)}
+
+  /* PROJECTS */
+ .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:25px}
+ .card{background:var(--card);padding:20px;border-radius:16px;border:1px solid #222;transition:0.3s}
+ .card:hover{transform:translateY(-8px);border-color:#38bdf8;box-shadow:0 10px 30px rgba(56,189,248,0.2)}
+ .card h3{margin:10px 0}
+ .card p{color:var(--muted);font-size:0.9rem}
+ .tags span{background:#222;padding:5px 10px;border-radius:6px;font-size:0.8rem;margin-right:5px}
+
+  /* SKILLS */
+ .skills{display:flex;flex-wrap:wrap;gap:15px}
+ .skill{padding:10px 20px;background:var(--card);border-radius:8px;border:1px solid #222}
+
+  /* CONTACT */
+  form{display:flex;flex-direction:column;gap:15px;max-width:500px}
+  input,textarea{padding:12px;border-radius:8px;border:1px solid #333;background:#111;color:var(--text)}
+
+  footer{text-align:center;padding:40px;color:var(--muted)}
+  @media(max-width:900px){#home{flex-direction:column;text-align:center} nav ul{display:none}}
 </style>
 </head>
 <body>
 
-<h1>📊 Dashboard Laporan Data</h1>
+<!-- NAVBAR -->
+<nav>
+  <div class="logo">Portfolio.</div>
+  <ul>
+    <li><a href="#home">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
 
-<div class="grid">
-  <div class="card">
-    <h3>Total Data</h3>
-    <h2 id="totalData">0</h2>
+<!-- HERO -->
+<section id="home">
+  <div class="hero-text fade-in">
+    <p>Halo, saya</p>
+    <h1><span class="gradient-text" id="typing"></span></h1>
+    <p>Frontend Developer & UI Designer yang suka bikin website keren dan cepat.</p>
+    <a href="#projects" class="btn">Lihat Project</a>
   </div>
-  <div class="card">
-    <h3>Total Penjualan</h3>
-    <h2 id="totalPenjualan">Rp 0</h2>
+  <div class="hero-img fade-in">
+    <img src="https://i.imgur.com/8Km9tLL.png" alt="foto kamu"> <!-- ganti link foto -->
   </div>
-  <div class="card">
-    <h3>Produk Terlaris</h3>
-    <h2 id="produkTerlaris">-</h2>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="fade-in">
+  <h2>About Me</h2>
+  <p style="color:var(--muted);margin-top:20px;max-width:700px">
+    Saya seorang developer yang fokus di React, Tailwind, dan Next.js.
+    Suka bikin desain minimalis dengan performa tinggi. Tujuan saya: bikin web yang
+    bukan cuma bagus, tapi juga kepake.
+  </p>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="fade-in">
+  <h2>Projects</h2>
+  <div class="grid" style="margin-top:30px">
+    <div class="card">
+      <h3>Dashboard Analytics</h3>
+      <p>Dashboard untuk visualisasi data penjualan dengan Chart.js dan API.</p>
+      <div class="tags"><span>React</span><span>Tailwind</span><span>API</span></div>
+    </div>
+    <div class="card">
+      <h3>Landing Page SaaS</h3>
+      <p>Landing page modern untuk produk SaaS dengan animasi GSAP.</p>
+      <div class="tags"><span>Next.js</span><span>Framer</span></div>
+    </div>
+    <div class="card">
+      <h3>WhatsApp Bot</h3>
+      <p>Bot multi-device pake Baileys untuk otomasi dan laporan data.</p>
+      <div class="tags"><span>NodeJS</span><span>Baileys</span></div>
+    </div>
   </div>
-</div>
+</section>
 
-<div class="card">
-  <h3>Filter & Aksi</h3>
-  <input type="text" id="search" placeholder="Cari nama/produk...">
-  <select id="filterBulan">
-    <option value="">Semua Bulan</option>
-  </select>
-  <button onclick="exportExcel()">Export Excel</button>
-  <button onclick="tambahData()">+ Tambah Data</button>
-</div>
+<!-- SKILLS -->
+<section id="skills" class="fade-in">
+  <h2>Skills</h2>
+  <div class="skills" style="margin-top:20px">
+    <div class="skill">HTML</div><div class="skill">CSS</div><div class="skill">JavaScript</div>
+    <div class="skill">React</div><div class="skill">Next.js</div><div class="skill">Tailwind</div>
+    <div class="skill">Node.js</div><div class="skill">Git</div>
+  </div>
+</section>
 
-<div class="card">
-  <h3>Grafik Penjualan</h3>
-  <canvas id="chartPenjualan"></canvas>
-</div>
+<!-- CONTACT -->
+<section id="contact" class="fade-in">
+  <h2>Contact Me</h2>
+  <form onsubmit="alert('Pesan terkirim!');return false">
+    <input type="text" placeholder="Nama" required>
+    <input type="email" placeholder="Email" required>
+    <textarea rows="5" placeholder="Pesan..." required></textarea>
+    <button class="btn" type="submit">Kirim</button>
+  </form>
+  <div style="margin-top:20px;display:flex;gap:15px">
+    <a href="#"><i data-lucide="github"></i></a>
+    <a href="#"><i data-lucide="linkedin"></i></a>
+    <a href="#"><i data-lucide="instagram"></i></a>
+  </div>
+</section>
 
-<div class="card">
-  <h3>Tabel Data</h3>
-  <table id="tabelData">
-    <thead>
-      <tr>
-        <th>No</th><th>Tanggal</th><th>Nama</th><th>Produk</th><th>Qty</th><th>Harga</th><th>Total</th><th>Aksi</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-</div>
+<footer>© 2026 Nama Kamu. Dibuat dengan ❤️</footer>
 
 <script>
-// === DATA CONTOH. GANTI DENGAN DATA KAMU ===
-let data = JSON.parse(localStorage.getItem('laporanData')) || [
-  {tgl: '2026-01-05', nama: 'Budi', produk: 'Laptop', qty: 2, harga: 8000000},
-  {tgl: '2026-01-12', nama: 'Siti', produk: 'Mouse', qty: 5, harga: 150000},
-  {tgl: '2026-02-03', nama: 'Andi', produk: 'Keyboard', qty: 3, harga: 400000},
-  {tgl: '2026-02-20', nama: 'Budi', produk: 'Laptop', qty: 1, harga: 8000000},
-];
-
-// === FUNGSI UTAMA ===
-function simpanData() {
-  localStorage.setItem('laporanData', JSON.stringify(data));
-  render();
+// 1. ANIMASI KETIK
+const words = ["Nama Kamu", "Developer", "Designer"];
+let i=0, j=0, isDel=false;
+function typing(){
+  const el = document.getElementById('typing');
+  el.innerHTML = words[i].substring(0,j);
+  if(!isDel && j++ === words[i].length){isDel=true;setTimeout(typing,1500);return}
+  if(isDel && j-- === 0){isDel=false;i=(i+1)%words.length}
+  setTimeout(typing, isDel?100:150)
 }
+typing()
 
-function render() {
-  const search = document.getElementById('search').value.toLowerCase();
-  const bulan = document.getElementById('filterBulan').value;
+// 2. ANIMASI SCROLL FADE IN
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting) e.target.classList.add('show')})
+},{threshold:0.2})
+document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el))
 
-  let filtered = data.filter(d => {
-    const matchSearch = d.nama.toLowerCase().includes(search) || d.produk.toLowerCase().includes(search);
-    const matchBulan = bulan === '' || d.tgl.startsWith(bulan);
-    return matchSearch && matchBulan;
-  });
-
-  // Render Tabel
-  const tbody = document.querySelector('#tabelData tbody');
-  tbody.innerHTML = '';
-  filtered.forEach((d, i) => {
-    const total = d.qty * d.harga;
-    tbody.innerHTML += `
-      <tr>
-        <td>${i+1}</td>
-        <td>${d.tgl}</td>
-        <td>${d.nama}</td>
-        <td>${d.produk}</td>
-        <td>${d.qty}</td>
-        <td>Rp ${d.harga.toLocaleString('id-ID')}</td>
-        <td>Rp ${total.toLocaleString('id-ID')}</td>
-        <td><button onclick="hapusData(${i})">Hapus</button></td>
-      </tr>
-    `;
-  });
-
-  // Render Statistik
-  document.getElementById('totalData').innerText = filtered.length;
-  const totalPenjualan = filtered.reduce((a,b) => a + (b.qty*b.harga), 0);
-  document.getElementById('totalPenjualan').innerText = 'Rp ' + totalPenjualan.toLocaleString('id-ID');
-
-  const produkCount = {};
-  filtered.forEach(d => produkCount[d.produk] = (produkCount[d.produk]||0) + d.qty);
-  const terlaris = Object.keys(produkCount).sort((a,b) => produkCount[b]-produkCount[a])[0] || '-';
-  document.getElementById('produkTerlaris').innerText = terlaris;
-
-  // Render Chart
-  renderChart(filtered);
-  renderFilterBulan();
-}
-
-function renderChart(filtered) {
-  const ctx = document.getElementById('chartPenjualan');
-  const perBulan = {};
-  filtered.forEach(d => {
-    const bulan = d.tgl.slice(0,7); // YYYY-MM
-    perBulan[bulan] = (perBulan[bulan]||0) + (d.qty*d.harga);
-  });
-
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: Object.keys(perBulan),
-      datasets: [{
-        label: 'Total Penjualan',
-        data: Object.values(perBulan),
-        backgroundColor: '#38bdf8'
-      }]
-    },
-    options: { responsive: true, scales: { y: { beginAtZero: true } } }
-  });
-}
-
-function renderFilterBulan() {
-  const select = document.getElementById('filterBulan');
-  const bulan = [...new Set(data.map(d => d.tgl.slice(0,7)))];
-  select.innerHTML = '<option value="">Semua Bulan</option>' + bulan.map(b => `<option value="${b}">${b}</option>`).join('');
-}
-
-function tambahData() {
-  const tgl = prompt('Tanggal YYYY-MM-DD');
-  const nama = prompt('Nama Pembeli');
-  const produk = prompt('Nama Produk');
-  const qty = parseInt(prompt('Jumlah'));
-  const harga = parseInt(prompt('Harga Satuan'));
-  if(tgl && nama && produk && qty && harga) {
-    data.push({tgl,nama,produk,qty,harga});
-    simpanData();
-  }
-}
-
-function hapusData(i) {
-  if(confirm('Hapus data ini?')) {
-    data.splice(i,1);
-    simpanData();
-  }
-}
-
-function exportExcel() {
-  const ws = XLSX.utils.json_to_sheet(data);
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Laporan");
-  XLSX.writeFile(wb, "laporan_data.xlsx");
-}
-
-// Event
-document.getElementById('search').addEventListener('input', render);
-document.getElementById('filterBulan').addEventListener('change', render);
-
-render(); // pertama kali load
+// 3. ICON
+lucide.createIcons();
 </script>
 </body>
-  </html>
+</html>
