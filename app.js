@@ -1,14 +1,14 @@
-// EDIT DATA KAMU DI SINI
+// EDIT NAMA & DATA KAMU DI SINI
 const DATA = {
-  nama: "the.sad.boy01",
+  nama: "Nama Kamu",
   role: ["Frontend Developer", "UI Designer", "Creative Coder"],
   about: "I build pixel-perfect, engaging, and accessible digital experiences. Currently focused on React, Next.js, and motion.",
   projects: [
-    {title: "Orbit Analytics", desc: "Real-time dashboard with data visualization", tags: ["React", "Tailwind", "Chart.js"], link: "#", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070"},
-    {title: "Nova SaaS", desc: "Landing page for AI SaaS with smooth animations", tags: ["Next.js", "Framer", "GSAP"], link: "#", img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2072"},
-    {title: "Astra Bot", desc: "WhatsApp bot panel with multi-device support", tags: ["NodeJS", "Baileys"], link: "#", img: "https://images.unsplash.com/photo-1511376777862-611b54f68947?q=80&w=2070"}
+    {title: "Project Alpha", desc: "Dashboard modern dengan data visualisasi real-time", tags: ["React", "Tailwind", "Chart.js"], link: "#", img: "https://telegra.ph/file/6ea54729b0ca7cf6a7246.jpg"},
+    {title: "Project Beta", desc: "Landing page SaaS dengan animasi smooth", tags: ["Next.js", "Framer", "GSAP"], link: "#", img: "https://telegra.ph/file/9fabb4dec8e1f858003ae.jpg"},
+    {title: "Project Gamma", desc: "Aplikasi web responsive dengan UI clean", tags: ["JavaScript", "CSS", "API"], link: "#", img: "https://telegra.ph/file/dc04e52fac202eeea19d6.jpg"}
   ],
-  social: {github:"https://github.com/Kangsad01", linkedin:"#", instagram:"#"}
+  social: {github:"#", linkedin:"#", instagram:"#"}
 }
 
 // INJECT CSS
@@ -16,7 +16,7 @@ document.head.innerHTML += `<style>
   :root{--bg:#030303;--card:#0A0A0A;--text:#EDEDED;--muted:#888;--p1:#9333ea;--p2:#06b6d4}
   *{margin:0;padding:0;box-sizing:border-box;font-family:'Satoshi',sans-serif;scroll-behavior:smooth;cursor:none}
   body{background:var(--bg);color:var(--text);overflow-x:hidden}
- .blob{position:fixed;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(147,51,234,0.3) 0%,transparent 70%);filter:blur(120px);z-index:-1;pointer-events:none}
+.blob{position:fixed;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(147,51,234,0.3) 0%,transparent 70%);filter:blur(120px);z-index:-1;pointer-events:none}
   nav{position:fixed;top:0;width:100%;padding:30px 8%;display:flex;justify-content:space-between;align-items:center;z-index:100;transition:0.3s}
   nav.scrolled{background:rgba(3,3,3,0.7);backdrop-filter:blur(20px);padding:20px 8%}
 .logo{font-size:28px;font-weight:900;background:linear-gradient(90deg,var(--p1),var(--p2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
@@ -25,8 +25,9 @@ document.head.innerHTML += `<style>
 .nav-links a:hover{color:var(--text)}
 .hamburger{display:none;flex-direction:column;gap:6px;cursor:pointer}
 .hamburger span{width:28px;height:2px;background:var(--text);transition:0.3s}
-.mobile-menu{position:fixed;top:0;right:-100%;width:70%;height:100vh;background:var(--card);padding:100px 40px;transition:0.5s;border-left:1px solid #1a1a1a}
+.mobile-menu{position:fixed;top:0;right:-100%;width:70%;height:100vh;background:var(--card);padding:100px 40px;transition:0.5s;border-left:1px solid #1a1a1a;z-index:99}
 .mobile-menu.show{right:0}
+.mobile-menu a{color:var(--text);text-decoration:none;font-size:1.5rem;display:block}
   section{padding:160px 8%;min-height:100vh}
 .reveal{opacity:0;transform:translateY(60px);transition:1.2s cubic-bezier(0.16,1,0.3,1)}
 .reveal.show{opacity:1;transform:translateY(0)}
@@ -42,11 +43,11 @@ document.head.innerHTML += `<style>
 .card img{width:100%;height:220px;object-fit:cover;border-radius:16px}
 .tags{display:flex;gap:10px;margin-top:15px;flex-wrap:wrap}
 .tags span{padding:8px 16px;background:#111;border-radius:50px;font-size:0.85rem;color:var(--muted)}
-.cursor{position:fixed;width:20px;height:20px;border:2px solid var(--p2);border-radius:50%;pointer-events:none;z-index:9999;transition:0.1s}
- @media(max-width:1000px){.nav-links{display:none}.hamburger{display:flex}.hero h1{font-size:3.5rem}}
+.cursor{position:fixed;width:20px;height:20px;border:2px solid var(--p2);border-radius:50%;pointer-events:none;z-index:9999;transition:0.1s;mix-blend-mode:difference}
+ @media(max-width:1000px){.nav-links{display:none}.hamburger{display:flex}.hero h1{font-size:3.5rem};cursor{ display:none }}
 </style>`;
 
-// RENDER SEMUA
+// RENDER
 const app = document.getElementById('app');
 app.innerHTML = `
   <div class="cursor"></div>
@@ -63,15 +64,17 @@ init();
 // COMPONENTS
 function Navbar(){
   return `<nav id="navbar">
-    <div class="logo">JD.</div>
+    <div class="logo">NK.</div>
     <ul class="nav-links">
       <li><a href="#home">Home</a></li><li><a href="#about">About</a></li>
       <li><a href="#projects">Work</a></li><li><a href="#contact">Contact</a></li>
     </ul>
     <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
     <div class="mobile-menu" id="mobileMenu">
-      <a href="#home">Home</a><br><br><a href="#about">About</a><br><br>
-      <a href="#projects">Work</a><br><br><a href="#contact">Contact</a>
+      <a href="#home" onclick="toggleMenu()">Home</a>
+      <a href="#about" onclick="toggleMenu()">About</a>
+      <a href="#projects" onclick="toggleMenu()">Work</a>
+      <a href="#contact" onclick="toggleMenu()">Contact</a>
     </div>
   </nav>`
 }
@@ -96,7 +99,7 @@ function Projects(){
     <h2 style="font-size:3rem">Selected <span class="gradient">Work</span></h2>
     <div class="grid">
       ${DATA.projects.map(p=>`
-        <div class="card magnetic">
+        <div class="card magnetic" onclick="window.open('${p.link}')">
           <img src="${p.img}">
           <h3 style="margin:20px 0 10px">${p.title}</h3>
           <p style="color:var(--muted)">${p.desc}</p>
@@ -109,21 +112,20 @@ function Projects(){
 function Contact(){
   return `<section id="contact" class="reveal">
     <h2 style="font-size:3rem">Get In <span class="gradient">Touch</span></h2>
-    <form onsubmit="alert('Sent!');return false" style="max-width:600px;margin-top:40px">
-      <input placeholder="Name" required style="inputStyle">
-      <input type="email" placeholder="Email" required style="inputStyle">
-      <textarea placeholder="Message" rows="5" required style="inputStyle"></textarea>
-      <button class="btn magnetic">Send Message</button>
+    <form onsubmit="alert('Pesan Terkirim!');return false" style="max-width:600px;margin-top:40px">
+      <input placeholder="Nama" required style="width:100%;padding:16px;margin-bottom:20px;background:#111;border:1px solid #222;color:var(--text);border-radius:12px;font-size:1rem">
+      <input type="email" placeholder="Email" required style="width:100%;padding:16px;margin-bottom:20px;background:#111;border:1px solid #222;color:var(--text);border-radius:12px;font-size:1rem">
+      <textarea placeholder="Pesan" rows="5" required style="width:100%;padding:16px;margin-bottom:20px;background:#111;border:1px solid #222;color:var(--text);border-radius:12px;font-size:1rem"></textarea>
+      <button class="btn magnetic">Kirim Pesan</button>
     </form>
-  </section>`.replace(/inputStyle/g,'width:100%;padding:16px;margin-bottom:20px;background:#111;border:1px solid #222;color:var(--text);border-radius:12px;font-size:1rem')
+  </section>`
 }
 function Footer(){
   return `<footer style="text-align:center;padding:60px 8%;border-top:1px solid #1a1a1a;color:var(--muted)">© 2026 ${DATA.nama}. Crafted with ❤️</footer>`
 }
 
-// LOGIC JS
+// LOGIC
 function init(){
-  // 1. Custom Cursor
   const cursor = document.querySelector('.cursor');
   document.addEventListener('mousemove', e => {
     cursor.style.left = e.clientX - 10 + 'px';
@@ -136,23 +138,15 @@ function init(){
     })
     el.addEventListener('mouseleave', ()=>el.style.transform='translate(0,0)')
   })
-
-  // 2. Blob follow mouse
   const blob = document.getElementById('blob');
   document.addEventListener('mousemove', e=>{
     blob.style.left = e.clientX - 300 + 'px';
     blob.style.top = e.clientY - 300 + 'px';
   })
-
-  // 3. Navbar scroll
   window.addEventListener('scroll', ()=>{
     document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50)
   })
-
-  // 4. Hamburger
   window.toggleMenu = ()=>document.getElementById('mobileMenu').classList.toggle('show');
-
-  // 5. Typing
   let i=0,j=0,del=false;
   function type(){
     const el = document.getElementById('typing');
@@ -162,8 +156,6 @@ function init(){
     setTimeout(type, del?60:100)
   }
   type();
-
-  // 6. Reveal on scroll
   const obs = new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting) e.target.classList.add('show')})},{threshold:0.1});
   document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 }
