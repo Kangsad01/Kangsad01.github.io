@@ -1,13 +1,9 @@
-// ========== 1. DATA KAMU ==========
+// ========== 1. DATA ==========
 const DATA = {
   nama: "Kangsad01",
-  role: ["Frontend Developer", "UI Designer", "Creative Coder", "Motion Designer"],
-  about: "I build pixel-perfect, engaging, and accessible digital experiences. Currently focused on React, Next.js, and motion.",
-  stats: [
-    {number: 20, label: "Projects Done"},
-    {number: 3, label: "Years Experience"},
-    {number: 15, label: "Happy Clients"}
-  ],
+  role: ["Frontend Developer", "UI Designer", "Creative Coder", "Motion Artist"],
+  about: "I craft digital experiences that feel alive. Merging code, design, and motion to build interfaces that people remember.",
+  stats: [{number: 20, label: "Projects Done"}, {number: 3, label: "Years Experience"}, {number: 15, label: "Happy Clients"}],
   tech: [
     {name: "React", level: 90, icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react-original.svg"},
     {name: "Next.js", level: 85, icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg"},
@@ -19,109 +15,84 @@ const DATA = {
     {name: "Figma", level: 85, icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"}
   ],
   projects: [
-    {title: "Project Alpha", desc: "Dashboard modern dengan data visualisasi real-time", tags: ["React", "Tailwind", "Chart.js"], link: "https://github.com/Kangsad01", img: "https://telegra.ph/file/6ea54729b0ca7cf6a7246.jpg"},
-    {title: "Project Beta", desc: "Landing page SaaS dengan animasi smooth", tags: ["Next.js", "Framer", "GSAP"], link: "https://github.com/Kangsad01", img: "https://telegra.ph/file/9fabb4dec8e1f858003ae.jpg"},
-    {title: "Project Gamma", desc: "Aplikasi web responsive dengan UI clean", tags: ["JavaScript", "CSS", "API"], link: "https://github.com/Kangsad01", img: "https://telegra.ph/file/dc04e52fac202eeea19d6.jpg"}
+    {title: "NEXUS DASHBOARD", desc: "Data visualization platform with real-time analytics", tags: ["React", "D3.js", "WebGL"], link: "https://github.com/Kangsad01", img: "https://telegra.ph/file/6ea54729b0ca7cf6a7246.jpg"},
+    {title: "AURORA SAAS", desc: "Landing page with scroll-triggered animations", tags: ["Next.js", "Framer", "GSAP"], link: "https://github.com/Kangsad01", img: "https://telegra.ph/file/9fabb4dec8e1f858003ae.jpg"},
+    {title: "ORBIT APP", desc: "Mobile-first web app with glassmorphism UI", tags: ["JavaScript", "CSS", "API"], link: "https://github.com/Kangsad01", img: "https://telegra.ph/file/dc04e52fac202eeea19d6.jpg"}
   ],
   blog: [
-    {title: "Cara Membuat Parallax Scroll di Vanilla JS", date: "20 Apr 2026", desc: "Tutorial lengkap membuat efek parallax tanpa library.", img: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=500", link: "#"},
-    {title: "10 Animasi GSAP yang Wajib Kamu Tau", date: "15 Apr 2026", desc: "Kumpulan animasi GSAP paling keren buat bikin website jadi hidup.", img: "https://images.unsplash.com/photo-1550439062-609e1531270e?w=500", link: "#"},
-    {title: "Dark Mode Toggle Pake LocalStorage", date: "10 Apr 2026", desc: "Simpan tema user biar ga reset pas reload.", img: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=500", link: "#"}
+    {title: "The Art of Micro-Interactions", date: "20 Apr 2026", desc: "How small details create big emotional impact.", img: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=500", link: "#"},
+    {title: "Building with GSAP & ScrollTrigger", date: "15 Apr 2026", desc: "Creating cinematic scroll experiences.", img: "https://images.unsplash.com/photo-1550439062-609e1531270e?w=500", link: "#"},
+    {title: "Glassmorphism in 2026", date: "10 Apr 2026", desc: "Modern UI trends that actually work.", img: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=500", link: "#"}
   ],
   testimonials: [
-    {name: "Ahmad", job: "CEO Startup", text: "Kerjaannya rapi banget dan hasilnya melebihi ekspektasi.", avatar: "https://i.pravatar.cc/100?img=1"},
-    {name: "Sinta", job: "Product Manager", text: "Komunikasi lancar, deadline tepat waktu. UI/UX nya keren abis.", avatar: "https://i.pravatar.cc/100?img=5"}
+    {name: "Ahmad", job: "CEO @ Startup", text: "This portfolio hits different. The animations are insane.", avatar: "https://i.pravatar.cc/100?img=1"},
+    {name: "Sinta", job: "Product Lead", text: "Best frontend portfolio I've seen this year. Hire this guy.", avatar: "https://i.pravatar.cc/100?img=5"}
   ],
   social: {github:"https://github.com/Kangsad01", linkedin:"#", instagram:"https://www.instagram.com/the.sad.boy01"}
 }
 
 let theme = localStorage.getItem('theme') || 'dark';
-let mouseX = 0, mouseY = 0;
 
-// ========== 2. CSS BARU + ANIMASI ==========
+// ========== 2. CSS UNIK + GRAIN + GLITCH ==========
 function injectCSS(){
   const css = `
-  :root{--bg:#030303;--text:#f5f5f5;--muted:#a0a0a0;--card:#111;--accent:#9333ea;--accent2:#06b6d4;--border:rgba(255,255,255,0.1)}
-  [data-theme='light']{--bg:#f5f5f5;--text:#030303;--muted:#525252;--card:#fff;--border:rgba(0,0,0,0.1)}
+  :root{--bg:#030303;--text:#f5f5f5;--muted:#a0a0a0;--card:rgba(17,17,17,0.5);--accent:#9333ea;--accent2:#06b6d4;--border:rgba(255,255,255,0.1)}
+  [data-theme='light']{--bg:#f5f5f5;--text:#030303;--muted:#525252;--card:rgba(255,255,255,0.5);--border:rgba(0,0,0,0.1)}
   *{margin:0;padding:0;box-sizing:border-box;cursor:none}
   html{scroll-behavior:smooth}
-  body{font-family:'Satoshi',sans-serif;background:var(--bg);color:var(--text);transition:background.3s,color.3s;overflow-x:hidden}
- .cursor{position:fixed;width:20px;height:20px;border:2px solid var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transition:transform.2s;mix-blend-mode:difference}
- .cursor-follower{position:fixed;width:40px;height:40px;background:rgba(147,51,234,0.2);border-radius:50%;pointer-events:none;z-index:9998;transition:transform.4s ease-out}
+  body{font-family:'Satoshi',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+  body::before{content:'';position:fixed;inset:0;background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4"/></filter><rect width="100%" height="100%" filter="url(#n)" opacity="0.03"/></svg>');z-index:-1;pointer-events:none}
+  
+  .progress-bar-top{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));z-index:10001;transform-origin:left;transform:scaleX(0)}
+  .cursor{position:fixed;width:8px;height:8px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:difference}
+  .cursor-follower{position:fixed;width:40px;height:40px;border:2px solid var(--accent);border-radius:50%;pointer-events:none;z-index:9998;transition:transform.3s ease-out, width.3s, height.3s}
+  
   #app{opacity:0;transition:opacity.5s}
   #app.loaded{opacity:1}
-.loader{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;transition:opacity.5s}
-.loader.hidden{opacity:0;pointer-events:none}
-.loader-text{font-size:2rem;font-weight:900;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:pulse 2s infinite}
- @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-  nav{position:fixed;top:0;width:100%;padding:1.5rem 5%;display:flex;justify-content:space-between;align-items:center;background:rgba(3,3,3,0.5);backdrop-filter:blur(10px);z-index:1000;border-bottom:1px solid var(--border);transition:.3s}
-  nav.scrolled{padding:1rem 5%;background:rgba(3,3,3,0.8)}
-.logo{display:flex;align-items:center;gap:.5rem;font-weight:900;font-size:1.2rem;transition:.3s}
-.logo:hover{transform:scale(1.05)}
-.nav-links{display:flex;gap:2rem;list-style:none}
-.nav-links a{color:var(--muted);text-decoration:none;transition:.3s;position:relative}
-.nav-links a::after{content:'';position:absolute;bottom:-5px;left:0;width:0;height:2px;background:var(--accent);transition:.3s}
-.nav-links a:hover{color:var(--text)}
-.nav-links a:hover::after{width:100%}
-.theme-toggle,.hamburger{background:none;border:1px solid var(--border);color:var(--text);padding:.5rem;border-radius:50%;cursor:pointer;transition:.3s}
-.theme-toggle:hover{transform:rotate(180deg);border-color:var(--accent)}
-  section{padding:8rem 5%;min-height:100vh;display:flex;flex-direction:column;justify-content:center}
-.section-title{font-size:2.5rem;font-weight:900;text-align:center;margin-bottom:3rem}
-.btn{padding:.8rem 2rem;border-radius:12px;text-decoration:none;font-weight:700;transition:.3s;border:1px solid var(--border);display:inline-flex;align-items:center;gap:.5rem;position:relative;overflow:hidden}
-.btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,var(--accent),transparent);transition:.5s}
-.btn:hover::before{left:100%}
-.btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff;border:none}
-.btn:hover{transform:translateY(-3px);box-shadow:0 10px 20px rgba(147,51,234,0.3)}
-.hero{position:relative;text-align:center}
-.hero-bg{position:absolute;inset:0;z-index:-1}
-.hero-title{font-size:4rem;font-weight:900;line-height:1.1}
-.gradient-text{background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero-subtitle{font-size:1.5rem;color:var(--muted);margin:1rem 0}
-.hero-buttons{display:flex;gap:1rem;justify-content:center;margin:2rem 0}
-.stats{display:flex;justify-content:center;gap:3rem;margin-top:4rem}
-.stat-card{text-align:center;padding:1.5rem;border-radius:16px;background:var(--card);border:1px solid var(--border);transition:.3s}
-.stat-card:hover{transform:translateY(-5px);border-color:var(--accent)}
-.stat-number{font-size:3rem;font-weight:900}
-.about-content{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
-.about-img{width:100%;border-radius:20px;transition:.5s}
-.about-img:hover{transform:scale(1.03)}
-.tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem}
-.tech-card{background:var(--card);padding:1.5rem;border-radius:16px;border:1px solid var(--border);transition:.3s}
-.tech-card:hover{transform:translateY(-5px);border-color:var(--accent)}
-.tech-header{display:flex;align-items:center;gap:1rem;margin-bottom:1rem}
-.tech-icon{width:32px;height:32px}
-.progress-bar{height:8px;background:var(--border);border-radius:10px;overflow:hidden}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0;transition:width 1.5s ease-out}
-.project-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem}
-.project-card{background:var(--card);border-radius:20px;overflow:hidden;border:1px solid var(--border);transition:.3s}
-.project-card:hover{transform:translateY(-10px);box-shadow:0 20px 40px rgba(147,51,234,0.2)}
-.project-img{width:100%;height:200px;object-fit:cover;transition:.5s}
-.project-card:hover.project-img{transform:scale(1.1)}
-.project-content{padding:1.5rem}
-.project-tags{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0}
-.tag{background:rgba(147,51,234,0.2);color:var(--accent);padding:.3rem.8rem;border-radius:20px;font-size:.8rem}
-.blog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem}
-.blog-card{background:var(--card);border-radius:20px;overflow:hidden;border:1px solid var(--border);transition:.3s}
-.blog-card:hover{transform:translateY(-5px)}
-.blog-img{width:100%;height:200px;object-fit:cover}
-.blog-content{padding:1.5rem}
-.blog-date{color:var(--muted);font-size:.9rem}
-.testimonial-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem}
-.testimonial-card{background:var(--card);padding:2rem;border-radius:20px;border:1px solid var(--border);transition:.3s}
-.testimonial-card:hover{transform:scale(1.03)}
-.testimonial-header{display:flex;align-items:center;gap:1rem;margin-bottom:1rem}
-.testimonial-avatar{width:50px;height:50px;border-radius:50%}
-.contact-wrapper{display:grid;grid-template-columns:1fr 1fr;gap:3rem}
-.contact-form{display:flex;flex-direction:column;gap:1rem}
-.contact-form input,.contact-form textarea{padding:1rem;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text);font-family:inherit;transition:.3s}
-.contact-form input:focus,.contact-form textarea:focus{border-color:var(--accent);outline:none}
-  footer{text-align:center;padding:3rem 5%;border-top:1px solid var(--border)}
-.social-links{display:flex;justify-content:center;gap:1.5rem;margin:1rem 0}
-.social-links a{color:var(--muted);transition:.3s}
-.social-links a:hover{color:var(--accent);transform:scale(1.2)}
-.reveal{opacity:0;transform:translateY(30px);transition:all.8s cubic-bezier(0.16, 1, 0.3, 1)}
-.reveal.active{opacity:1;transform:translateY(0)}
-  @media(max-width:768px){.nav-links{display:none}.hamburger{display:block}.about-content,.contact-wrapper{grid-template-columns:1fr}.hero-title{font-size:2.5rem}.cursor,.cursor-follower{display:none}}
+  .loader{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;transition:opacity.5s}
+  .loader.hidden{opacity:0;pointer-events:none}
+  .glitch{position:relative;font-size:4rem;font-weight:900}
+  .glitch::before,.glitch::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%}
+  .glitch::before{animation:glitch-1 0.5s infinite; color:var(--accent); z-index:-1}
+  .glitch::after{animation:glitch-2 0.5s infinite; color:var(--accent2); z-index:-2}
+  @keyframes glitch-1{0%,100%{clip-path:inset(0 0 80% 0)}50%{clip-path:inset(10% 0 10% 0);transform:translate(-2px,2px)}}
+  @keyframes glitch-2{0%,100%{clip-path:inset(80% 0 0 0)}50%{clip-path:inset(10% 0 10% 0);transform:translate(2px,-2px)}}
+  
+  nav{position:fixed;top:0;width:100%;padding:2rem 5%;display:flex;justify-content:space-between;align-items:center;background:rgba(3,3,3,0.1);backdrop-filter:blur(20px);z-index:1000;border-bottom:1px solid var(--border);transition:.3s}
+  nav.scrolled{padding:1rem 5%}
+  .logo{font-weight:900;font-size:1.5rem;letter-spacing:2px}
+  .nav-links{display:flex;gap:2rem;list-style:none}
+  .nav-links a{color:var(--muted);text-decoration:none;transition:.3s;position:relative}
+  .nav-links a:hover{color:var(--text)}
+  
+  section{padding:10rem 5%;min-height:100vh}
+  .section-title{font-size:3rem;font-weight:900;text-align:center;margin-bottom:4rem}
+  
+  .liquid-btn{padding:1rem 2.5rem;border-radius:50px;text-decoration:none;font-weight:700;position:relative;overflow:hidden;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff;border:none;transition:.3s}
+  .liquid-btn::before{content:'';position:absolute;top:0;left:-100%;width:200%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent);transition:.5s}
+  .liquid-btn:hover::before{left:100%}
+  .liquid-btn:hover{transform:scale(1.05);box-shadow:0 0 30px rgba(147,51,234,0.5)}
+  
+  .hero{text-align:center;position:relative}
+  .hero-title{font-size:5rem;font-weight:900;line-height:1}
+  .gradient-text{background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .hero-subtitle{font-size:1.3rem;color:var(--muted);margin:2rem 0;max-width:600px;margin-left:auto;margin-right:auto}
+  
+  .tilt-card{background:var(--card);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:20px;transition:transform.3s;transform-style:preserve-3d}
+  .tilt-card:hover{transform:translateY(-10px) rotateX(5deg)}
+  
+  .project-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:2rem}
+  .project-card{overflow:hidden}
+  .project-img{width:100%;height:250px;object-fit:cover;transition:.5s}
+  .project-card:hover .project-img{transform:scale(1.1)}
+  .project-content{padding:2rem}
+  .project-tags{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0}
+  .tag{border:1px solid var(--accent);color:var(--accent);padding:.3rem.8rem;border-radius:20px;font-size:.8rem}
+  
+  .reveal{opacity:0;transform:translateY(50px);transition:all 1s cubic-bezier(0.16, 1, 0.3, 1)}
+  .reveal.active{opacity:1;transform:translateY(0)}
+  
+  @media(max-width:768px){.nav-links{display:none}.hero-title{font-size:3rem}.cursor,.cursor-follower{display:none}}
   `;
   const style = document.createElement('style');
   style.innerHTML = css;
@@ -129,120 +100,72 @@ function injectCSS(){
 }
 
 // ========== 3. COMPONENTS ==========
-function Cursor(){
-  const cursor = document.createElement('div');
-  cursor.className = 'cursor';
-  const follower = document.createElement('div');
-  follower.className = 'cursor-follower';
-  document.body.appendChild(cursor);
-  document.body.appendChild(follower);
-  document.addEventListener('mousemove', e => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    cursor.style.left = mouseX - 10 + 'px';
-    cursor.style.top = mouseY - 10 + 'px';
-    setTimeout(() => {
-      follower.style.left = mouseX - 20 + 'px';
-      follower.style.top = mouseY - 20 + 'px';
-    }, 100);
-  });
-}
+function ProgressBar(){ const bar = document.createElement('div'); bar.className='progress-bar-top'; document.body.appendChild(bar); window.addEventListener('scroll', ()=>{const scrolled = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight); bar.style.transform = `scaleX(${scrolled})`}) }
 
-function Skeleton(){ return `<nav id="navbar"></nav><main><section id="hero"></section><section id="about"></section><section id="tech"></section><section id="projects"></section><section id="blog"></section><section id="testimonials"></section><section id="contact"></section></main><footer id="footer"></footer>`; }
+function Cursor(){ const c=document.createElement('div');c.className='cursor';const f=document.createElement('div');f.className='cursor-follower';document.body.appendChild(c);document.body.appendChild(f);document.addEventListener('mousemove',e=>{c.style.left=e.clientX-4+'px';c.style.top=e.clientY-4+'px';setTimeout(()=>{f.style.left=e.clientX-20+'px';f.style.top=e.clientY-20+'px'},80)}); document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>{f.style.width='60px';f.style.height='60px'});el.addEventListener('mouseleave',()=>{f.style.width='40px';f.style.height='40px'})}) }
 
-function Navbar(){ return `<nav id="navbar"><div class="logo magnetic"><svg width="35" height="35" viewBox="0 0 100 100"><defs><linearGradient id="logoGrad" x1="0" y1="0" x2="100" y2="100"><stop offset="0" stop-color="#9333ea"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs><rect width="100" height="100" rx="20" fill="var(--card)"/><text x="50" y="65" font-size="50" font-family="Satoshi" font-weight="900" text-anchor="middle" fill="url(#logoGrad)">K01</text></svg><span>${DATA.nama}</span></div><ul class="nav-links"><li><a href="#hero">Home</a></li><li><a href="#about">About</a></li><li><a href="#projects">Projects</a></li><li><a href="#contact">Contact</a></li></ul><div class="nav-actions"><button class="theme-toggle" id="theme-toggle"><i data-lucide="sun"></i></button><button class="hamburger" id="hamburger"><i data-lucide="menu"></i></button></div></nav>`; }
+function Skeleton(){ return `<nav></nav><main><section id="hero"></section><section id="projects"></section><section id="tech"></section><section id="blog"></section><section id="contact"></section></main><footer></footer>`; }
 
-function Hero(){ return `<section id="hero" class="hero"><canvas id="hero-bg" class="hero-bg"></canvas><h1 class="hero-title">I build <span id="role-text" class="gradient-text"></span></h1><p class="hero-subtitle">${DATA.about}</p><div class="hero-buttons"><a href="#projects" class="btn btn-primary magnetic">View Work <i data-lucide="arrow-right"></i></a><button class="btn magnetic" id="download-cv"><i data-lucide="download"></i> Download CV</button></div><div class="stats">${DATA.stats.map(s=>`<div class="stat-card"><div class="stat-number" data-target="${s.number}">0</div><div>${s.label}</div></div>`).join('')}</div></section>`; }
+function Navbar(){ return `<nav><div class="logo">${DATA.nama}</div><ul class="nav-links"><li><a href="#hero">Home</a></li><li><a href="#projects">Work</a></li><li><a href="#tech">Skills</a></li><li><a href="#contact">Contact</a></li></ul><button class="liquid-btn" id="theme-toggle" style="padding:.5rem 1rem">Toggle</button></nav>`; }
 
-function About(){ return `<section id="about" class="reveal"><h2 class="section-title">About Me</h2><div class="about-content"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500" class="about-img"/><div><p>${DATA.about}</p></div></div></section>`; }
-function TechStack(){ return `<section id="tech" class="reveal"><h2 class="section-title">Tech Stack</h2><div class="tech-grid">${DATA.tech.map(t=>`<div class="tech-card"><div class="tech-header"><img src="${t.icon}" class="tech-icon"/><h3>${t.name}</h3></div><div class="progress-bar"><div class="progress-fill" data-level="${t.level}"></div></div></div>`).join('')}</div></section>`; }
-function Projects(){ return `<section id="projects" class="reveal"><h2 class="section-title">Featured Projects</h2><div class="project-grid">${DATA.projects.map(p=>`<div class="project-card"><img src="${p.img}" class="project-img"/><div class="project-content"><h3>${p.title}</h3><p>${p.desc}</p><div class="project-tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div><a href="${p.link}" class="btn magnetic">View Project</a></div></div>`).join('')}</div></section>`; }
-function Blog(){ return `<section id="blog" class="reveal"><h2 class="section-title">Latest Articles</h2><div class="blog-grid">${DATA.blog.map(b=>`<div class="blog-card"><img src="${b.img}" class="blog-img"/><div class="blog-content"><p class="blog-date">${b.date}</p><h3>${b.title}</h3><p>${b.desc}</p></div></div>`).join('')}</div></section>`; }
-function Testimonials(){ return `<section id="testimonials" class="reveal"><h2 class="section-title">What Clients Say</h2><div class="testimonial-grid">${DATA.testimonials.map(t=>`<div class="testimonial-card"><div class="testimonial-header"><img src="${t.avatar}" class="testimonial-avatar"/><div><h4>${t.name}</h4><p>${t.job}</p></div></div><p>"${t.text}"</p></div>`).join('')}</div></section>`; }
-function Contact(){ return `<section id="contact" class="reveal"><h2 class="section-title">Get In Touch</h2><div class="contact-wrapper"><div><h3>Let's work together</h3><p>I'm always open to discussing new projects or creative ideas.</p></div><form class="contact-form" action="https://formspree.io/f/xwvgbaov" method="POST"><input name="name" placeholder="Your Name" required><input name="email" type="email" placeholder="Your Email" required><textarea name="message" placeholder="Your Message" rows="5" required></textarea><button type="submit" class="btn btn-primary magnetic">Send Message</button></form></div></section>`; }
-function Footer(){ return `<footer id="footer"><div class="social-links"><a href="${DATA.social.github}"><i data-lucide="github"></i></a><a href="${DATA.social.instagram}"><i data-lucide="instagram"></i></a></div><p>© 2026 ${DATA.nama}. All rights reserved.</p></footer>`; }
+function Hero(){ return `<section id="hero" class="hero"><h1 class="hero-title glitch" data-text="${DATA.nama}">${DATA.nama}</h1><p class="hero-subtitle" id="role-text"></p><p>${DATA.about}</p><div style="margin-top:2rem"><a href="#projects" class="liquid-btn">Explore Work</a></div></section>`; }
 
-// ========== 4. LOGIC BARU ==========
-function createParticles(){
-  const canvas = document.getElementById('hero-bg');
-  const ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  const particles = [];
-  for(let i=0; i<50; i++){
-    particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vx:(Math.random()-0.5)*2,vy:(Math.random()-0.5)*2,r:Math.random()*2+1});
-  }
-  function animate(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle = theme === 'dark'? 'rgba(147,51,234,0.5)' : 'rgba(147,51,234,0.2)';
-    particles.forEach(p=>{
-      p.x += p.vx; p.y += p.vy;
-      if(p.x<0||p.x>canvas.width)p.vx*=-1;
-      if(p.y<0||p.y>canvas.height)p.vy*=-1;
-      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
+function Projects(){ return `<section id="projects" class="reveal"><h2 class="section-title">Selected Work</h2><div class="project-grid">${DATA.projects.map(p=>`<div class="project-card tilt-card"><img src="${p.img}" class="project-img"/><div class="project-content"><h3>${p.title}</h3><p>${p.desc}</p><div class="project-tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div></div></div>`).join('')}</div></section>`; }
+
+function TechStack(){ return `<section id="tech" class="reveal"><h2 class="section-title">Tech Arsenal</h2><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2rem">${DATA.tech.map(t=>`<div class="tilt-card" style="padding:2rem;text-align:center"><img src="${t.icon}" style="width:48px;height:48px;margin-bottom:1rem"/><h3>${t.name}</h3></div>`).join('')}</div></section>`; }
+
+function Contact(){ return `<section id="contact" class="reveal"><h2 class="section-title">Let's Build Something</h2><form action="https://formspree.io/f/xwvgbaov" method="POST" style="max-width:600px;margin:0 auto;display:flex;flex-direction:column;gap:1rem"><input name="name" placeholder="Name" style="padding:1rem;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text)"><input name="email" type="email" placeholder="Email" style="padding:1rem;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text)"><textarea name="message" placeholder="Message" rows="5" style="padding:1rem;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text)"></textarea><button type="submit" class="liquid-btn">Send Message</button></form></section>`; }
+
+function Footer(){ return `<footer style="text-align:center;padding:3rem"><p>© 2026 ${DATA.nama}. Crafted with obsession.</p></footer>`; }
+
+// ========== 4. LOGIC ==========
+function tiltEffect(){
+  document.querySelectorAll('.tilt-card').forEach(card=>{
+    card.addEventListener('mousemove', e=>{
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width/2;
+      const centerY = rect.height/2;
+      const rotateX = (y - centerY)/10;
+      const rotateY = (centerX - x)/10;
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
     });
-    requestAnimationFrame(animate);
-  }
-  animate();
-}
-
-function magneticEffect(){
-  document.querySelectorAll('.magnetic').forEach(btn=>{
-    btn.addEventListener('mousemove', e=>{
-      const rect = btn.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width/2;
-      const y = e.clientY - rect.top - rect.height/2;
-      btn.style.transform = `translate(${x*0.2}px, ${y*0.2}px)`;
-    });
-    btn.addEventListener('mouseleave', ()=>{btn.style.transform='translate(0,0)'});
+    card.addEventListener('mouseleave', ()=>{card.style.transform='perspective(1000px) rotateX(0) rotateY(0) scale(1)'});
   });
 }
 
 function runAllObservers(){
-  const observer = new IntersectionObserver((entries)=>{
-    entries.forEach(entry=>{
-      if(entry.isIntersecting){
-        entry.target.classList.add('active');
-        entry.target.querySelectorAll('.progress-fill').forEach(bar=>{bar.style.width = bar.dataset.level + '%'});
-        entry.target.querySelectorAll('.stat-number').forEach(num=>{
-          let target = +num.dataset.target; let count = 0;
-          const timer = setInterval(()=>{count++;num.innerText = count;if(count >= target)clearInterval(timer)}, 50);
-        });
-        observer.unobserve(entry.target);
-      }
-    });
-  },{threshold:0.2});
+  const observer = new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('active');observer.unobserve(entry.target)}})},{threshold:0.1});
   document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 }
 
 function init(){
+  ProgressBar();
   Cursor();
   const app = document.getElementById('app');
-  if(!app) return;
-  app.innerHTML = Navbar() + Hero() + About() + TechStack() + Projects() + Blog() + Testimonials() + Contact() + Footer();
+  app.innerHTML = Navbar() + Hero() + Projects() + TechStack() + Contact() + Footer();
   lucide.createIcons();
-  createParticles();
-  magneticEffect();
+  tiltEffect();
   runAllObservers();
-
-  window.addEventListener('scroll', ()=>{document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50)});
-
+  
+  let i=0;
+  const roleEl = document.getElementById('role-text');
+  setInterval(()=>{roleEl.innerText = DATA.role[i]; i=(i+1)%DATA.role.length}, 2500);
+  
   document.getElementById('theme-toggle').onclick = () => {
     theme = theme === 'dark'? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
   };
-
-  document.getElementById('download-cv').onclick = () => {html2pdf().from(document.getElementById('pdf-content')).save('CV-Kangsad01.pdf')};
-
-  let i = 0;
-  setInterval(()=>{document.getElementById('role-text').innerText = DATA.role[i];i = (i + 1) % DATA.role.length}, 2000);
-
-  setTimeout(()=>{document.getElementById('loader').classList.add('hidden');app.classList.add('loaded')}, 1000);
+  
+  window.addEventListener('scroll', ()=>{document.querySelector('nav').classList.toggle('scrolled', window.scrollY > 50)});
+  
+  setTimeout(()=>{document.getElementById('loader').classList.add('hidden');app.classList.add('loaded')}, 800);
 }
 
 // ========== 5. JALANIN ==========
 injectCSS();
 document.documentElement.setAttribute('data-theme', theme);
-document.getElementById('app').innerHTML = `<div class="loader" id="loader"><div class="loader-text">${DATA.nama}</div></div><div id="pdf-content">${Skeleton()}</div>`;
+document.getElementById('app').innerHTML = `<div class="loader" id="loader"><div class="glitch" data-text="${DATA.nama}">${DATA.nama}</div></div><div id="pdf-content">${Skeleton()}</div>`;
 init();
