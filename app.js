@@ -142,6 +142,8 @@ function Contact(){ return `<section id="contact" class="reveal"><h2 style="font
 function Footer(){ return `<footer style="text-align:center;padding:60px 8%;border-top:1px solid #333;color:var(--muted)"><div class="socials" style="justify-content:center"><a href="${DATA.social.github}" target="_blank"><i data-lucide="github"></i></a><a href="${DATA.social.instagram}" target="_blank"><i data-lucide="instagram"></i></a><a href="${DATA.social.linkedin}" target="_blank"><i data-lucide="linkedin"></i></a></div><p style="margin-top:20px">© 2026 ${DATA.nama}. Crafted with ❤️</p></footer>` }
 
 function init(){
+  const app = document.getElementById('app');
+if(!app) return; // biar ga error kalau ga ketemu
   lucide.createIcons();
   setTimeout(() => {
     document.getElementById('pdf-content').innerHTML = `${Navbar()}${Hero()}${About()}${TechStack()}${Projects()}${Blog()}${Testimonials()}${Contact()}${Footer()}`;
