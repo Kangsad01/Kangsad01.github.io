@@ -2,15 +2,38 @@
 const DATA = {
   nama: "Kangsad01",
   role: ["Frontend Developer", "UI Designer", "Creative Coder"],
-  about: "I craft digital experiences that feel alive.",
-  stats: [{number: 20, label: "Projects Done"}, {number: 3, label: "Years Experience"}, {number: 15, label: "Happy Clients"}],
+  about: "Frontend Developer dari Surabaya yang suka bikin website interaktif dan animasi smooth. Fokus di React, Next.js, dan UI/UX.",
+  stats: [{number: 8, label: "Projects Done"}, {number: 1, label: "Years Experience"}, {number: 5, label: "Happy Clients"}],
   tech: [
     {name: "React", level: 90, icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react-original.svg"},
     {name: "Next.js", level: 85, icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg"},
-    {name: "Tailwind", level: 95, icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg"}
+    {name: "Tailwind", level: 95, icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg"},
+    {name: "JavaScript", level: 90, icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript-original.svg"},
+    {name: "GSAP", level: 75, icon: "https://cdn.worldvectorlogo.com/logos/gsap-greensock.svg"},
+    {name: "Figma", level: 85, icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"}
   ],
   projects: [
-    {title: "NEXUS DASHBOARD", desc: "Data visualization platform", tags: ["React", "D3.js"], link: "#", img: "https://telegra.ph/file/6ea54729b0ca7cf6a7246.jpg"}
+    {
+      title: "PORTFOLIO V3", 
+      desc: "Portfolio personal dengan animasi GSAP, dark mode, dan responsive design.", 
+      tags: ["HTML", "CSS", "JavaScript", "GSAP"], 
+      link: "https://kangsad01.github.io", 
+      img: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=500"
+    },
+    {
+      title: "PROJECT DASHBOARD", 
+      desc: "Admin dashboard modern dengan chart real-time dan UI clean.", 
+      tags: ["React", "Tailwind", "Chart.js"], 
+      link: "https://github.com/Kangsad01", 
+      img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500"
+    },
+    {
+      title: "LANDING PAGE SAAS", 
+      desc: "Landing page untuk produk SaaS dengan animasi scroll.", 
+      tags: ["Next.js", "Framer"], 
+      link: "https://github.com/Kangsad01", 
+      img: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=500"
+    }
   ],
   blog: [], testimonials: [],
   social: {github:"https://github.com/Kangsad01", instagram:"https://www.instagram.com/the.sad.boy01"}
