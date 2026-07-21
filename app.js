@@ -6,7 +6,7 @@ const DATA = {
   foto: "https://avatars.githubusercontent.com/Kangsad01",
   email: "drakblue3@gmail.com",
   websiteScreenshot: "https://avatars.githubusercontent.com/Kangsad01",
-  music: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3", // LAGI LEBIH MASKULIN
+  music: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
   stats: [{number: 20, label: "Repositories"}, {number: 3, label: "Years Coding"}, {number: 100, label: "Bot Users"}],
   tech: [
     {name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"},
@@ -51,7 +51,7 @@ function mouseGlow(){ const glow = document.createElement('div'); glow.id='glow'
 function scrollProgress(){ const progressBar = document.createElement('div'); progressBar.id='progress-bar'; document.body.appendChild(progressBar); window.addEventListener('scroll', () => { const winScroll = document.documentElement.scrollTop; const height = document.documentElement.scrollHeight - document.documentElement.clientHeight; progressBar.style.width = (winScroll / height) * 100 + '%'; }) }
 function backToTop(){ const btn = document.createElement('button'); btn.id='back-to-top'; btn.innerHTML='↑'; document.body.appendChild(btn); window.addEventListener('scroll', () => { if(window.scrollY > 500){ btn.classList.add('show') } else{ btn.classList.remove('show') } }); btn.onclick = () => { window.scrollTo({top:0, behavior:'smooth'}) }; }
 
-function magneticButtons(){ // BALIKIN YG LAMA
+function magneticButtons(){
   document.querySelectorAll('.magnetic-btn').forEach(btn => {
     btn.addEventListener('mousemove', e => {
       const rect = btn.getBoundingClientRect();
@@ -63,7 +63,24 @@ function magneticButtons(){ // BALIKIN YG LAMA
   })
 }
 
-function terminalType(){ const lines = ['git clone https://github.com/Kangsad01','npm install','Server running on port 3000','Portfolio loaded ✓']; const el = document.getElementById('terminal-text'); if(!el) return; let i=0, j=0; function type(){ if(j < lines[i].length){ el.innerHTML += lines[i][j++]; setTimeout(type, 40); } else { el.innerHTML += '<br>'; i++; j=0; if(i < lines.length) setTimeout(type, 600); } type(); }
+function terminalType(){
+  const lines = ['git clone https://github.com/Kangsad01','npm install','Server running on port 3000','Portfolio loaded ✓'];
+  const el = document.getElementById('terminal-text');
+  if(!el) return;
+  let i=0, j=0;
+  function type(){
+    if(j < lines[i].length){
+      el.innerHTML += lines[i][j++];
+      setTimeout(type, 40);
+    } else {
+      el.innerHTML += '<br>';
+      i++;
+      j=0;
+      if(i < lines.length) setTimeout(type, 600);
+    }
+  }
+  type();
+}
 
 function liquidBackground(){
   const canvas = document.createElement('canvas');
@@ -77,7 +94,7 @@ function liquidBackground(){
     const bgColor = getCSSVar('--bg');
     ctx.clearRect(0,0,canvas.width,canvas.height);
     const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width);
-    gradient.addColorStop(0,'rgba(56,189,248,0.1)'); // CYAN
+    gradient.addColorStop(0,'rgba(56,189,248,0.1)');
     gradient.addColorStop(1, bgColor);
     ctx.fillStyle = gradient;
     ctx.fillRect(0,0,canvas.width,canvas.height);
@@ -106,16 +123,37 @@ function particleBackground(){
       p.x += p.speedX; p.y += p.speedY;
       if(p.x < 0 || p.x > canvas.width) p.speedX *= -1;
       if(p.y < 0 || p.y > canvas.height) p.speedY *= -1;
-      ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fillStyle = 'rgba(56,189,248,0.5)'; ctx.fill(); // CYAN
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fillStyle = 'rgba(56,189,248,0.5)'; ctx.fill();
     });
     requestAnimationFrame(animate);
   }
   animate();
 }
 
-function typeWriter(el, texts){ let i = 0, j = 0, isDeleting = false; function type(){ const current = texts[i]; if(isDeleting){ el.innerHTML = current.substring(0, j-1) + '<span style="border-right:3px solid var(--accent)"></span>';j-- } else{ el.innerHTML = current.substring(0, j+1) + '<span style="border-right:3px solid var(--accent)"></span>';j++ } if(!isDeleting && j === current.length){ isDeleting = true; setTimeout(type, 2500) } else if(isDeleting && j === 0){ isDeleting = false; i = (i + 1) % texts.length; setTimeout(type, 500) } else{ setTimeout(type, isDeleting? 40 : 80) } type() }
+function typeWriter(el, texts){
+  let i = 0, j = 0, isDeleting = false;
+  function type(){
+    const current = texts[i];
+    if(isDeleting){
+      el.innerHTML = current.substring(0, j-1) + '<span style="border-right:3px solid var(--accent)"></span>';j--
+    } else{
+      el.innerHTML = current.substring(0, j+1) + '<span style="border-right:3px solid var(--accent)"></span>';j++
+    }
+    if(!isDeleting && j === current.length){
+      isDeleting = true;
+      setTimeout(type, 2500)
+    } else if(isDeleting && j === 0){
+      isDeleting = false;
+      i = (i + 1) % texts.length;
+      setTimeout(type, 500)
+    } else{
+      setTimeout(type, isDeleting? 40 : 80)
+    }
+  }
+  type();
+}
 
-function scrollReveal(){ // ANIMASI SEPERTI DULU
+function scrollReveal(){
   const observer = new IntersectionObserver(entries => {
     entries.forEach((entry, i) => {
       if(entry.isIntersecting){
@@ -133,6 +171,7 @@ async function fetchAllProjects(){
   for(const user of DATA.githubs){ try{ const res = await fetch('https://api.github.com/users/' + user + '/repos?sort=updated&per_page=10'); const repos = await res.json(); const mapped = repos.map(repo => ({ title: repo.name.toUpperCase(), desc: repo.description || "No description.", img: 'https://opengraph.githubassets.com/1/' + user + '/' + repo.name, link: repo.html_url })); allRepos = allRepos.concat(mapped); }catch(e){} }
   projectsContainer.innerHTML = allRepos.map((p,i) => `<div class="glass-card" style="transition-delay:${i*0.08}s"><img src="${p.img}" class="project-img" onerror="this.src='https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600'"><h3 style="font-size:1.5rem;margin-bottom:1rem">${p.title}</h3><p style="color:var(--muted);margin-bottom:1.5rem">${p.desc}</p><a href="${p.link}" target="_blank" class="magnetic-btn">View Code</a></div>`).join('');
   magneticButtons();
+  scrollReveal();
 }
 
 function Navbar(){ return `<nav><div class="logo">${DATA.nama}</div></nav>`; }
