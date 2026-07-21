@@ -1,22 +1,18 @@
 const DATA = {
   nama: "Kangsad01",
-  github: "sadteams",
+  githubs: ["Kangsad01", "sadteams"], // 2 AKUN KAMU
   role: ["WhatsApp Bot Developer", "Backend Engineer", "Automation Expert", "Creative Coder"],
   about: "Aku suka bikin bot dan tools yang bener-bener dipake orang. Fokus di automation, database, dan UI yang clean.",
-  foto: "https://avatars.githubusercontent.com/kangsad01",
-  email: "drakblue3@gmail.com", // GANTI EMAIL KAMU
+  foto: "https://avatars.githubusercontent.com/sadteams",
+  email: "kangsad01@gmail.com",
   stats: [{number: 20, label: "Repositories"}, {number: 3, label: "Years Coding"}, {number: 100, label: "Bot Users"}],
   tech: [
     {name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"},
     {name: "MongoDB", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg"},
-    {name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript-original.svg"},
+    {name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"}, // FIX JS
     {name: "WhatsApp", icon: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/whatsapp.svg"}
   ],
-  projects: [
-    {title: "WEABOT - WA BOT", desc: "Bot WhatsApp multi-fitur dengan menu interaktif, sticker, dan game. Dibangun pake Node.js + Baileys.", img: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600", link: "https://github.com/sadteams/Weabot/tree/update"},
-    {title: "DATABASE SYSTEM", desc: "Sistem database untuk menyimpan data user, premium, dan log bot. Support MongoDB & JSON.", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600", link: "https://github.com/sadteams/database"},
-    {title: "PORTFOLIO WEBSITE", desc: "Website portfolio personal dengan efek glassmorphism, particle cursor, dan animasi liquid.", img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600", link: "https://kangsad01.github.io/"}
-  ]
+  projects: [] // KOSONGIN, NANTI DIISI OTOMATIS DARI GITHUB
 }
 
 function injectCSS(){
@@ -25,18 +21,11 @@ function injectCSS(){
   :root{--bg:#0a000f;--text:#fff;--muted:#aaa;--accent:#ec4899;--card:rgba(255,255,255,0.08);--border:rgba(236,72,153,0.3)}
   *{margin:0;padding:0;box-sizing:border-box} html{scroll-behavior:smooth}
   body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text)}
-
-  /* 1. SCROLL PROGRESS BAR */
   #progress-bar{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,#ec4899,#f472b6);z-index:10001;width:0%}
-
-  /* 2. CUSTOM CURSOR */
   #cursor{position:fixed;width:30px;height:30px;border:2px solid var(--accent);border-radius:50%;pointer-events:none;z-index:99999;mix-blend-mode:screen;transition:transform.2s}
   #cursor-dot{position:fixed;width:8px;height:8px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:99999}
-
-  /* 3. BACK TO TOP */
-  #back-to-top{position:fixed;bottom:30px;right:30px;width:50px;height:50px;border-radius:50%;background:linear-gradient(90deg,#ec4899,#f472b6);border:none;color:#fff;font-size:1.5rem;cursor:pointer;z-index:9999;opacity:0;transform:translateY(100px);transition:.3s;box-shadow:0 0 20px rgba(236,72,153,0.5)}
+  #back-to-top{position:fixed;bottom:30px;right:30px;width:50px;height:50px;border-radius:50%;background:linear-gradient(90deg,#ec4899,#f472b6);border:none;color:#fff;font-size:1.5rem;cursor:pointer;z-index:9999;opacity:0;transform:translateY(100px);transition:.3s}
   #back-to-top.show{opacity:1;transform:translateY(0)}
-
   #liquid-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2}
 .container{max-width:1400px;margin:0 auto;padding:0 5%}
   nav{position:fixed;top:0;width:100%;padding:2rem 5%;display:flex;justify-content:space-between;background:var(--card);backdrop-filter:blur(20px);z-index:1000;border-bottom:1px solid var(--border)}
@@ -59,18 +48,17 @@ function injectCSS(){
 .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3rem}
 .stat-box{text-align:center;padding:3rem}
 .stat-box h3{font-size:4rem;color:var(--accent);font-weight:900}
-.project-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:4rem}
-.project-img{width:100%;height:350px;object-fit:cover;border-radius:20px;margin-bottom:2rem}
+.project-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3rem} /* JADI 3 KOLOM */
+.project-img{width:100%;height:200px;object-fit:cover;border-radius:20px;margin-bottom:1.5rem;background:linear-gradient(135deg,#ec4899,#f472b6)}
 .tech-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3rem}
 .tech-card{text-align:center}
 .tech-card img{width:80px;height:80px;filter:drop-shadow(0 0 20px var(--accent))}
-
-  /* 4. FOOTER */
-  footer{padding:5rem 5%;text-align:center;border-top:1px solid var(--border);background:var(--card)}
- .social-links{display:flex;justify-content:center;gap:2rem;margin-bottom:2rem}
- .social-links a{width:50px;height:50px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--accent);font-size:1.5rem;transition:.3s}
- .social-links a:hover{transform:translateY(-5px);background:var(--accent);color:#fff}
-
+footer{padding:5rem 5%;text-align:center;border-top:1px solid var(--border);background:var(--card)}
+.social-links{display:flex;justify-content:center;gap:2rem;margin-bottom:2rem}
+.social-links a{width:50px;height:50px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--accent);font-size:1.5rem;transition:.3s}
+.social-links a:hover{transform:translateY(-5px);background:var(--accent);color:#fff}
+.loading{text-align:center;font-size:2rem;color:var(--accent)}
+  @media(max-width:1024px){.project-grid{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:768px){
 .about-grid,.project-grid,.tech-grid{grid-template-columns:1fr}
 .hero-title{font-size:3.5rem}
@@ -80,7 +68,42 @@ function injectCSS(){
   document.head.appendChild(Object.assign(document.createElement('style'), {innerHTML: css}));
 }
 
-/* 1. SCROLL PROGRESS */
+/* FETCH SEMUA REPO DARI 2 AKUN */
+async function fetchAllProjects(){
+  const projectsContainer = document.getElementById('projects-grid');
+  if(!projectsContainer) return;
+  projectsContainer.innerHTML = `<p class="loading">Loading projects...</p>`;
+
+  let allRepos = [];
+  for(const user of DATA.githubs){
+    try{
+      const res = await fetch(`https://api.github.com/users/${user}/repos?sort=updated&per_page=12`);
+      const repos = await res.json();
+      const mapped = repos.map(repo => ({
+        title: repo.name.toUpperCase(),
+        desc: repo.description || "No description. Click to view code.",
+        img: `https://opengraph.githubassets.com/1/${user}/${repo.name}`, // AUTO PREVIEW GITHUB
+        link: repo.html_url
+      }));
+      allRepos = [...allRepos,...mapped];
+    }catch(e){console.log(e)}
+  }
+
+  // Urutkan berdasarkan terbaru
+  allRepos.sort((a,b) => b.link.localeCompare(a.link));
+
+  const projectHTML = allRepos.map((p,i) => `
+    <div class="project-card glass-card" style="transition-delay:${i*0.05}s">
+      <img src="${p.img}" class="project-img" onerror="this.src='https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600'">
+      <h3 style="font-size:1.5rem;margin-bottom:1rem">${p.title}</h3>
+      <p style="color:var(--muted);font-size:1rem;margin-bottom:1.5rem;min-height:60px">${p.desc}</p>
+      <a href="${p.link}" target="_blank" class="liquid-btn">View Code</a>
+    </div>`).join('');
+
+  projectsContainer.innerHTML = projectHTML;
+  scrollReveal(); // jalanin animasi lagi
+}
+
 function scrollProgress(){
   const progressBar = document.createElement('div'); progressBar.id='progress-bar'; document.body.appendChild(progressBar);
   window.addEventListener('scroll', ()=>{
@@ -91,104 +114,51 @@ function scrollProgress(){
   })
 }
 
-/* 2. SCROLL REVEAL */
 function scrollReveal(){
   const observer = new IntersectionObserver((entries)=>{
     entries.forEach(entry=>{
       if(entry.isIntersecting){
         entry.target.classList.add('revealed');
-        // animasi counter
-        if(entry.target.querySelector('.counter')){
-          animateCounter(entry.target.querySelector('.counter'));
-        }
+        if(entry.target.querySelector('.counter')){ animateCounter(entry.target.querySelector('.counter')); }
       }
     })
-  },{threshold:0.2});
+  },{threshold:0.1});
   document.querySelectorAll('.section-title,.glass-card').forEach(el=>observer.observe(el));
 }
 
-/* 3. COUNTER ANIMATION */
 function animateCounter(el){
   const target = +el.getAttribute('data-target');
-  let count = 0;
-  const inc = target / 100;
-  const update = ()=>{
-    count += inc;
-    if(count < target){ el.innerText = Math.ceil(count); setTimeout(update, 20) }
-    else{ el.innerText = target + '+' }
-  }
+  let count = 0; const inc = target / 100;
+  const update = ()=>{ count += inc; if(count < target){ el.innerText = Math.ceil(count); setTimeout(update, 20) } else{ el.innerText = target + '+' } }
   update();
 }
 
-/* 4. BACK TO TOP */
 function backToTop(){
   const btn = document.createElement('button'); btn.id='back-to-top'; btn.innerHTML='↑'; document.body.appendChild(btn);
-  window.addEventListener('scroll', ()=>{
-    if(window.scrollY > 500){ btn.classList.add('show') } else{ btn.classList.remove('show') }
-  })
+  window.addEventListener('scroll', ()=>{ if(window.scrollY > 500){ btn.classList.add('show') } else{ btn.classList.remove('show') } })
   btn.onclick = ()=> window.scrollTo({top:0, behavior:'smooth'})
 }
 
 function customCursor(){
   const cursor = document.createElement('div'); cursor.id='cursor'; document.body.appendChild(cursor);
   const dot = document.createElement('div'); dot.id='cursor-dot'; document.body.appendChild(dot);
-  document.addEventListener('mousemove', e=>{
-    cursor.style.left = e.clientX - 15 + 'px';
-    cursor.style.top = e.clientY - 15 + 'px';
-    dot.style.left = e.clientX - 4 + 'px';
-    dot.style.top = e.clientY - 4 + 'px';
-  })
+  document.addEventListener('mousemove', e=>{ cursor.style.left = e.clientX - 15 + 'px'; cursor.style.top = e.clientY - 15 + 'px'; dot.style.left = e.clientX - 4 + 'px'; dot.style.top = e.clientY - 4 + 'px'; })
 }
 
 function liquidBackground(){
   const canvas = document.createElement('canvas'); canvas.id='liquid-bg'; document.body.appendChild(canvas);
   const ctx = canvas.getContext('2d'); canvas.width=window.innerWidth; canvas.height=window.innerHeight;
-  let time = 0;
-  function animate(){
-    time += 0.01;
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width);
-    gradient.addColorStop(0,'rgba(236,72,153,0.3)');
-    gradient.addColorStop(1,'rgba(10,0,15,1)');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-    requestAnimationFrame(animate)
-  } animate();
+  let time = 0; function animate(){ time += 0.01; ctx.clearRect(0,0,canvas.width,canvas.height); const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width); gradient.addColorStop(0,'rgba(236,72,153,0.3)'); gradient.addColorStop(1,'rgba(10,0,15,1)'); ctx.fillStyle = gradient; ctx.fillRect(0,0,canvas.width,canvas.height); requestAnimationFrame(animate) } animate();
 }
 
-function typeWriter(el, texts){
-  let i = 0, j = 0, isDeleting = false;
-  function type(){
-    const current = texts[i];
-    if(isDeleting){el.innerHTML = current.substring(0, j-1) + '<span class="typing-cursor"></span>';j--}
-    else{el.innerHTML = current.substring(0, j+1) + '<span class="typing-cursor"></span>';j++}
-    if(!isDeleting && j === current.length){isDeleting = true; setTimeout(type, 2000)}
-    else if(isDeleting && j === 0){isDeleting = false; i = (i + 1) % texts.length; setTimeout(type, 500)}
-    else{setTimeout(type, isDeleting? 50 : 100)}
-  }
-  type()
-}
+function typeWriter(el, texts){ let i = 0, j = 0, isDeleting = false; function type(){ const current = texts[i]; if(isDeleting){el.innerHTML = current.substring(0, j-1) + '<span class="typing-cursor"></span>';j--} else{el.innerHTML = current.substring(0, j+1) + '<span class="typing-cursor"></span>';j++} if(!isDeleting && j === current.length){isDeleting = true; setTimeout(type, 2000)} else if(isDeleting && j === 0){isDeleting = false; i = (i + 1) % texts.length; setTimeout(type, 500)} else{setTimeout(type, isDeleting? 50 : 100)} } type() }
 
 function Navbar(){ return `<nav><div class="logo">${DATA.nama}</div></nav>`; }
 function Hero(){ return `<section class="hero"><div class="container"><h1 class="hero-title">${DATA.nama}</h1><p class="hero-subtitle" id="role-text"></p><a href="#projects" class="liquid-btn">View Projects</a></div></section>`; }
-function About(){
-  const statsHTML = DATA.stats.map(s => `<div class="stat-box glass-card"><h3 class="counter" data-target="${s.number}">0</h3><p>${s.label}</p></div>`).join('');
-  return `<section id="about"><div class="container"><h2 class="section-title">About</h2><div class="about-grid"><img src="${DATA.foto}" class="about-img"><div><p style="font-size:1.3rem;line-height:1.8;color:var(--muted)">${DATA.about}</p><div class="stats-grid">${statsHTML}</div></div></div></div></section>`;
-}
-function Projects(){
-  const projectHTML = DATA.projects.map((p,i) => `<div class="project-card glass-card" style="transition-delay:${i*0.1}s"><img src="${p.img}" class="project-img"><h3 style="font-size:2rem;margin-bottom:1rem">${p.title}</h3><p style="color:var(--muted);font-size:1.1rem;margin-bottom:1.5rem">${p.desc}</p><a href="${p.link}" target="_blank" class="liquid-btn">View Code</a></div>`).join('');
-  return `<section id="projects"><div class="container"><h2 class="section-title">My Work</h2><div class="project-grid">${projectHTML}</div></div></section>`;
-}
-function TechStack(){
-  const techHTML = DATA.tech.map((t,i) => `<div class="tech-card glass-card" style="transition-delay:${i*0.1}s"><img src="${t.icon}"><h3>${t.name}</h3></div>`).join('');
-  return `<section id="tech"><div class="container"><h2 class="section-title">Tech Stack</h2><div class="tech-grid">${techHTML}</div></section>`;
-}
-function Footer(){
-  return `<footer><div class="container"><div class="social-links">
-    <a href="https://github.com/${DATA.github}" target="_blank">GH</a>
-    <a href="mailto:${DATA.email}">@</a>
-  </div><p style="color:var(--muted)">© 2026 ${DATA.nama}. Built with 💖</p></div></footer>`;
-}
+function About(){ const statsHTML = DATA.stats.map(s => `<div class="stat-box glass-card"><h3 class="counter" data-target="${s.number}">0</h3><p>${s.label}</p></div>`).join(''); return `<section id="about"><div class="container"><h2 class="section-title">About</h2><div class="about-grid"><img src="${DATA.foto}" class="about-img"><div><p style="font-size:1.3rem;line-height:1.8;color:var(--muted)">${DATA.about}</p><div class="stats-grid">${statsHTML}</div></div></div></div></section>`; }
+function Projects(){ return `<section id="projects"><div class="container"><h2 class="section-title">All My Projects</h2><div class="project-grid" id="projects-grid"></div></div></section>`; } // ID PENTING
+function TechStack(){ const techHTML = DATA.tech.map((t,i) => `<div class="tech-card glass-card" style="transition-delay:${i*0.1}s"><img src="${t.icon}"><h3>${t.name}</h3></div>`).join(''); return `<section id="tech"><div class="container"><h2 class="section-title">Tech Stack</h2><div class="tech-grid">${techHTML}</div></section>`; }
+function Footer(){ return `<footer><div class="container"><div class="social-links"><a href="https://github.com/${DATA.githubs[0]}" target="_blank">GH1</a><a href="https://github.com/${DATA.githubs[1]}" target="_blank">GH2</a><a href="mailto:${DATA.email}">@</a></div><p style="color:var(--muted)">© 2026 ${DATA.nama}. Built with 💖</p></div></footer>`; }
 
 function init(){
   injectCSS();
@@ -198,6 +168,7 @@ function init(){
   backToTop();
   document.body.innerHTML = Navbar() + Hero() + About() + Projects() + TechStack() + Footer();
   typeWriter(document.getElementById('role-text'), DATA.role);
+  fetchAllProjects(); // PANGGIL FETCH
   setTimeout(scrollReveal, 500);
 }
 document.addEventListener('DOMContentLoaded', init);
