@@ -3,13 +3,13 @@ const DATA = {
   githubs: ["Kangsad01", "sadteams"],
   role: ["WhatsApp Bot Developer", "Backend Engineer", "Automation Expert"],
   about: "Aku suka bikin bot dan tools yang bener-bener dipake orang. Fokus di automation, database, dan UI yang clean.",
-  foto: "https://avatars.githubusercontent.com/Kangsad01", // UDAH GANTI KE KANGSAD01
+  foto: "https://avatars.githubusercontent.com/Kangsad01",
   email: "kangsad01@gmail.com",
   stats: [{number: 20, label: "Repositories"}, {number: 3, label: "Years Coding"}, {number: 100, label: "Bot Users"}],
   tech: [
     {name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"},
     {name: "MongoDB", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg"},
-    {name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"},
+    {name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript-original.svg"},
     {name: "WhatsApp", icon: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/whatsapp.svg"}
   ],
   projects: []
@@ -21,13 +21,8 @@ function injectCSS(){
   :root{--bg:#0a000f;--text:#fff;--muted:#aaa;--accent:#ec4899;--card:rgba(255,255,255,0.08);--border:rgba(236,72,153,0.3)}
   *{margin:0;padding:0;box-sizing:border-box} html{scroll-behavior:smooth}
   body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text)}
-
-  /* NOISE TEXTURE */
   body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:url('https://grainy-gradients.vercel.app/noise.svg');opacity:0.05;z-index:-1;pointer-events:none}
-
-  /* GLOW NGIKUTIN MOUSE */
   #glow{position:fixed;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle, rgba(236,72,153,0.15) 0%, transparent 70%);pointer-events:none;z-index:-1;transition:transform 0.2s}
-
   #progress-bar{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,#ec4899,#f472b6);z-index:10001;width:0%}
   #cursor{position:fixed;width:30px;height:30px;border:2px solid var(--accent);border-radius:50%;pointer-events:none;z-index:99999;mix-blend-mode:screen;transition:transform.2s}
   #cursor-dot{position:fixed;width:8px;height:8px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:99999}
@@ -46,15 +41,12 @@ function injectCSS(){
 .hero-subtitle{font-size:2rem;color:var(--muted);margin:3rem 0;min-height:60px}
 .typing-cursor{display:inline-block;width:4px;height:2rem;background:#ec4899;animation:blink 1s infinite;margin-left:5px;vertical-align:middle}
   @keyframes blink{50%{opacity:0}}
-
-  /* TERMINAL SECTION */
 .terminal{background:#000;border:1px solid var(--border);border-radius:15px;padding:2rem;font-family:'Fira Code',monospace;max-width:800px;margin:0 auto;box-shadow:0 0 50px rgba(236,72,153,0.2)}
 .terminal-header{display:flex;gap:8px;margin-bottom:1.5rem}
 .terminal-dot{width:12px;height:12px;border-radius:50%}
 .dot-red{background:#ff5f56}.dot-yellow{background:#ffbd2e}.dot-green{background:#27c93f}
 .terminal-body{color:#00ff00;font-size:1.1rem;line-height:1.8}
 .terminal-line::before{content:'kangsad01@portfolio:~$ ';color:#ec4899}
-
 .glass-card{background:var(--card);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:30px;padding:3rem;transition:.5s;opacity:0;transform:translateY(50px)}
 .glass-card.revealed{opacity:1;transform:translateY(0)}
 .glass-card:hover{transform:translateY(-20px);box-shadow:0 20px 60px rgba(236,72,153,0.3)}
@@ -74,111 +66,49 @@ footer{padding:5rem 5%;text-align:center;border-top:1px solid var(--border);back
 .social-links a:hover{transform:translateY(-5px);background:var(--accent);color:#fff}
 .loading{text-align:center;font-size:2rem;color:var(--accent)}
   @media(max-width:1024px){.project-grid{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:768px){
-.about-grid,.project-grid,.tech-grid{grid-template-columns:1fr}
-.hero-title{font-size:3.5rem}
-.section-title{font-size:3rem}
-  }
+  @media(max-width:768px){.about-grid,.project-grid,.tech-grid{grid-template-columns:1fr}.hero-title{font-size:3.5rem}.section-title{font-size:3rem}}
   `;
   document.head.appendChild(Object.assign(document.createElement('style'), {innerHTML: css}));
 }
 
-/* GLOW NGIKUTIN MOUSE */
 function mouseGlow(){
   const glow = document.createElement('div'); glow.id='glow'; document.body.appendChild(glow);
-  document.addEventListener('mousemove', e=>{
-    glow.style.left = e.clientX - 200 + 'px';
-    glow.style.top = e.clientY - 200 + 'px';
-  })
+  document.addEventListener('mousemove', e=>{ glow.style.left = e.clientX - 200 + 'px'; glow.style.top = e.clientY - 200 + 'px'; })
 }
-
-/* MAGNETIC BUTTON */
 function magneticButtons(){
   document.querySelectorAll('.magnetic-btn').forEach(btn=>{
-    btn.addEventListener('mousemove', e=>{
-      const rect = btn.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width/2;
-      const y = e.clientY - rect.top - rect.height/2;
-      btn.style.transform = `translate(${x*0.3}px, ${y*0.3}px)`;
-    })
+    btn.addEventListener('mousemove', e=>{ const rect = btn.getBoundingClientRect(); const x = e.clientX - rect.left - rect.width/2; const y = e.clientY - rect.top - rect.height/2; btn.style.transform = `translate(${x*0.3}px, ${y*0.3}px)`; })
     btn.addEventListener('mouseleave', ()=>{ btn.style.transform = 'translate(0,0)' })
   })
 }
-
-/* TERMINAL TYPEWRITER */
 function terminalType(){
-  const lines = [
-    'git clone https://github.com/Kangsad01',
-    'npm install && npm run dev',
-    'Building amazing things...',
-    'Portfolio loaded successfully ✓'
-  ];
-  const el = document.getElementById('terminal-text');
-  if(!el) return;
-  let i=0, j=0;
-  function type(){
-    if(j < lines[i].length){
-      el.innerHTML += lines[i][j++];
-      setTimeout(type, 50);
-    } else {
-      el.innerHTML += '<br>';
-      i++; j=0;
-      if(i < lines.length) setTimeout(type, 800);
-    }
-  }
-  type();
+  const lines = ['git clone https://github.com/Kangsad01','npm install && npm run dev','Building amazing things...','Portfolio loaded successfully ✓'];
+  const el = document.getElementById('terminal-text'); if(!el) return;
+  let i=0, j=0; function type(){ if(j < lines[i].length){ el.innerHTML += lines[i][j++]; setTimeout(type, 50); } else { el.innerHTML += '<br>'; i++; j=0; if(i < lines.length) setTimeout(type, 800); } } type();
 }
-
 async function fetchAllProjects(){
-  const projectsContainer = document.getElementById('projects-grid');
-  if(!projectsContainer) return;
+  const projectsContainer = document.getElementById('projects-grid'); if(!projectsContainer) return;
   projectsContainer.innerHTML = `<p class="loading">Loading projects...</p>`;
   let allRepos = [];
   for(const user of DATA.githubs){
-    try{
-      const res = await fetch(`https://api.github.com/users/${user}/repos?sort=updated&per_page=12`);
-      const repos = await res.json();
-      const mapped = repos.map(repo => ({
-        title: repo.name.toUpperCase(),
-        desc: repo.description || "No description. Click to view code.",
-        img: `https://opengraph.githubassets.com/1/${user}/${repo.name}`,
-        link: repo.html_url
-      }));
-      allRepos = [...allRepos,...mapped];
-    }catch(e){console.log(e)}
+    try{ const res = await fetch(`https://api.github.com/users/${user}/repos?sort=updated&per_page=12`); const repos = await res.json(); const mapped = repos.map(repo => ({ title: repo.name.toUpperCase(), desc: repo.description || "No description. Click to view code.", img: `https://opengraph.githubassets.com/1/${user}/${repo.name}`, link: repo.html_url })); allRepos = [...allRepos,...mapped]; }catch(e){console.log(e)}
   }
   const projectHTML = allRepos.map((p,i) => `<div class="project-card glass-card" style="transition-delay:${i*0.05}s"><img src="${p.img}" class="project-img" onerror="this.src='https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600'"><h3 style="font-size:1.5rem;margin-bottom:1rem">${p.title}</h3><p style="color:var(--muted);font-size:1rem;margin-bottom:1.5rem;min-height:60px">${p.desc}</p><a href="${p.link}" target="_blank" class="magnetic-btn">View Code</a></div>`).join('');
-  projectsContainer.innerHTML = projectHTML;
-  magneticButtons();
-  scrollReveal();
+  projectsContainer.innerHTML = projectHTML; magneticButtons(); scrollReveal();
 }
-
 function scrollProgress(){
   const progressBar = document.createElement('div'); progressBar.id='progress-bar'; document.body.appendChild(progressBar);
   window.addEventListener('scroll', ()=>{ const winScroll = document.body.scrollTop || document.documentElement.scrollTop; const height = document.documentElement.scrollHeight - document.documentElement.clientHeight; const scrolled = (winScroll / height) * 100; progressBar.style.width = scrolled + '%'; })
 }
 function scrollReveal(){
-  const observer = new IntersectionObserver((entries)=>{ entries.forEach(entry=>{ if(entry.isIntersecting){ entry.target.classList.add('revealed'); if(entry.target.querySelector('.counter')){ animateCounter(entry.target.querySelector('.counter')); } }) },{threshold:0.1});
+  const observer = new IntersectionObserver((entries)=>{ entries.forEach(entry=>{ if(entry.isIntersecting){ entry.target.classList.add('revealed'); if(entry.target.querySelector('.counter')){ animateCounter(entry.target.querySelector('.counter')); } }) },{threshold:0.1}); // FIX DISINI
   document.querySelectorAll('.section-title,.glass-card').forEach(el=>observer.observe(el));
 }
 function animateCounter(el){ const target = +el.getAttribute('data-target'); let count = 0; const inc = target / 100; const update = ()=>{ count += inc; if(count < target){ el.innerText = Math.ceil(count); setTimeout(update, 20) } else{ el.innerText = target + '+' } } update(); }
-function backToTop(){
-  const btn = document.createElement('button'); btn.id='back-to-top'; btn.innerHTML='↑'; document.body.appendChild(btn);
-  window.addEventListener('scroll', ()=>{ if(window.scrollY > 500){ btn.classList.add('show') } else{ btn.classList.remove('show') } })
-  btn.onclick = ()=> window.scrollTo({top:0, behavior:'smooth'})
-}
-function customCursor(){
-  const cursor = document.createElement('div'); cursor.id='cursor'; document.body.appendChild(cursor);
-  const dot = document.createElement('div'); dot.id='cursor-dot'; document.body.appendChild(dot);
-  document.addEventListener('mousemove', e=>{ cursor.style.left = e.clientX - 15 + 'px'; cursor.style.top = e.clientY - 15 + 'px'; dot.style.left = e.clientX - 4 + 'px'; dot.style.top = e.clientY - 4 + 'px'; })
-}
-function liquidBackground(){
-  const canvas = document.createElement('canvas'); canvas.id='liquid-bg'; document.body.appendChild(canvas);
-  const ctx = canvas.getContext('2d'); canvas.width=window.innerWidth; canvas.height=window.innerHeight;
-  let time = 0; function animate(){ time += 0.01; ctx.clearRect(0,0,canvas.width,canvas.height); const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width); gradient.addColorStop(0,'rgba(236,72,153,0.3)'); gradient.addColorStop(1,'rgba(10,0,15,1)'); ctx.fillStyle = gradient; ctx.fillRect(0,0,canvas.width,canvas.height); requestAnimationFrame(animate) } animate();
-}
+function backToTop(){ const btn = document.createElement('button'); btn.id='back-to-top'; btn.innerHTML='↑'; document.body.appendChild(btn); window.addEventListener('scroll', ()=>{ if(window.scrollY > 500){ btn.classList.add('show') } else{ btn.classList.remove('show') } }) btn.onclick = ()=> window.scrollTo({top:0, behavior:'smooth'}) }
+function customCursor(){ const cursor = document.createElement('div'); cursor.id='cursor'; document.body.appendChild(cursor); const dot = document.createElement('div'); dot.id='cursor-dot'; document.body.appendChild(dot); document.addEventListener('mousemove', e=>{ cursor.style.left = e.clientX - 15 + 'px'; cursor.style.top = e.clientY - 15 + 'px'; dot.style.left = e.clientX - 4 + 'px'; dot.style.top = e.clientY - 4 + 'px'; }) }
+function liquidBackground(){ const canvas = document.createElement('canvas'); canvas.id='liquid-bg'; document.body.appendChild(canvas); const ctx = canvas.getContext('2d'); canvas.width=window.innerWidth; canvas.height=window.innerHeight; let time = 0; function animate(){ time += 0.01; ctx.clearRect(0,0,canvas.width,canvas.height); const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width); gradient.addColorStop(0,'rgba(236,72,153,0.3)'); gradient.addColorStop(1,'rgba(10,0,15,1)'); ctx.fillStyle = gradient; ctx.fillRect(0,0,canvas.width,canvas.height); requestAnimationFrame(animate) } animate(); }
 function typeWriter(el, texts){ let i = 0, j = 0, isDeleting = false; function type(){ const current = texts[i]; if(isDeleting){el.innerHTML = current.substring(0, j-1) + '<span class="typing-cursor"></span>';j--} else{el.innerHTML = current.substring(0, j+1) + '<span class="typing-cursor"></span>';j++} if(!isDeleting && j === current.length){isDeleting = true; setTimeout(type, 2000)} else if(isDeleting && j === 0){isDeleting = false; i = (i + 1) % texts.length; setTimeout(type, 500)} else{setTimeout(type, isDeleting? 50 : 100)} } type() }
-
 function Navbar(){ return `<nav><div class="logo">${DATA.nama}</div></nav>`; }
 function Hero(){ return `<section class="hero"><div class="container"><h1 class="hero-title">${DATA.nama}</h1><p class="hero-subtitle" id="role-text"></p><a href="#projects" class="magnetic-btn">View Projects</a></div></section>`; }
 function Terminal(){ return `<section><div class="container"><div class="terminal glass-card"><div class="terminal-header"><div class="terminal-dot dot-red"></div><div class="terminal-dot dot-yellow"></div><div class="terminal-dot dot-green"></div></div><div class="terminal-body" id="terminal-text"></div></div></div></section>`; }
@@ -186,17 +116,5 @@ function About(){ const statsHTML = DATA.stats.map(s => `<div class="stat-box gl
 function Projects(){ return `<section id="projects"><div class="container"><h2 class="section-title">All My Projects</h2><div class="project-grid" id="projects-grid"></div></div></section>`; }
 function TechStack(){ const techHTML = DATA.tech.map((t,i) => `<div class="tech-card glass-card" style="transition-delay:${i*0.1}s"><img src="${t.icon}"><h3>${t.name}</h3></div>`).join(''); return `<section id="tech"><div class="container"><h2 class="section-title">Tech Stack</h2><div class="tech-grid">${techHTML}</div></section>`; }
 function Footer(){ return `<footer><div class="container"><div class="social-links"><a href="https://github.com/${DATA.githubs[0]}" target="_blank">GH1</a><a href="https://github.com/${DATA.githubs[1]}" target="_blank">GH2</a><a href="mailto:${DATA.email}">@</a></div><p style="color:var(--muted)">© 2026 ${DATA.nama}. Built with 💖</p></div></footer>`; }
-
-function init(){
-  injectCSS();
-  liquidBackground();
-  mouseGlow(); // FITUR BARU
-  customCursor();
-  scrollProgress();
-  backToTop();
-  document.body.innerHTML = Navbar() + Hero() + Terminal() + About() + Projects() + TechStack() + Footer(); // TAMBAH TERMINAL
-  typeWriter(document.getElementById('role-text'), DATA.role);
-  fetchAllProjects();
-  setTimeout(()=>{scrollReveal(); terminalType();}, 500);
-}
+function init(){ injectCSS(); liquidBackground(); mouseGlow(); customCursor(); scrollProgress(); backToTop(); document.body.innerHTML = Navbar() + Hero() + Terminal() + About() + Projects() + TechStack() + Footer(); typeWriter(document.getElementById('role-text'), DATA.role); fetchAllProjects(); setTimeout(()=>{scrollReveal(); terminalType();}, 500); }
 document.addEventListener('DOMContentLoaded', init);
