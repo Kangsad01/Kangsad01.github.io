@@ -9,7 +9,7 @@ const DATA = {
   tech: [
     {name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"},
     {name: "MongoDB", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg"},
-    {name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript-original.svg"},
+    {name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"},
     {name: "WhatsApp", icon: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/whatsapp.svg"}
   ],
   projects: []
@@ -46,7 +46,6 @@ function injectCSS(){
 .terminal-dot{width:12px;height:12px;border-radius:50%}
 .dot-red{background:#ff5f56}.dot-yellow{background:#ffbd2e}.dot-green{background:#27c93f}
 .terminal-body{color:#00ff00;font-size:1.1rem;line-height:1.8}
-.terminal-line::before{content:'kangsad01@portfolio:~$ ';color:#ec4899}
 .glass-card{background:var(--card);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:30px;padding:3rem;transition:.5s;opacity:0;transform:translateY(50px)}
 .glass-card.revealed{opacity:1;transform:translateY(0)}
 .glass-card:hover{transform:translateY(-20px);box-shadow:0 20px 60px rgba(236,72,153,0.3)}
@@ -105,9 +104,7 @@ function scrollReveal(){
     entries.forEach(entry=>{
       if(entry.isIntersecting){
         entry.target.classList.add('revealed');
-        if(entry.target.querySelector('.counter')){
-          animateCounter(entry.target.querySelector('.counter'));
-        }
+        if(entry.target.querySelector('.counter')){ animateCounter(entry.target.querySelector('.counter')); }
       }
     })
   },{threshold:0.1});
