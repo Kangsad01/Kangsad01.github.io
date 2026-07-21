@@ -1,21 +1,5 @@
-:root{
-  --bg:#0a0f1e;
-  --card:rgba(15,23,42,0.6);
-  --text:#e2e8f0;
-  --accent:#38bdf8; /* CYAN */
-  --accent2:#0ea5e9; /* BIRU */
-  --muted:#94a3b8;
-  --border:#1e293b
-}
-[data-theme="light"]{
-  --bg:#f1f5f9;
-  --card:rgba(255,255,255,0.8);
-  --text:#0f172a;
-  --accent:#0ea5e9;
-  --accent2:#0284c7;
-  --muted:#64748b;
-  --border:#cbd5e1
-}
+:root{--bg:#0a0f1e;--card:rgba(15,23,42,0.6);--text:#e2e8f0;--accent:#38bdf8;--accent2:#0ea5e9;--muted:#94a3b8;--border:#1e293b;--title:#ffffff}
+[data-theme="light"]{--bg:#f1f5f9;--card:rgba(255,255,255,0.8);--text:#0f172a;--accent:#0ea5e9;--accent2:#0284c7;--muted:#475569;--border:#cbd5e1;--title:#0f172a}
 
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -37,13 +21,15 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:2rem 5
 .theme-toggle:hover{transform:scale(1.1) rotate(15deg)}
 
 .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center}
-.hero-title{font-size:6rem;font-weight:900;margin-bottom:1rem;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-title{font-size:6rem;font-weight:900;margin-bottom:1rem;color:var(--title)}
 .magnetic-btn{display:inline-block;padding:1rem 2.5rem;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-radius:50px;text-decoration:none;font-weight:700;border:none;cursor:pointer;transition:.3s;box-shadow:0 5px 20px rgba(14,165,233,0.3)}
 .magnetic-btn:hover{box-shadow:0 10px 30px rgba(14,165,233,0.5)}
 
 section{padding:8rem 5%}
-.section-title{font-size:3.5rem;text-align:center;margin-bottom:4rem;opacity:0;transform:translateY(30px);transition:.8s}
+.section-title{font-size:3.5rem;text-align:center;margin-bottom:4rem;opacity:0;transform:translateY(30px);transition:.8s;color:var(--title)}
 .section-title.revealed{opacity:1;transform:translateY(0)}
+h3{color:var(--text)}
+p{color:var(--muted)}
 .project-grid,.tech-grid,.stats-grid,.contact-grid{display:grid;gap:2.5rem}
 .project-grid{grid-template-columns:repeat(auto-fit,minmax(350px,1fr))}
 .tech-grid{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
