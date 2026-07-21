@@ -6,12 +6,12 @@ const DATA = {
   foto: "https://avatars.githubusercontent.com/Kangsad01",
   email: "kangsad01@gmail.com",
   stats: [{number: 20, label: "Repositories"}, {number: 3, label: "Years Coding"}, {number: 100, label: "Bot Users"}],
-  tech: [
-    {name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"},
-    {name: "MongoDB", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg"},
-    {name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript-original.svg"},
-    {name: "WhatsApp", icon: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/whatsapp.svg"}
-  ],
+ tech: [
+  {name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"},
+  {name: "MongoDB", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg"},
+  {name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"},
+  {name: "WhatsApp", icon: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/whatsapp.svg"}
+],
   projects: []
 }
 
@@ -212,8 +212,9 @@ function TechStack(){
   const techHTML = DATA.tech.map(function(t,i){ return '<div class="tech-card glass-card" style="transition-delay:' + (i*0.1) + 's"><img src="' + t.icon + '"><h3>' + t.name + '</h3></div>' }).join('');
   return '<section id="tech"><div class="container"><h2 class="section-title">Tech Stack</h2><div class="tech-grid">' + techHTML + '</div></section>';
 }
-function Footer(){ return '<footer><div class="container"><div class="social-links"><a href="https://github.com/' + DATA.githubs[0] + '" target="_blank">GH1</a><a href="https://github.com/' + DATA.githubs[1] + '" target="_blank">GH2</a><a href="mailto:' + DATA.email + '">@</a></div><p style="color:var(--muted)">© 2026 ' + DATA.nama + '. Built with 💖</p></div></footer>'; }
-
+function Footer(){ 
+  return '<footer><div class="container"><div class="social-links"><a href="https://github.com/' + DATA.githubs[0] + '" target="_blank">GH</a><a href="https://github.com/' + DATA.githubs[1] + '" target="_blank">TEAM</a><a href="mailto:' + DATA.email + '">@</a></div><p style="color:var(--muted);position:relative;z-index:2">© 2026 ' + DATA.nama + '. Crafted with 💖 + Code</p></div></footer>'; 
+}
 function init(){
   liquidBackground();
   mouseGlow();
