@@ -10,16 +10,11 @@ const DATA = {
     {name: "React", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react-original.svg"},
     {name: "Next.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg"},
     {name: "Tailwind", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg"},
-    {name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript-original.svg"},
-    {name: "TypeScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg"},
-    {name: "GSAP", icon: "https://cdn.worldvectorlogo.com/logos/gsap-greensock.svg"},
-    {name: "Framer", icon: "https://cdn.worldvectorlogo.com/logos/framer-1.svg"},
-    {name: "Figma", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"}
+    {name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript-original.svg"}
   ],
   projects: [
     {title: "PORTFOLIO V3", desc: "Portfolio personal dengan animasi GSAP, dark mode, dan responsive design.", tags: ["HTML", "CSS", "JavaScript", "GSAP"], link: "https://kangsad01.github.io", img: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600"},
-    {title: "DASHBOARD ANALYTICS", desc: "Admin dashboard modern dengan chart real-time.", tags: ["React", "Tailwind", "Chart.js"], link: "https://github.com/Kangsad01", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600"},
-    {title: "SAAS LANDING PAGE", desc: "Landing page untuk produk SaaS dengan animasi scroll-trigger.", tags: ["Next.js", "Framer Motion"], link: "https://github.com/Kangsad01", img: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=600"}
+    {title: "DASHBOARD ANALYTICS", desc: "Admin dashboard modern dengan chart real-time.", tags: ["React", "Tailwind", "Chart.js"], link: "https://github.com/Kangsad01", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600"}
   ],
   social: {github:"https://github.com/Kangsad01", linkedin:"#", instagram:"https://www.instagram.com/the.sad.boy01"}
 }
@@ -52,12 +47,8 @@ function injectCSS(){
   .hero-subtitle{font-size:1.3rem;color:var(--muted);margin:2rem 0;min-height:30px}
   .typing-cursor{display:inline-block;width:3px;background:var(--accent);animation:blink 1s infinite}
   @keyframes blink{50%{opacity:0}}
-  .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3rem}
-  .stat-box{text-align:center;padding:2rem;background:var(--card);border-radius:15px;border:1px solid var(--border)}
-  .stat-box h3{font-size:2.5rem;color:var(--accent)}
-  .tilt-card{background:var(--card);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:20px}
   .github-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2rem}
-  .github-card{padding:1.5rem;text-align:center;background:var(--card);border-radius:15px}
+  .github-card{padding:1.5rem;text-align:center;background:var(--card);border-radius:15px;border:1px solid var(--border)}
   .terminal{position:fixed;bottom:0;left:0;width:100%;height:40%;background:rgba(0,0,0,0.9);backdrop-filter:blur(20px);border-top:2px solid var(--accent);transform:translateY(100%);transition:transform.3s;z-index:10000;font-family:monospace;padding:1rem;overflow-y:auto}
   .terminal.open{transform:translateY(0)}
   .terminal-input{background:transparent;border:none;color:var(--accent2);width:100%;outline:none;font-size:1rem}
@@ -65,14 +56,13 @@ function injectCSS(){
   .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
   .confetti{position:fixed;width:10px;height:10px;background:var(--accent);pointer-events:none;z-index:10001}
   .reveal{opacity:0;transform:translateY(50px);transition:all 1s}.reveal.active{opacity:1;transform:translateY(0)}
+  .tilt-card{background:var(--card);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:20px;transition:transform.3s}
   @media(max-width:768px){.nav-links{display:none}.hero-title{font-size:3rem}.cursor,.cursor-follower{display:none}}
   `;
   document.head.appendChild(Object.assign(document.createElement('style'), {innerHTML: css}));
 }
 
-// ========== 3. FITUR BARU PAKET CREATIVE DEV ==========
-
-// 1. LIQUID MORPH BACKGROUND
+// ========== 3. FITUR PAKET CREATIVE DEV ==========
 function liquidBackground(){
   const canvas = document.createElement('canvas'); canvas.id='liquid-bg'; document.body.appendChild(canvas);
   const ctx = canvas.getContext('2d'); canvas.width=window.innerWidth; canvas.height=window.innerHeight;
@@ -84,9 +74,9 @@ function liquidBackground(){
       ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,Math.PI*2); ctx.fillStyle=gradient; ctx.fill();
     }); requestAnimationFrame(animate)
   } animate();
+  window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight})
 }
 
-// 2. SPOTLIGHT CURSOR
 function spotlightCursor(){
   const spotlight = document.createElement('div'); spotlight.id='spotlight'; document.body.appendChild(spotlight);
   document.addEventListener('mousemove', e=>{
@@ -94,44 +84,48 @@ function spotlightCursor(){
   })
 }
 
-// 3. LIVE GITHUB STATS
 async function fetchGithubStats(){
   try{
     const res = await fetch(`https://api.github.com/users/${DATA.github}`);
     const data = await res.json();
-    document.getElementById('github-repos').innerText = data.public_repos;
-    document.getElementById('github-followers').innerText = data.followers;
-    document.getElementById('github-stars').innerText = '⭐'; // Placeholder
+    const reposEl = document.getElementById('github-repos');
+    const followersEl = document.getElementById('github-followers');
+    if(reposEl) reposEl.innerText = data.public_repos;
+    if(followersEl) followersEl.innerText = data.followers;
   }catch(e){console.log('Github API error')}
 }
 
-// 4. TERMINAL MODE CTRL+K
 function terminalMode(){
   const term = document.createElement('div'); term.className='terminal'; term.innerHTML=`<p>> Welcome to ${DATA.nama} Terminal v1.0</p><p>> Type 'help' for commands</p><div id="term-output"></div><p>> <input class="terminal-input" id="term-input"></p>`;
   document.body.appendChild(term);
-  document.addEventListener('keydown', e=>{ if(e.ctrlKey && e.key==='k'){ e.preventDefault(); term.classList.toggle('open'); document.getElementById('term-input').focus() } });
-  document.getElementById('term-input').onkeydown = (e)=>{
-    if(e.key==='Enter'){
-      const cmd = e.target.value; document.getElementById('term-output').innerHTML += `<p>> ${cmd}</p>`;
-      if(cmd==='help'){document.getElementById('term-output').innerHTML += `<p>projects, about, contact, clear</p>`}
-      if(cmd==='projects'){window.scrollTo({top:document.getElementById('projects').offsetTop,behavior:'smooth'})}
-      if(cmd==='clear'){document.getElementById('term-output').innerHTML=''}
-      e.target.value='';
+  document.addEventListener('keydown', e=>{ if(e.ctrlKey && e.key==='k'){ e.preventDefault(); term.classList.toggle('open'); document.getElementById('term-input')?.focus() } });
+  const input = document.getElementById('term-input');
+  if(input){
+    input.onkeydown = (e)=>{
+      if(e.key==='Enter'){
+        const cmd = e.target.value; document.getElementById('term-output').innerHTML += `<p>> ${cmd}</p>`;
+        if(cmd==='help'){document.getElementById('term-output').innerHTML += `<p>projects, about, contact, clear</p>`}
+        if(cmd==='projects'){window.scrollTo({top:document.getElementById('projects')?.offsetTop,behavior:'smooth'})}
+        if(cmd==='clear'){document.getElementById('term-output').innerHTML=''}
+        e.target.value='';
+      }
     }
   }
 }
 
-// 5. CONFETTI + SOUND
 function playSound(freq=440){ if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination); osc.frequency.value = freq; gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3); osc.start(); osc.stop(audioCtx.currentTime + 0.3); }
 function shootConfetti(){ for(let i=0;i<50;i++){ const c=document.createElement('div'); c.className='confetti'; c.style.left=Math.random()*100+'%'; c.style.background=`hsl(${Math.random()*360},100%,50%)`; document.body.appendChild(c); c.animate([{transform:'translateY(0) rotate(0deg)',opacity:1},{transform:`translateY(${window.innerHeight}px) rotate(720deg)`,opacity:0}],{duration:2000}); setTimeout(()=>c.remove(),2000) } }
 
-// ========== 4. COMPONENTS LAMA ==========
+// ========== 4. COMPONENTS ==========
 function ProgressBar(){ const bar = document.createElement('div'); bar.className='progress-bar-top'; document.body.appendChild(bar); window.addEventListener('scroll', ()=>{const scrolled = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight); bar.style.transform = `scaleX(${scrolled})`}) }
 function Cursor(){ const c=document.createElement('div');c.className='cursor';const f=document.createElement('div');f.className='cursor-follower';document.body.appendChild(c);document.body.appendChild(f);document.addEventListener('mousemove',e=>{c.style.left=e.clientX-4+'px';c.style.top=e.clientY-4+'px';setTimeout(()=>{f.style.left=e.clientX-20+'px';f.style.top=e.clientY-20+'px'},80)}) }
 function Navbar(){ return `<nav><div class="logo">${DATA.nama}</div><ul class="nav-links"><li><a href="#hero">Home</a></li><li><a href="#projects">Work</a></li><li><a href="#tech">Skills</a></li><li><a href="#contact">Contact</a></li></ul><button class="liquid-btn" id="theme-toggle" style="padding:.5rem 1rem">Toggle</button></nav>`; }
 function Hero(){ return `<section id="hero" class="hero"><h1 class="hero-title">${DATA.nama}</h1><p class="hero-subtitle" id="role-text"></p><p>${DATA.about}</p><div style="margin-top:2rem"><a href="#projects" class="liquid-btn">View My Work</a></div></section>`; }
 function Projects(){ return `<section id="projects" class="reveal"><h2 class="section-title">Selected Work</h2><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:2rem">${DATA.projects.map(p=>`<div class="project-card tilt-card"><img src="${p.img}" style="width:100%;height:250px;object-fit:cover;border-radius:15px 15px 0 0"/><div style="padding:2rem"><h3>${p.title}</h3><p>${p.desc}</p></div></div>`).join('')}</div></section>`; }
-function TechStack(){ return `<section id="tech" class="reveal"><h2 class="section-title">Live GitHub Stats</h2><div class="github-stats"><div class="github-card"><h3 id="github-repos">0</h3><p>Repositories</p></div><div class="github-card"><h3 id="github-followers">0</h3><p>Followers</p></div><div class="github-card"><h3 id="github-stars">0</h3><p>Stars</p></div></div><h2 class="section-title" style="margin-top:4rem">Tech Arsenal</h2><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2rem">${DATA.tech.map(t=>`<div class="tech-card tilt-card" style="padding:2rem;text-align:center"><img src="${t.icon}" style="width:48px;height:48px"/><h3>${t.name}</h3></div>`).join('')}</div></section>`; }
+function TechStack(){ 
+  const techHTML = DATA.tech.map(t=>`<div class="tech-card tilt-card" style="padding:2rem;text-align:center"><img src="${t.icon}" style="width:48px;height:48px"/><h3>${t.name}</h3></div>`).join('');
+  return `<section id="tech" class="reveal"><h2 class="section-title">Live GitHub Stats</h2><div class="github-stats"><div class="github-card"><h3 id="github-repos">0</h3><p>Repositories</p></div><div class="github-card"><h3 id="github-followers">0</h3><p>Followers</p></div><div class="github-card"><h3>⭐</h3><p>Creative</p></div></div><h2 class="section-title" style="margin-top:4rem">Tech Arsenal</h2><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2rem">${techHTML}</div></section>`; 
+}
 function Contact(){ return `<section id="contact" class="reveal"><h2 class="section-title">Let's Build Something</h2><form id="contact-form" style="max-width:600px;margin:0 auto;display:flex;flex-direction:column;gap:1rem"><input name="name" placeholder="Name" required style="padding:1rem;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text)"><input name="email" type="email" placeholder="Email" required style="padding:1rem;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text)"><textarea name="message" placeholder="Message" rows="5" required style="padding:1rem;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text)"></textarea><button type="submit" class="liquid-btn">Send Message</button></form></section>`; }
 function Footer(){ return `<footer style="text-align:center;padding:3rem;border-top:1px solid var(--border)"><p>© 2026 ${DATA.nama}. Press Ctrl+K for Terminal</p></footer>`; }
 
@@ -149,7 +143,7 @@ function init(){
   const roleEl = document.getElementById('role-text'); 
   if(roleEl){ typeWriter(roleEl, DATA.role); }
 
-  document.getElementById('theme-toggle').onclick = () => { theme = theme === 'dark'? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', theme); localStorage.setItem('theme', theme); };
+  document.getElementById('theme-toggle').onclick = () => { playSound(400); theme = theme === 'dark'? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', theme); localStorage.setItem('theme', theme); };
 
   document.getElementById('contact-form').onsubmit = (e)=>{ 
     e.preventDefault(); 
