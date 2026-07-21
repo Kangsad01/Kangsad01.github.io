@@ -101,7 +101,16 @@ function scrollProgress(){
   window.addEventListener('scroll', ()=>{ const winScroll = document.body.scrollTop || document.documentElement.scrollTop; const height = document.documentElement.scrollHeight - document.documentElement.clientHeight; const scrolled = (winScroll / height) * 100; progressBar.style.width = scrolled + '%'; })
 }
 function scrollReveal(){
-  const observer = new IntersectionObserver((entries)=>{ entries.forEach(entry=>{ if(entry.isIntersecting){ entry.target.classList.add('revealed'); if(entry.target.querySelector('.counter')){ animateCounter(entry.target.querySelector('.counter')); } }) },{threshold:0.1}); // FIX DISINI
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('revealed');
+        if(entry.target.querySelector('.counter')){
+          animateCounter(entry.target.querySelector('.counter'));
+        }
+      }
+    })
+  },{threshold:0.1});
   document.querySelectorAll('.section-title,.glass-card').forEach(el=>observer.observe(el));
 }
 function animateCounter(el){ const target = +el.getAttribute('data-target'); let count = 0; const inc = target / 100; const update = ()=>{ count += inc; if(count < target){ el.innerText = Math.ceil(count); setTimeout(update, 20) } else{ el.innerText = target + '+' } } update(); }
