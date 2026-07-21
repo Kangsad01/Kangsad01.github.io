@@ -4,13 +4,14 @@ const DATA = {
   role: ["WhatsApp Bot Developer", "Backend Engineer", "Automation Expert"],
   about: "Aku suka bikin bot dan tools yang bener-bener dipake orang. Fokus di automation, database, dan UI yang clean.",
   foto: "https://avatars.githubusercontent.com/Kangsad01",
-  email: "kangsad01@gmail.com",
-  websiteScreenshot: "https://i.imgur.com/8Km9tLL.png",
+  email: "drakblue3@gmail.com",
+  websiteScreenshot: "https://avatars.githubusercontent.com/Kangsad01",
+  music: "https://cdn.pixabay.com/audio/1/1/lofi-116199.mp3", // LOFI CHILL
   stats: [{number: 20, label: "Repositories"}, {number: 3, label: "Years Coding"}, {number: 100, label: "Bot Users"}],
   tech: [
     {name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"},
     {name: "MongoDB", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg"},
-    {name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript-original.svg"},
+    {name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"},
     {name: "WhatsApp", icon: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/whatsapp.svg"}
   ],
   projects: []
@@ -18,9 +19,6 @@ const DATA = {
 
 let particlesArray = [];
 let mouse = {x: null, y: null, radius: 150};
-
-function playClickSound(){ try{ const audio = new AudioContext(); const osc = audio.createOscillator(); osc.type = 'sine'; osc.frequency.setValueAtTime(800, audio.currentTime); osc.connect(audio.destination); osc.start(); osc.stop(audio.currentTime + 0.1); }catch(e){} }
-document.addEventListener('click', playClickSound);
 
 function themeToggle(){ 
   setTimeout(() => {
@@ -43,6 +41,21 @@ function themeToggle(){
   }, 100);
 }
 
+function musicPlayer(){
+  const player = document.createElement('div');
+  player.id = 'music-player';
+  player.innerHTML = `<button id="play-btn">▶️</button><audio id="bg-music" loop src="${DATA.music}"></audio><span style="font-size:0.9rem">Lofi</span>`;
+  document.body.appendChild(player);
+  const audio = document.getElementById('bg-music');
+  const btn = document.getElementById('play-btn');
+  let playing = false;
+  btn.onclick = () => {
+    if(playing){ audio.pause(); btn.innerHTML = '▶️'; }
+    else{ audio.play(); btn.innerHTML = '⏸️'; }
+    playing = !playing;
+  }
+}
+
 function mouseGlow(){ const glow = document.createElement('div'); glow.id='glow'; document.body.appendChild(glow); document.addEventListener('mousemove', e => { glow.style.left = (e.clientX - 200) + 'px'; glow.style.top = (e.clientY - 200) + 'px'; }) }
 function customCursor(){ const cursor = document.createElement('div'); cursor.id='cursor'; document.body.appendChild(cursor); const dot = document.createElement('div'); dot.id='cursor-dot'; document.body.appendChild(dot); document.addEventListener('mousemove', e => { cursor.style.left = (e.clientX - 15) + 'px'; cursor.style.top = (e.clientY - 15) + 'px'; dot.style.left = (e.clientX - 4) + 'px'; dot.style.top = (e.clientY - 4) + 'px'; }) }
 function scrollProgress(){ const progressBar = document.createElement('div'); progressBar.id='progress-bar'; document.body.appendChild(progressBar); window.addEventListener('scroll', () => { const winScroll = document.documentElement.scrollTop; const height = document.documentElement.scrollHeight - document.documentElement.clientHeight; progressBar.style.width = (winScroll / height) * 100 + '%'; }) }
@@ -54,13 +67,13 @@ function liquidBackground(){ const canvas = document.createElement('canvas'); ca
 function particleBackground(){ 
   const canvas = document.createElement('canvas'); 
   canvas.id = 'particles'; 
-  document.querySelector('.hero').appendChild(canvas); 
+  document.body.appendChild(canvas); 
   const ctx = canvas.getContext('2d'); 
   canvas.width = window.innerWidth; 
-  canvas.height = window.innerHeight; 
+  canvas.height = document.body.scrollHeight; 
   
   const particleSize = window.innerWidth > 1024? 4 : 2;
-  const particleCount = window.innerWidth > 1024? 120 : 80;
+  const particleCount = window.innerWidth > 1024? 150 : 100;
   
   for(let i = 0; i < particleCount; i++){ 
     particlesArray.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * particleSize + 1, speedX: Math.random() * 0.5 - 0.25, speedY: Math.random() * 0.5 - 0.25 }) 
@@ -85,19 +98,7 @@ function particleBackground(){
   animate(); 
 }
 
-function typeWriter(el, texts){ 
-  let i = 0, j = 0, isDeleting = false; 
-  function type(){ 
-    const current = texts[i]; 
-    if(isDeleting){ el.innerHTML = current.substring(0, j-1) + '<span class="typing-cursor"></span>';j-- } 
-    else{ el.innerHTML = current.substring(0, j+1) + '<span class="typing-cursor"></span>';j++ } 
-    if(!isDeleting && j === current.length){ isDeleting = true; setTimeout(type, 2000) } 
-    else if(isDeleting && j === 0){ isDeleting = false; i = (i + 1) % texts.length; setTimeout(type, 500) } 
-    else{ setTimeout(type, isDeleting? 50 : 100) } 
-  } 
-  type()
-}
-
+function typeWriter(el, texts){ let i = 0, j = 0, isDeleting = false; function type(){ const current = texts[i]; if(isDeleting){ el.innerHTML = current.substring(0, j-1) + '<span class="typing-cursor"></span>';j-- } else{ el.innerHTML = current.substring(0, j+1) + '<span class="typing-cursor"></span>';j++ } if(!isDeleting && j === current.length){ isDeleting = true; setTimeout(type, 2000) } else if(isDeleting && j === 0){ isDeleting = false; i = (i + 1) % texts.length; setTimeout(type, 500) } else{ setTimeout(type, isDeleting? 50 : 100) } } type() }
 function scrollReveal(){ const observer = new IntersectionObserver(entries => { entries.forEach(entry => { if(entry.isIntersecting){ entry.target.classList.add('revealed'); if(entry.target.querySelector('.counter')){ animateCounter(entry.target.querySelector('.counter')); } } }) }, {threshold: 0.1}); document.querySelectorAll('.section-title,.glass-card').forEach(el => { observer.observe(el); }); }
 function animateCounter(el){ const target = +el.getAttribute('data-target'); let count = 0; const inc = target / 100; const update = () => { count += inc; if(count < target){ el.innerText = Math.ceil(count); requestAnimationFrame(update) } else{ el.innerText = target + '+' } }; update(); }
 
@@ -120,7 +121,24 @@ function Terminal(){ return `<section><div class="container"><div class="termina
 function About(){ const statsHTML = DATA.stats.map(s => `<div class="stat-box glass-card"><h3 class="counter" data-target="${s.number}">0</h3><p>${s.label}</p></div>`).join(''); return `<section id="about"><div class="container"><h2 class="section-title">About</h2><div class="about-grid"><img src="${DATA.foto}" class="about-img"><div><p style="font-size:1.3rem;line-height:1.8;color:var(--muted)">${DATA.about}</p><div class="stats-grid">${statsHTML}</div></div></div></div></section>`; }
 function Projects(){ return `<section id="projects"><div class="container"><h2 class="section-title">All My Projects</h2><div class="project-grid" id="projects-grid"></div></div></section>`; }
 function TechStack(){ const techHTML = DATA.tech.map((t,i) => `<div class="tech-card glass-card" style="transition-delay:${i*0.1}s"><img src="${t.icon}"><h3>${t.name}</h3></div>`).join(''); return `<section id="tech"><div class="container"><h2 class="section-title">Tech Stack</h2><div class="tech-grid">${techHTML}</div></section>`; }
-function contactForm(){ return `<section id="contact"><div class="container"><h2 class="section-title">Let's Work Together</h2><div class="contact-grid"><div class="contact-card"><div class="contact-item glass-card"><div class="contact-icon">📧</div><div><h3>Email</h3><p style="color:var(--muted)">${DATA.email}</p></div></div><div class="contact-item glass-card"><div class="contact-icon">💻</div><div><h3>GitHub</h3><p style="color:var(--muted)">@${DATA.githubs[0]}</p></div></div><div class="contact-item glass-card"><div class="contact-icon">📍</div><div><h3>Location</h3><p style="color:var(--muted)">Indonesia</p></div></div></div><form class="contact-form glass-card" onsubmit="alert('Pesan terkirim! Nanti aku balas via email');return false"><h3 style="margin-bottom:1rem">Kirim Pesan</h3><input type="text" placeholder="Nama Kamu" required><input type="email" placeholder="Email Kamu" required><textarea rows="5" placeholder="Ceritain project kamu..." required></textarea><button type="submit" class="magnetic-btn">Send Message 🚀</button></form></div></div></section>` }
+
+function contactForm(){ 
+  return `<section id="contact"><div class="container"><h2 class="section-title">Let's Work Together</h2><div class="contact-grid">
+    <div class="contact-card">
+      <div class="contact-item glass-card"><div class="contact-icon">📧</div><div><h3>Email</h3><p style="color:var(--muted)">${DATA.email}</p></div></div>
+      <div class="contact-item glass-card"><div class="contact-icon">💻</div><div><h3>GitHub</h3><p style="color:var(--muted)">@${DATA.githubs[0]}</p></div></div>
+      <div class="contact-item glass-card"><div class="contact-icon">📍</div><div><h3>Location</h3><p style="color:var(--muted)">Indonesia</p></div></div>
+    </div>
+    <form class="contact-form glass-card" onsubmit="alert('Pesan terkirim! Nanti aku balas via email');return false">
+      <h3 style="margin-bottom:1rem">Kirim Pesan</h3>
+      <input type="text" placeholder="Nama Kamu" required>
+      <input type="email" placeholder="Email Kamu" required>
+      <textarea rows="5" placeholder="Ceritain project kamu..." required></textarea>
+      <button type="submit" class="magnetic-btn">Send Message 🚀</button>
+    </form>
+  </div></div></section>` 
+}
+
 function Footer(){ return `<footer><div class="container"><div class="social-links"><a href="https://github.com/${DATA.githubs[0]}" target="_blank">GH</a><a href="https://github.com/${DATA.githubs[1]}" target="_blank">TEAM</a><a href="mailto:${DATA.email}">@</a></div><p style="color:var(--muted);position:relative;z-index:2">© 2026 ${DATA.nama}. Crafted with 💖 + Code</p></div></footer>`; }
 
 function init(){ 
@@ -132,6 +150,7 @@ function init(){
   backToTop(); 
   document.body.innerHTML = Navbar() + Hero() + Terminal() + About() + Projects() + TechStack() + contactForm() + Footer(); 
   themeToggle();
+  musicPlayer(); 
   particleBackground();
   typeWriter(document.getElementById('role-text'), DATA.role); 
   fetchAllProjects(); 
