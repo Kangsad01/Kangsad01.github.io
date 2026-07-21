@@ -10,7 +10,7 @@ const DATA = {
   tech: [
     {name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"},
     {name: "MongoDB", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg"},
-    {name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"},
+    {name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript-original.svg"},
     {name: "WhatsApp", icon: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/whatsapp.svg"}
   ],
   projects: []
@@ -23,7 +23,7 @@ function playClickSound(){ try{ const audio = new AudioContext(); const osc = au
 document.addEventListener('click', playClickSound);
 
 function themeToggle(){ 
-  setTimeout(() => { // KASIH DELAY BIAR NAVNYA MUNCUL DULU
+  setTimeout(() => {
     const btn = document.createElement('button'); 
     btn.className = 'theme-toggle magnetic-btn'; 
     btn.innerHTML = localStorage.getItem('theme') === 'light'? '☀️' : '🌙'; 
@@ -49,7 +49,7 @@ function scrollProgress(){ const progressBar = document.createElement('div'); pr
 function backToTop(){ const btn = document.createElement('button'); btn.id='back-to-top'; btn.innerHTML='↑'; document.body.appendChild(btn); window.addEventListener('scroll', () => { if(window.scrollY > 500){ btn.classList.add('show') } else{ btn.classList.remove('show') } }); btn.onclick = () => { window.scrollTo({top:0, behavior:'smooth'}) }; }
 function magneticButtons(){ document.querySelectorAll('.magnetic-btn').forEach(btn => { btn.addEventListener('mousemove', e => { const rect = btn.getBoundingClientRect(); const x = e.clientX - rect.left - rect.width/2; const y = e.clientY - rect.top - rect.height/2; btn.style.transform = `translate(${x*0.3}px, ${y*0.3}px)`; }); btn.addEventListener('mouseleave', () => { btn.style.transform = 'translate(0,0)' }); }) }
 function terminalType(){ const lines = ['git clone https://github.com/Kangsad01','npm install && npm run dev','Building amazing things...','Portfolio loaded successfully ✓']; const el = document.getElementById('terminal-text'); if(!el) return; let i=0, j=0; function type(){ if(j < lines[i].length){ el.innerHTML += lines[i][j++]; setTimeout(type, 50); } else { el.innerHTML += '<br>'; i++; j=0; if(i < lines.length) setTimeout(type, 800); } } type(); }
-function liquidBackground(){ const canvas = document.createElement('canvas'); canvas.id='liquid-bg'; document.body.appendChild(canvas); const ctx = canvas.getContext('2d'); canvas.width=window.innerWidth; canvas.height=window.innerHeight; let time = 0; function animate(){ time += 0.01; ctx.clearRect(0,0,canvas.width,canvas.height); const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width); gradient.addColorStop(0,'rgba(236,72,153,0.3)'); gradient.addColorStop(1,'rgba(10,0,15,1)'); ctx.fillStyle = gradient; ctx.fillRect(0,0,canvas.width,canvas.height); requestAnimationFrame(animate); } animate(); }
+function liquidBackground(){ const canvas = document.createElement('canvas'); canvas.id='liquid-bg'; document.body.appendChild(canvas); const ctx = canvas.getContext('2d'); canvas.width=window.innerWidth; canvas.height=window.innerHeight; function animate(){ ctx.clearRect(0,0,canvas.width,canvas.height); const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width); gradient.addColorStop(0,'rgba(236,72,153,0.3)'); gradient.addColorStop(1,'rgba(10,0,15,1)'); ctx.fillStyle = gradient; ctx.fillRect(0,0,canvas.width,canvas.height); requestAnimationFrame(animate); } animate(); }
 
 function particleBackground(){ 
   const canvas = document.createElement('canvas'); 
@@ -59,17 +59,11 @@ function particleBackground(){
   canvas.width = window.innerWidth; 
   canvas.height = window.innerHeight; 
   
-  const particleSize = window.innerWidth > 1024? 4 : 2; // DESKTOP LEBIH GEDE
+  const particleSize = window.innerWidth > 1024? 4 : 2;
   const particleCount = window.innerWidth > 1024? 120 : 80;
   
   for(let i = 0; i < particleCount; i++){ 
-    particlesArray.push({ 
-      x: Math.random() * canvas.width, 
-      y: Math.random() * canvas.height, 
-      size: Math.random() * particleSize + 1, 
-      speedX: Math.random() * 0.5 - 0.25, 
-      speedY: Math.random() * 0.5 - 0.25 
-    }) 
+    particlesArray.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * particleSize + 1, speedX: Math.random() * 0.5 - 0.25, speedY: Math.random() * 0.5 - 0.25 }) 
   } 
   
   window.addEventListener('mousemove', e => {mouse.x = e.x; mouse.y = e.y}); 
@@ -80,25 +74,30 @@ function particleBackground(){
       const dx = mouse.x - p.x; 
       const dy = mouse.y - p.y; 
       const dist = Math.sqrt(dx*dx + dy*dy); 
-      if(dist < mouse.radius){ 
-        p.x -= dx/dist * 2; 
-        p.y -= dy/dist * 2; 
-      } 
-      p.x += p.speedX; 
-      p.y += p.speedY; 
+      if(dist < mouse.radius){ p.x -= dx/dist * 2; p.y -= dy/dist * 2; } 
+      p.x += p.speedX; p.y += p.speedY; 
       if(p.x < 0 || p.x > canvas.width) p.speedX *= -1; 
       if(p.y < 0 || p.y > canvas.height) p.speedY *= -1; 
-      ctx.beginPath(); 
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); 
-      ctx.fillStyle = 'rgba(236,72,153,0.5)'; 
-      ctx.fill(); 
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fillStyle = 'rgba(236,72,153,0.5)'; ctx.fill(); 
     });
     requestAnimationFrame(animate); 
   } 
   animate(); 
 }
 
-function typeWriter(el, texts){ let i = 0, j = 0, isDeleting = false; function type(){ const current = texts[i]; if(isDeleting){ el.innerHTML = current.substring(0, j-1) + '<span class="typing-cursor"></span>';j-- } else{ el.innerHTML = current.substring(0, j+1) + '<span class="typing-cursor"></span>';j++ } if(!isDeleting && j === current.length){ isDeleting = true; setTimeout(type, 2000) } else if(isDeleting && j === 0){ isDeleting = false; i = (i + 1) % texts.length; setTimeout(type, 500) } else{ setTimeout(type, isDeleting? 50 : 100) } type() }
+function typeWriter(el, texts){ 
+  let i = 0, j = 0, isDeleting = false; 
+  function type(){ 
+    const current = texts[i]; 
+    if(isDeleting){ el.innerHTML = current.substring(0, j-1) + '<span class="typing-cursor"></span>';j-- } 
+    else{ el.innerHTML = current.substring(0, j+1) + '<span class="typing-cursor"></span>';j++ } 
+    if(!isDeleting && j === current.length){ isDeleting = true; setTimeout(type, 2000) } 
+    else if(isDeleting && j === 0){ isDeleting = false; i = (i + 1) % texts.length; setTimeout(type, 500) } 
+    else{ setTimeout(type, isDeleting? 50 : 100) } 
+  } 
+  type()
+}
+
 function scrollReveal(){ const observer = new IntersectionObserver(entries => { entries.forEach(entry => { if(entry.isIntersecting){ entry.target.classList.add('revealed'); if(entry.target.querySelector('.counter')){ animateCounter(entry.target.querySelector('.counter')); } } }) }, {threshold: 0.1}); document.querySelectorAll('.section-title,.glass-card').forEach(el => { observer.observe(el); }); }
 function animateCounter(el){ const target = +el.getAttribute('data-target'); let count = 0; const inc = target / 100; const update = () => { count += inc; if(count < target){ el.innerText = Math.ceil(count); requestAnimationFrame(update) } else{ el.innerText = target + '+' } }; update(); }
 
@@ -121,28 +120,11 @@ function Terminal(){ return `<section><div class="container"><div class="termina
 function About(){ const statsHTML = DATA.stats.map(s => `<div class="stat-box glass-card"><h3 class="counter" data-target="${s.number}">0</h3><p>${s.label}</p></div>`).join(''); return `<section id="about"><div class="container"><h2 class="section-title">About</h2><div class="about-grid"><img src="${DATA.foto}" class="about-img"><div><p style="font-size:1.3rem;line-height:1.8;color:var(--muted)">${DATA.about}</p><div class="stats-grid">${statsHTML}</div></div></div></div></section>`; }
 function Projects(){ return `<section id="projects"><div class="container"><h2 class="section-title">All My Projects</h2><div class="project-grid" id="projects-grid"></div></div></section>`; }
 function TechStack(){ const techHTML = DATA.tech.map((t,i) => `<div class="tech-card glass-card" style="transition-delay:${i*0.1}s"><img src="${t.icon}"><h3>${t.name}</h3></div>`).join(''); return `<section id="tech"><div class="container"><h2 class="section-title">Tech Stack</h2><div class="tech-grid">${techHTML}</div></section>`; }
-
-function contactForm(){ // CONTACT BARU LEBIH MENARIK
-  return `<section id="contact"><div class="container"><h2 class="section-title">Let's Work Together</h2><div class="contact-grid">
-    <div class="contact-card">
-      <div class="contact-item glass-card"><div class="contact-icon">📧</div><div><h3>Email</h3><p style="color:var(--muted)">${DATA.email}</p></div></div>
-      <div class="contact-item glass-card"><div class="contact-icon">💻</div><div><h3>GitHub</h3><p style="color:var(--muted)">@${DATA.githubs[0]}</p></div></div>
-      <div class="contact-item glass-card"><div class="contact-icon">📍</div><div><h3>Location</h3><p style="color:var(--muted)">Indonesia</p></div></div>
-    </div>
-    <form class="contact-form glass-card" onsubmit="alert('Pesan terkirim! Nanti aku balas via email');return false">
-      <h3 style="margin-bottom:1rem">Kirim Pesan</h3>
-      <input type="text" placeholder="Nama Kamu" required>
-      <input type="email" placeholder="Email Kamu" required>
-      <textarea rows="5" placeholder="Ceritain project kamu..." required></textarea>
-      <button type="submit" class="magnetic-btn">Send Message 🚀</button>
-    </form>
-  </div></div></section>` 
-}
-
+function contactForm(){ return `<section id="contact"><div class="container"><h2 class="section-title">Let's Work Together</h2><div class="contact-grid"><div class="contact-card"><div class="contact-item glass-card"><div class="contact-icon">📧</div><div><h3>Email</h3><p style="color:var(--muted)">${DATA.email}</p></div></div><div class="contact-item glass-card"><div class="contact-icon">💻</div><div><h3>GitHub</h3><p style="color:var(--muted)">@${DATA.githubs[0]}</p></div></div><div class="contact-item glass-card"><div class="contact-icon">📍</div><div><h3>Location</h3><p style="color:var(--muted)">Indonesia</p></div></div></div><form class="contact-form glass-card" onsubmit="alert('Pesan terkirim! Nanti aku balas via email');return false"><h3 style="margin-bottom:1rem">Kirim Pesan</h3><input type="text" placeholder="Nama Kamu" required><input type="email" placeholder="Email Kamu" required><textarea rows="5" placeholder="Ceritain project kamu..." required></textarea><button type="submit" class="magnetic-btn">Send Message 🚀</button></form></div></div></section>` }
 function Footer(){ return `<footer><div class="container"><div class="social-links"><a href="https://github.com/${DATA.githubs[0]}" target="_blank">GH</a><a href="https://github.com/${DATA.githubs[1]}" target="_blank">TEAM</a><a href="mailto:${DATA.email}">@</a></div><p style="color:var(--muted);position:relative;z-index:2">© 2026 ${DATA.nama}. Crafted with 💖 + Code</p></div></footer>`; }
 
 function init(){ 
-  document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark'); // LOAD THEME DULU
+  document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');
   liquidBackground();
   mouseGlow(); 
   customCursor(); 
