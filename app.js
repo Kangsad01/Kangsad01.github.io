@@ -20,11 +20,20 @@ const DATA = {
     {title: "DASHBOARD ANALYTICS", desc: "Admin dashboard modern dengan chart real-time.", tags: ["React", "Tailwind", "Chart.js"], link: "https://github.com/Kangsad01", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600"},
     {title: "SAAS LANDING PAGE", desc: "Landing page untuk produk SaaS dengan animasi scroll-trigger.", tags: ["Next.js", "Framer Motion"], link: "https://github.com/Kangsad01", img: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=600"}
   ],
+  blog: [
+    {title: "The Art of Micro-Interactions", date: "20 Apr 2026", desc: "How small details create big emotional impact.", img: "https://images.unsplash.com/photo-1550439062-609e1531270e?w=500", link: "#"},
+    {title: "Mastering GSAP Animations", date: "15 Apr 2026", desc: "From zero to hero with GreenSock.", img: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=500", link: "#"}
+  ],
+  testimonials: [
+    {name: "Client A", job: "CEO Startup", text: "Website nya keren banget. Animasi nya smooth dan loading cepat.", avatar: "https://i.pravatar.cc/100?img=1"},
+    {name: "Client B", job: "Product Manager", text: "Kangsad01 paham banget sama UI/UX. Hasilnya melebihi ekspektasi.", avatar: "https://i.pravatar.cc/100?img=2"}
+  ],
   social: {github:"https://github.com/Kangsad01", linkedin:"#", instagram:"https://www.instagram.com/the.sad.boy01"}
 }
 
 let theme = localStorage.getItem('theme') || 'dark';
 let particles = [];
+let audioCtx;
 
 // ========== 2. INJECT CSS ==========
 function injectCSS(){
@@ -52,8 +61,10 @@ function injectCSS(){
  .nav-links a:hover{color:var(--text)}
   section{padding:10rem 5%;min-height:100vh}
  .section-title{font-size:3rem;font-weight:900;text-align:center;margin-bottom:4rem}
- .liquid-btn{padding:1rem 2.5rem;border-radius:50px;text-decoration:none;font-weight:700;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff;border:none;cursor:pointer;transition:all.3s;position:relative}
+ .liquid-btn{padding:1rem 2.5rem;border-radius:50px;text-decoration:none;font-weight:700;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff;border:none;cursor:pointer;transition:all.3s;position:relative;overflow:hidden}
  .liquid-btn:hover{transform:scale(1.05);box-shadow:0 0 30px rgba(147,51,234,0.5)}
+ .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,0.3);transform:scale(0);animation:ripple .6s linear}
+  @keyframes ripple{to{transform:scale(4);opacity:0}}
  .hero{text-align:center}
  .hero-title{font-size:5rem;font-weight:900;line-height:1}
  .hero-subtitle{font-size:1.3rem;color:var(--muted);margin:2rem 0;max-width:600px;margin-left:auto;margin-right:auto;min-height:30px}
@@ -65,12 +76,23 @@ function injectCSS(){
  .stat-box{text-align:center;padding:2rem;background:var(--card);border-radius:15px}
  .stat-box h3{font-size:2.5rem;color:var(--accent)}
  .tilt-card{background:var(--card);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:20px;transition:transform.3s}
+ .filter-buttons{display:flex;gap:1rem;justify-content:center;margin-bottom:3rem;flex-wrap:wrap}
+ .filter-btn{padding:.5rem 1.5rem;border:1px solid var(--border);background:transparent;color:var(--text);border-radius:20px;cursor:pointer}
+ .filter-btn.active{background:var(--accent);border-color:var(--accent)}
  .project-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:2rem}
  .project-card{overflow:hidden}.project-img{width:100%;height:250px;object-fit:cover;border-radius:15px 15px 0 0}
  .project-content{padding:2rem}.project-tags{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0}
  .tag{border:1px solid var(--accent);color:var(--accent);padding:.3rem.8rem;border-radius:20px;font-size:.8rem}
  .tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2rem}
  .tech-card{padding:2rem;text-align:center}.tech-card img{width:48px;height:48px;margin-bottom:1rem}
+ .blog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem}
+ .blog-card{overflow:hidden}.blog-img{width:100%;height:200px;object-fit:cover;border-radius:15px 15px 0 0}
+ .blog-content{padding:1.5rem}
+ .testimonial-slider{max-width:800px;margin:0 auto;text-align:center}
+ .testimonial-card{padding:2rem;background:var(--card);border-radius:20px}
+ .testimonial-avatar{width:80px;height:80px;border-radius:50%;margin:0 auto 1rem}
+ .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);background:var(--accent);color:#fff;padding:1rem 2rem;border-radius:12px;opacity:0;transition:all.3s;z-index:10000}
+ .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
  .reveal{opacity:0;transform:translateY(50px);transition:all 1s}.reveal.active{opacity:1;transform:translateY(0)}
  .back-to-top{position:fixed;bottom:2rem;right:2rem;background:var(--accent);color:#fff;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;cursor:pointer;opacity:0;pointer-events:none;transition:all.3s;z-index:999}
  .back-to-top.show{opacity:1;pointer-events:auto}
@@ -79,66 +101,34 @@ function injectCSS(){
   document.head.appendChild(Object.assign(document.createElement('style'), {innerHTML: css}));
 }
 
-// ========== 3. FITUR BARU ==========
-function createParticles(){
-  const canvas = document.createElement('canvas'); canvas.id='particles'; document.body.appendChild(canvas);
-  const ctx = canvas.getContext('2d'); canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-  for(let i=0; i<50; i++){ particles.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, size:Math.random()*2+1, speedX:Math.random()*2-1, speedY:Math.random()*2-1}) }
-  function animate(){ ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle = theme==='dark'?'rgba(147,51,234,0.5)':'rgba(147,51,234,0.2)';
-    particles.forEach(p=>{ p.x+=p.speedX; p.y+=p.speedY; if(p.x<0||p.x>canvas.width)p.speedX*=-1; if(p.y<0||p.y>canvas.height)p.speedY*=-1; ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,Math.PI*2); ctx.fill() });
-    requestAnimationFrame(animate)
-  } animate();
-  window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight})
-}
+// ========== 3. FITUR ULTIMATE ==========
+function playSound(freq=440){ if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination); osc.frequency.value = freq; gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2); osc.start(); osc.stop(audioCtx.currentTime + 0.2); }
 
-function typeWriter(element, texts, speed=100){
-  let i=0, j=0, isDeleting=false;
-  function type(){
-    const current = texts[i];
-    if(isDeleting){ element.innerHTML = current.substring(0,j-1) + '<span class="typing-cursor"></span>'; j-- }
-    else{ element.innerHTML = current.substring(0,j+1) + '<span class="typing-cursor"></span>'; j++ }
-    if(!isDeleting && j===current.length){ isDeleting=true; setTimeout(type,2000) }
-    else if(isDeleting && j===0){ isDeleting=false; i=(i+1)%texts.length; setTimeout(type,500) }
-    else{ setTimeout(type, isDeleting?50:speed) }
-  } type()
-}
+function rippleEffect(){ document.querySelectorAll('.liquid-btn').forEach(btn=>{ btn.addEventListener('click', function(e){ playSound(600); const ripple = document.createElement('span'); ripple.className='ripple'; const rect = this.getBoundingClientRect(); ripple.style.left = e.clientX - rect.left + 'px'; ripple.style.top = e.clientY - rect.top + 'px'; this.appendChild(ripple); setTimeout(()=>ripple.remove(),600) }) }
 
-function animateCounter(){
-  document.querySelectorAll('.stat-box h3').forEach((counter, idx)=>{
-    const target = DATA.stats[idx].number; let count=0;
-    const update = ()=>{ if(count<target){ count++; counter.innerText=count+'+'; requestAnimationFrame(update) } }
-    const obs = new IntersectionObserver((e)=>{if(e[0].isIntersecting){update(); obs.disconnect()}},{threshold:0.5});
-    obs.observe(counter.parentElement)
-  })
-}
+function parallaxHero(){ document.addEventListener('mousemove', e=>{ const x = (window.innerWidth/2 - e.clientX)/50; const y = (window.innerHeight/2 - e.clientY)/50; document.querySelector('.hero-title')?.style.setProperty('transform', `translate(${x}px, ${y}px)`) }) }
 
-function magneticButton(){
-  document.querySelectorAll('.liquid-btn').forEach(btn=>{
-    btn.addEventListener('mousemove', e=>{
-      const rect = btn.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width/2;
-      const y = e.clientY - rect.top - rect.height/2;
-      btn.style.transform = `translate(${x*0.2}px, ${y*0.2}px) scale(1.05)`
-    });
-    btn.addEventListener('mouseleave', ()=>{btn.style.transform='translate(0,0) scale(1)'})
-  })
-}
+function filterProjects(){ const grid = document.querySelector('.project-grid'); const buttons = document.querySelectorAll('.filter-btn'); buttons.forEach(btn=>{ btn.onclick = ()=>{ buttons.forEach(b=>b.classList.remove('active')); btn.classList.add('active'); const filter = btn.dataset.filter; document.querySelectorAll('.project-card').forEach(card=>{ card.style.display = filter==='all'||card.dataset.tech.includes(filter)?'block':'none' }) } }) }
 
-function backToTop(){
-  const btn = document.createElement('div'); btn.className='back-to-top'; btn.innerHTML='↑'; document.body.appendChild(btn);
-  window.addEventListener('scroll', ()=>{ if(window.scrollY>500){btn.classList.add('show')}else{btn.classList.remove('show')} });
-  btn.onclick = ()=>{window.scrollTo({top:0,behavior:'smooth'})}
-}
+function testimonialSlider(){ let current=0; const cards = document.querySelectorAll('.testimonial-card'); function show(n){ cards.forEach((c,i)=>c.style.display=i===n?'block':'none') } show(0); setInterval(()=>{current=(current+1)%cards.length; show(current)},4000) }
+
+function showToast(msg){ const toast = document.createElement('div'); toast.className='toast'; toast.innerText=msg; document.body.appendChild(toast); setTimeout(()=>toast.classList.add('show'),100); setTimeout(()=>{toast.classList.remove('show'); setTimeout(()=>toast.remove(),300)},3000) }
+
+function konamiCode(){ let keys=[]; const code=[38,38,40,40,37,39,37,39,66,65]; window.addEventListener('keydown',e=>{ keys.push(e.keyCode); keys=keys.slice(-10); if(keys.toString()===code.toString()){ document.body.style.animation='glitch-1 .5s 3'; showToast('EASTER EGG UNLOCKED! 🎉') } }) }
+
+function lazyLoad(){ const imgs = document.querySelectorAll('img[data-src]'); const obs = new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.src=entry.target.dataset.src; obs.unobserve(entry.target)}})}); imgs.forEach(img=>obs.observe(img)) }
 
 // ========== 4. COMPONENTS ==========
 function ProgressBar(){ const bar = document.createElement('div'); bar.className='progress-bar-top'; document.body.appendChild(bar); window.addEventListener('scroll', ()=>{const scrolled = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight); bar.style.transform = `scaleX(${scrolled})`}) }
 function Cursor(){ const c=document.createElement('div');c.className='cursor';const f=document.createElement('div');f.className='cursor-follower';document.body.appendChild(c);document.body.appendChild(f);document.addEventListener('mousemove',e=>{c.style.left=e.clientX-4+'px';c.style.top=e.clientY-4+'px';setTimeout(()=>{f.style.left=e.clientX-20+'px';f.style.top=e.clientY-20+'px'},80)}) }
-function Navbar(){ return `<nav><div class="logo">${DATA.nama}</div><ul class="nav-links"><li><a href="#hero">Home</a></li><li><a href="#about">About</a></li><li><a href="#projects">Work</a></li><li><a href="#tech">Skills</a></li><li><a href="#contact">Contact</a></li></ul><button class="liquid-btn" id="theme-toggle" style="padding:.5rem 1rem">Toggle</button></nav>`; }
+function Navbar(){ return `<nav><div class="logo">${DATA.nama}</div><ul class="nav-links"><li><a href="#hero">Home</a></li><li><a href="#about">About</a></li><li><a href="#projects">Work</a></li><li><a href="#blog">Blog</a></li><li><a href="#tech">Skills</a></li><li><a href="#contact">Contact</a></li></ul><button class="liquid-btn" id="theme-toggle" style="padding:.5rem 1rem">Toggle</button></nav>`; }
 function Hero(){ return `<section id="hero" class="hero"><h1 class="hero-title glitch" data-text="${DATA.nama}">${DATA.nama}</h1><p class="hero-subtitle" id="role-text"></p><p>${DATA.about}</p><div style="margin-top:2rem"><a href="#projects" class="liquid-btn">View My Work</a></div></section>`; }
-function About(){ return `<section id="about" class="reveal"><h2 class="section-title">About Me</h2><div class="about-grid"><img src="${DATA.foto}" alt="Foto ${DATA.nama}" class="about-img tilt-card"><div><h3 style="font-size:2rem;margin-bottom:1rem">Halo, saya ${DATA.nama}</h3><p style="color:var(--muted);line-height:1.8">${DATA.about}</p><div class="stats-grid">${DATA.stats.map(s=>`<div class="stat-box"><h3>0+</h3><p>${s.label}</p></div>`).join('')}</div></div></div></section>`; }
-function Projects(){ return `<section id="projects" class="reveal"><h2 class="section-title">Selected Work</h2><div class="project-grid">${DATA.projects.map(p=>`<div class="project-card tilt-card"><img src="${p.img}" class="project-img"/><div class="project-content"><h3>${p.title}</h3><p>${p.desc}</p><div class="project-tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div><a href="${p.link}" target="_blank" class="liquid-btn" style="padding:.7rem 1.5rem;font-size:.9rem;margin-top:1rem;display:inline-block">View Project</a></div></div>`).join('')}</div></section>`; }
-function TechStack(){ return `<section id="tech" class="reveal"><h2 class="section-title">Tech Arsenal</h2><div class="tech-grid">${DATA.tech.map(t=>`<div class="tech-card tilt-card"><img src="${t.icon}"/><h3>${t.name}</h3></div>`).join('')}</div></section>`; }
-function Contact(){ return `<section id="contact" class="reveal"><h2 class="section-title">Let's Build Something</h2><form action="https://formspree.io/f/xqkgyzab" method="POST" style="max-width:600px;margin:0 auto;display:flex;flex-direction:column;gap:1rem"><input name="name" placeholder="Name" required style="padding:1rem;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text)"><input name="email" type="email" placeholder="Email" required style="padding:1rem;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text)"><textarea name="message" placeholder="Message" rows="5" required style="padding:1rem;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text)"></textarea><button type="submit" class="liquid-btn">Send Message</button></form></section>`; }
+function About(){ return `<section id="about" class="reveal"><h2 class="section-title">About Me</h2><div class="about-grid"><img data-src="${DATA.foto}" alt="Foto ${DATA.nama}" class="about-img tilt-card"><div><h3 style="font-size:2rem;margin-bottom:1rem">Halo, saya ${DATA.nama}</h3><p style="color:var(--muted);line-height:1.8">${DATA.about}</p><div class="stats-grid">${DATA.stats.map(s=>`<div class="stat-box"><h3>0+</h3><p>${s.label}</p></div>`).join('')}</div></div></div></section>`; }
+function Projects(){ const allTags = [...new Set(DATA.projects.flatMap(p=>p.tags))]; return `<section id="projects" class="reveal"><h2 class="section-title">Selected Work</h2><div class="filter-buttons"><button class="filter-btn active" data-filter="all">All</button>${allTags.map(t=>`<button class="filter-btn" data-filter="${t}">${t}</button>`).join('')}</div><div class="project-grid">${DATA.projects.map(p=>`<div class="project-card tilt-card" data-tech="${p.tags.join(' ')}"><img data-src="${p.img}" class="project-img"/><div class="project-content"><h3>${p.title}</h3><p>${p.desc}</p><div class="project-tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div><a href="${p.link}" target="_blank" class="liquid-btn" style="padding:.7rem 1.5rem;font-size:.9rem;margin-top:1rem;display:inline-block">View Project</a></div></div>`).join('')}</div></section>`; }
+function Blog(){ return `<section id="blog" class="reveal"><h2 class="section-title">Latest Blog</h2><div class="blog-grid">${DATA.blog.map(b=>`<div class="blog-card tilt-card"><img data-src="${b.img}" class="blog-img"/><div class="blog-content"><p style="color:var(--muted);font-size:.9rem">${b.date}</p><h3>${b.title}</h3><p>${b.desc}</p></div></div>`).join('')}</div></section>`; }
+function TechStack(){ return `<section id="tech" class="reveal"><h2 class="section-title">Tech Arsenal</h2><div class="tech-grid">${DATA.tech.map(t=>`<div class="tech-card tilt-card"><img data-src="${t.icon}"/><h3>${t.name}</h3></div>`).join('')}</div></section>`; }
+function Testimonials(){ return `<section id="testimonials" class="reveal"><h2 class="section-title">What Clients Say</h2><div class="testimonial-slider">${DATA.testimonials.map(t=>`<div class="testimonial-card"><img data-src="${t.avatar}" class="testimonial-avatar"/><p>"${t.text}"</p><h4>${t.name}</h4><p style="color:var(--muted)">${t.job}</p></div>`).join('')}</div></section>`; }
+function Contact(){ return `<section id="contact" class="reveal"><h2 class="section-title">Let's Build Something</h2><form id="contact-form" style="max-width:600px;margin:0 auto;display:flex;flex-direction:column;gap:1rem"><input name="name" placeholder="Name" required style="padding:1rem;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text)"><input name="email" type="email" placeholder="Email" required style="padding:1rem;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text)"><textarea name="message" placeholder="Message" rows="5" required style="padding:1rem;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text)"></textarea><button type="submit" class="liquid-btn">Send Message</button></form></section>`; }
 function Footer(){ return `<footer style="text-align:center;padding:3rem;border-top:1px solid var(--border)"><p>© 2026 ${DATA.nama}. Crafted with obsession.</p></footer>`; }
 
 // ========== 5. LOGIC ==========
@@ -146,18 +136,21 @@ function tiltEffect(){ document.querySelectorAll('.tilt-card').forEach(card=>{ c
 function runObserver(){ const observer = new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('active')}})},{threshold:0.1}); document.querySelectorAll('.reveal').forEach(el=>observer.observe(el)); }
 
 function init(){
-  ProgressBar(); Cursor(); createParticles(); backToTop();
+  ProgressBar(); Cursor(); createParticles(); backToTop(); parallaxHero(); konamiCode();
   const app = document.getElementById('app');
-  app.innerHTML = Navbar() + Hero() + About() + Projects() + TechStack() + Contact() + Footer();
-  tiltEffect(); runObserver(); magneticButton(); animateCounter();
+  app.innerHTML = Navbar() + Hero() + About() + Projects() + Blog() + Testimonials() + TechStack() + Contact() + Footer();
+  tiltEffect(); runObserver(); rippleEffect(); lazyLoad();
 
   const roleEl = document.getElementById('role-text'); 
   if(roleEl){ typeWriter(roleEl, DATA.role); }
 
   const themeBtn = document.getElementById('theme-toggle');
-  if(themeBtn){ themeBtn.onclick = () => { theme = theme === 'dark'? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', theme); localStorage.setItem('theme', theme); }; }
+  if(themeBtn){ themeBtn.onclick = () => { playSound(400); theme = theme === 'dark'? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', theme); localStorage.setItem('theme', theme); }; }
 
-  setTimeout(()=>{ document.getElementById('loader')?.classList.add('hidden'); app?.classList.add('loaded') }, 1000);
+  const form = document.getElementById('contact-form');
+  if(form){ form.onsubmit = (e)=>{ e.preventDefault(); playSound(800); showToast('Message sent! I will reply soon 🚀'); form.reset() } }
+
+  setTimeout(()=>{ filterProjects(); testimonialSlider(); animateCounter(); document.getElementById('loader')?.classList.add('hidden'); app?.classList.add('loaded') }, 1200);
 }
 
 // ========== 6. START ==========
