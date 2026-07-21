@@ -146,7 +146,7 @@ function typeWriter(el, texts){
     else{setTimeout(type,isDeleting?50:100)}
   } 
   type() 
-} // <- INI JUGA UDAH DITUTUP
+}
 
 function init(){
   injectCSS();
