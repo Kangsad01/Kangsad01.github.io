@@ -285,12 +285,16 @@ function Footer(){
 }
 function init(){ 
   liquidBackground();
-  particleBackground(); 
   mouseGlow(); 
   customCursor(); 
   scrollProgress(); 
   backToTop(); 
+  
+  // 1. RENDER HTML DULU
   document.body.innerHTML = Navbar() + Hero() + Terminal() + About() + Projects() + TechStack() + Footer(); 
+  
+  // 2. BARU JALANIN EFFECT SETELAH HTML ADA
+  particleBackground(); // PINDAH KE SINI
   typeWriter(document.getElementById('role-text'), DATA.role); 
   fetchAllProjects(); 
   setTimeout(function(){scrollReveal(); terminalType();}, 500); 
