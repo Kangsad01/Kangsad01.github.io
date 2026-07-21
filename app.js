@@ -177,6 +177,74 @@ function liquidBackground(){
   animate();
 }
 
+function particleBackground(){
+  const canvas = document.createElement('canvas');
+  canvas.id = 'particles';
+  document.querySelector('.hero').appendChild(canvas);
+  
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  
+  const particles = [];
+  const particleCount = 80;
+  
+  for(let i = 0; i < particleCount; i++){
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: Math.random() * 2 + 1,
+      speedX: Math.random() * 0.5 - 0.25,
+      speedY: Math.random() * 0.5 - 0.25,
+      color: 'rgba(236,72,153,' + (Math.random() * 0.5 + 0.2) + ')'
+    })
+  }
+  
+  function animateParticles(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    particles.forEach(p => {
+      p.x += p.speedX;
+      p.y += p.speedY;
+      
+      if(p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+      if(p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+      
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.fill();
+    })
+    
+    // Garis penghubung antar particle
+    for(let i = 0; i < particles.length; i++){
+      for(let j = i; j < particles.length; j++){
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        
+        if(dist < 120){
+          ctx.beginPath();
+          ctx.strokeStyle = 'rgba(236,72,153,' + (0.2 - dist/600) + ')';
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    
+    requestAnimationFrame(animateParticles);
+  }
+  
+  animateParticles();
+  
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  })
+}
+
 function typeWriter(el, texts){
   let i = 0, j = 0, isDeleting = false;
   function type(){
@@ -215,16 +283,17 @@ function TechStack(){
 function Footer(){ 
   return '<footer><div class="container"><div class="social-links"><a href="https://github.com/' + DATA.githubs[0] + '" target="_blank">GH</a><a href="https://github.com/' + DATA.githubs[1] + '" target="_blank">TEAM</a><a href="mailto:' + DATA.email + '">@</a></div><p style="color:var(--muted);position:relative;z-index:2">© 2026 ' + DATA.nama + '. Crafted with 💖 + Code</p></div></footer>'; 
 }
-function init(){
+function init(){ 
   liquidBackground();
-  mouseGlow();
-  customCursor();
-  scrollProgress();
-  backToTop();
-  document.body.innerHTML = Navbar() + Hero() + Terminal() + About() + Projects() + TechStack() + Footer();
-  typeWriter(document.getElementById('role-text'), DATA.role);
-  fetchAllProjects();
-  setTimeout(function(){scrollReveal(); terminalType();}, 500);
+  particleBackground(); 
+  mouseGlow(); 
+  customCursor(); 
+  scrollProgress(); 
+  backToTop(); 
+  document.body.innerHTML = Navbar() + Hero() + Terminal() + About() + Projects() + TechStack() + Footer(); 
+  typeWriter(document.getElementById('role-text'), DATA.role); 
+  fetchAllProjects(); 
+  setTimeout(function(){scrollReveal(); terminalType();}, 500); 
 }
 
 document.addEventListener('DOMContentLoaded', init);
