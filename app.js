@@ -6,7 +6,7 @@ const DATA = {
   foto: "https://avatars.githubusercontent.com/Kangsad01",
   email: "drakblue3@gmail.com",
   websiteScreenshot: "https://avatars.githubusercontent.com/Kangsad01",
-  music: "https://cdn.pixabay.com/download/audio/2022/03/10/audio_d1718f2676.mp3",
+  music: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
   stats: [{number: 20, label: "Repositories"}, {number: 3, label: "Years Coding"}, {number: 100, label: "Bot Users"}],
   tech: [
     {name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"},
@@ -37,9 +37,6 @@ function themeToggle(){
     html.setAttribute('data-theme', newTheme); 
     localStorage.setItem('theme', newTheme);
     btn.innerHTML = newTheme === 'light'? '☀️' : '🌙'; 
-    // refresh liquid bg biar ikut ganti
-    document.getElementById('liquid-bg').remove();
-    liquidBackground();
   } 
 }
 
@@ -49,13 +46,12 @@ function musicPlayer(){
   player.innerHTML = `<button id="play-btn">▶️</button><audio id="bg-music" loop src="${DATA.music}"></audio><span>Lofi</span>`;
   document.body.appendChild(player);
   const audio = document.getElementById('bg-music');
-  audio.volume = 0.2;
+  audio.volume = 0.15;
   const btn = document.getElementById('play-btn');
   btn.onclick = () => {
-    if(audio.paused){ audio.play(); btn.innerHTML = '⏸️'; }
+    if(audio.paused){ audio.play().catch(e=>alert('Gagal play musik')); btn.innerHTML = '⏸️'; }
     else{ audio.pause(); btn.innerHTML = '▶️'; }
   }
-  document.body.addEventListener('click', () => { audio.play().catch(()=>{}) }, {once:true});
 }
 
 function mouseGlow(){ const glow = document.createElement('div'); glow.id='glow'; glow.style.cssText='position:fixed;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(236,72,153,0.15)0%,transparent 70%);pointer-events:none;z-index:1'; document.body.appendChild(glow); document.addEventListener('mousemove', e => { glow.style.left = (e.clientX - 200) + 'px'; glow.style.top = (e.clientY - 200) + 'px'; }) }
@@ -65,57 +61,62 @@ function magneticButtons(){ document.querySelectorAll('.magnetic-btn').forEach(b
 function terminalType(){ const lines = ['git clone https://github.com/Kangsad01','npm install && npm run dev','Portfolio loaded successfully ✓']; const el = document.getElementById('terminal-text'); if(!el) return; let i=0, j=0; function type(){ if(j < lines[i].length){ el.innerHTML += lines[i][j++]; setTimeout(type, 50); } else { el.innerHTML += '<br>'; i++; j=0; if(i < lines.length) setTimeout(type, 800); } } type(); }
 
 function liquidBackground(){ 
-  const canvas = document.createElement('canvas'); 
-  canvas.id='liquid-bg'; 
-  document.body.appendChild(canvas); 
-  const ctx = canvas.getContext('2d'); 
-  canvas.width=window.innerWidth; 
-  canvas.height=window.innerHeight; 
-  
-  function animate(){ 
-    const bgColor = getCSSVar('--bg'); // AMBIL WARNA DARI CSS BENERAN
-    ctx.clearRect(0,0,canvas.width,canvas.height); 
-    const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width); 
-    gradient.addColorStop(0,'rgba(236,72,153,0.2)'); 
-    gradient.addColorStop(1, bgColor); // INI YG TADI ERROR
-    ctx.fillStyle = gradient; 
-    ctx.fillRect(0,0,canvas.width,canvas.height); 
-    requestAnimationFrame(animate); 
-  } 
-  animate(); 
+  try{
+    const canvas = document.createElement('canvas'); 
+    canvas.id='liquid-bg'; 
+    document.body.appendChild(canvas); 
+    const ctx = canvas.getContext('2d'); 
+    canvas.width=window.innerWidth; 
+    canvas.height=window.innerHeight; 
+    window.addEventListener('resize', ()=>{canvas.width=window.innerWidth; canvas.height=window.innerHeight});
+    
+    function animate(){ 
+      const bgColor = getCSSVar('--bg');
+      ctx.clearRect(0,0,canvas.width,canvas.height); 
+      const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width); 
+      gradient.addColorStop(0,'rgba(236,72,153,0.15)'); 
+      gradient.addColorStop(1, bgColor);
+      ctx.fillStyle = gradient; 
+      ctx.fillRect(0,0,canvas.width,canvas.height); 
+      requestAnimationFrame(animate); 
+    } 
+    animate(); 
+  }catch(e){console.log("Liquid bg error:", e)}
 }
 
 function particleBackground(){ 
-  const canvas = document.createElement('canvas'); 
-  canvas.id = 'particles'; 
-  document.body.appendChild(canvas); 
-  const ctx = canvas.getContext('2d'); 
-  
-  function resize(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-  resize();
-  window.addEventListener('resize', resize);
-  
-  for(let i = 0; i < 100; i++){ 
-    particlesArray.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 3 + 1, speedX: Math.random() * 0.4 - 0.2, speedY: Math.random() * 0.4 - 0.2 }) 
-  } 
-  
-  window.addEventListener('mousemove', e => {mouse.x = e.x; mouse.y = e.y}); 
-  
-  function animate(){ 
-    ctx.clearRect(0, 0, canvas.width, canvas.height); 
-    particlesArray.forEach(p => { 
-      const dx = mouse.x - p.x; 
-      const dy = mouse.y - p.y; 
-      const dist = Math.sqrt(dx*dx + dy*dy); 
-      if(dist < mouse.radius){ p.x -= dx/dist * 1.5; p.y -= dy/dist * 1.5; } 
-      p.x += p.speedX; p.y += p.speedY; 
-      if(p.x < 0 || p.x > canvas.width) p.speedX *= -1; 
-      if(p.y < 0 || p.y > canvas.height) p.speedY *= -1; 
-      ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fillStyle = 'rgba(236,72,153,0.4)'; ctx.fill(); 
-    });
-    requestAnimationFrame(animate); 
-  } 
-  animate(); 
+  try{
+    const canvas = document.createElement('canvas'); 
+    canvas.id = 'particles'; 
+    document.body.appendChild(canvas); 
+    const ctx = canvas.getContext('2d'); 
+    
+    function resize(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    resize();
+    window.addEventListener('resize', resize);
+    
+    for(let i = 0; i < 80; i++){ 
+      particlesArray.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 3 + 1, speedX: Math.random() * 0.4 - 0.2, speedY: Math.random() * 0.4 - 0.2 }) 
+    } 
+    
+    window.addEventListener('mousemove', e => {mouse.x = e.x; mouse.y = e.y}); 
+    
+    function animate(){ 
+      ctx.clearRect(0, 0, canvas.width, canvas.height); 
+      particlesArray.forEach(p => { 
+        const dx = mouse.x - p.x; 
+        const dy = mouse.y - p.y; 
+        const dist = Math.sqrt(dx*dx + dy*dy); 
+        if(dist < mouse.radius){ p.x -= dx/dist * 1.5; p.y -= dy/dist * 1.5; } 
+        p.x += p.speedX; p.y += p.speedY; 
+        if(p.x < 0 || p.x > canvas.width) p.speedX *= -1; 
+        if(p.y < 0 || p.y > canvas.height) p.speedY *= -1; 
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fillStyle = 'rgba(236,72,153,0.4)'; ctx.fill(); 
+      });
+      requestAnimationFrame(animate); 
+    } 
+    animate(); 
+  }catch(e){console.log("Particle error:", e)}
 }
 
 function typeWriter(el, texts){ let i = 0, j = 0, isDeleting = false; function type(){ const current = texts[i]; if(isDeleting){ el.innerHTML = current.substring(0, j-1) + '<span style="border-right:2px solid var(--accent)"></span>';j-- } else{ el.innerHTML = current.substring(0, j+1) + '<span style="border-right:2px solid var(--accent)"></span>';j++ } if(!isDeleting && j === current.length){ isDeleting = true; setTimeout(type, 2000) } else if(isDeleting && j === 0){ isDeleting = false; i = (i + 1) % texts.length; setTimeout(type, 500) } else{ setTimeout(type, isDeleting? 50 : 100) } } type() }
@@ -140,12 +141,12 @@ function Footer(){ return `<footer><div class="social-links"><a href="https://gi
 
 function init(){ 
   initTheme();
-  liquidBackground();
+  document.body.innerHTML = Navbar() + Hero() + Terminal() + About() + Projects() + TechStack() + contactForm() + Footer(); 
+  liquidBackground(); // JALANKAN DULU BIAR GAK CRASH
   particleBackground();
   mouseGlow(); 
   scrollProgress(); 
   backToTop(); 
-  document.body.innerHTML = Navbar() + Hero() + Terminal() + About() + Projects() + TechStack() + contactForm() + Footer(); 
   themeToggle();
   musicPlayer();
   typeWriter(document.getElementById('role-text'), DATA.role); 
