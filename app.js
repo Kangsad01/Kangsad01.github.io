@@ -81,7 +81,7 @@ function injectCSS(){
   section{padding:10rem 5%;min-height:100vh}
  .section-title{font-size:3rem;font-weight:900;text-align:center;margin-bottom:4rem}
 
- .liquid-btn{padding:1rem 2.5rem;border-radius:50px;text-decoration:none;font-weight:700;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff;border:none;cursor:pointer}
+ .liquid-btn{padding:1rem 2.5rem;border-radius:50px;text-decoration:none;font-weight:700;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff;border:none;cursor:pointer;transition:all.3s}
  .liquid-btn:hover{transform:scale(1.05);box-shadow:0 0 30px rgba(147,51,234,0.5)}
 
  .hero{text-align:center}
@@ -137,7 +137,7 @@ function tiltEffect(){
       const rotateX = (y - centerY)/10; const rotateY = (centerX - x)/10;
       card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
     });
-    card.addEventListener('mouseleave', ()=>{card.style.transform='perspective(1000px) rotateX(0) rotateY(0) scale(1)'});
+    card.addEventListener('mouseleave', ()=>{card.style.transform='perspective(1000px) rotateX(0) rotateY(0) scale(1)'})
   });
 }
 
