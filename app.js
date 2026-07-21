@@ -6,7 +6,7 @@ const DATA = {
   foto: "https://avatars.githubusercontent.com/Kangsad01",
   email: "drakblue3@gmail.com",
   websiteScreenshot: "https://avatars.githubusercontent.com/Kangsad01",
-  music: "https://cdn.pixabay.com/download/audio/2022/03/10/audio_d1718f2676.mp3", // GANTI LINK LOFI LAIN
+  music: "https://cdn.pixabay.com/download/audio/2022/03/10/audio_d1718f2676.mp3",
   stats: [{number: 20, label: "Repositories"}, {number: 3, label: "Years Coding"}, {number: 100, label: "Bot Users"}],
   tech: [
     {name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"},
@@ -18,6 +18,8 @@ const DATA = {
 
 let particlesArray = [];
 let mouse = {x: null, y: null, radius: 150};
+
+function getCSSVar(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
 
 function initTheme(){
   const saved = localStorage.getItem('theme') || 'dark';
@@ -35,6 +37,9 @@ function themeToggle(){
     html.setAttribute('data-theme', newTheme); 
     localStorage.setItem('theme', newTheme);
     btn.innerHTML = newTheme === 'light'? '☀️' : '🌙'; 
+    // refresh liquid bg biar ikut ganti
+    document.getElementById('liquid-bg').remove();
+    liquidBackground();
   } 
 }
 
@@ -50,7 +55,6 @@ function musicPlayer(){
     if(audio.paused){ audio.play(); btn.innerHTML = '⏸️'; }
     else{ audio.pause(); btn.innerHTML = '▶️'; }
   }
-  // Autoplay pas ada klik pertama di halaman
   document.body.addEventListener('click', () => { audio.play().catch(()=>{}) }, {once:true});
 }
 
@@ -59,7 +63,27 @@ function scrollProgress(){ const progressBar = document.createElement('div'); pr
 function backToTop(){ const btn = document.createElement('button'); btn.id='back-to-top'; btn.innerHTML='↑'; document.body.appendChild(btn); window.addEventListener('scroll', () => { if(window.scrollY > 500){ btn.classList.add('show') } else{ btn.classList.remove('show') } }); btn.onclick = () => { window.scrollTo({top:0, behavior:'smooth'}) }; }
 function magneticButtons(){ document.querySelectorAll('.magnetic-btn').forEach(btn => { btn.addEventListener('mousemove', e => { const rect = btn.getBoundingClientRect(); const x = e.clientX - rect.left - rect.width/2; const y = e.clientY - rect.top - rect.height/2; btn.style.transform = `translate(${x*0.3}px, ${y*0.3}px)`; }); btn.addEventListener('mouseleave', () => { btn.style.transform = 'translate(0,0)' }); }) }
 function terminalType(){ const lines = ['git clone https://github.com/Kangsad01','npm install && npm run dev','Portfolio loaded successfully ✓']; const el = document.getElementById('terminal-text'); if(!el) return; let i=0, j=0; function type(){ if(j < lines[i].length){ el.innerHTML += lines[i][j++]; setTimeout(type, 50); } else { el.innerHTML += '<br>'; i++; j=0; if(i < lines.length) setTimeout(type, 800); } } type(); }
-function liquidBackground(){ const canvas = document.createElement('canvas'); canvas.id='liquid-bg'; document.body.appendChild(canvas); const ctx = canvas.getContext('2d'); canvas.width=window.innerWidth; canvas.height=window.innerHeight; function animate(){ ctx.clearRect(0,0,canvas.width,canvas.height); const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width); gradient.addColorStop(0,'rgba(236,72,153,0.2)'); gradient.addColorStop(1,'var(--bg)'); ctx.fillStyle = gradient; ctx.fillRect(0,0,canvas.width,canvas.height); requestAnimationFrame(animate); } animate(); }
+
+function liquidBackground(){ 
+  const canvas = document.createElement('canvas'); 
+  canvas.id='liquid-bg'; 
+  document.body.appendChild(canvas); 
+  const ctx = canvas.getContext('2d'); 
+  canvas.width=window.innerWidth; 
+  canvas.height=window.innerHeight; 
+  
+  function animate(){ 
+    const bgColor = getCSSVar('--bg'); // AMBIL WARNA DARI CSS BENERAN
+    ctx.clearRect(0,0,canvas.width,canvas.height); 
+    const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width); 
+    gradient.addColorStop(0,'rgba(236,72,153,0.2)'); 
+    gradient.addColorStop(1, bgColor); // INI YG TADI ERROR
+    ctx.fillStyle = gradient; 
+    ctx.fillRect(0,0,canvas.width,canvas.height); 
+    requestAnimationFrame(animate); 
+  } 
+  animate(); 
+}
 
 function particleBackground(){ 
   const canvas = document.createElement('canvas'); 
@@ -111,7 +135,7 @@ function Terminal(){ return `<section><div class="container"><div class="glass-c
 function About(){ const statsHTML = DATA.stats.map(s => `<div class="glass-card" style="text-align:center"><h3 style="font-size:2.5rem;color:var(--accent)">${s.number}+</h3><p>${s.label}</p></div>`).join(''); return `<section id="about"><div class="container"><h2 class="section-title">About</h2><div style="display:grid;grid-template-columns:1fr 2fr;gap:3rem;align-items:center"><img src="${DATA.foto}" style="width:100%;border-radius:20px"><div><p style="font-size:1.2rem;line-height:1.8;color:var(--muted)">${DATA.about}</p><div class="stats-grid" style="margin-top:2rem">${statsHTML}</div></div></div></div></section>`; }
 function Projects(){ return `<section id="projects"><div class="container"><h2 class="section-title">Projects</h2><div class="project-grid" id="projects-grid"></div></div></section>`; }
 function TechStack(){ const techHTML = DATA.tech.map(t => `<div class="tech-card glass-card"><img src="${t.icon}"><h3>${t.name}</h3></div>`).join(''); return `<section id="tech"><div class="container"><h2 class="section-title">Tech Stack</h2><div class="tech-grid">${techHTML}</div></section>`; }
-function contactForm(){ return `<section id="contact"><div class="container"><h2 class="section-title">Contact</h2><div class="contact-grid"><div><div class="contact-item"><div class="contact-icon">📧</div><div><h3>Email</h3><p style="color:var(--muted)">${DATA.email}</p></div></div></div><form class="contact-form glass-card" onsubmit="alert('Terkirim!');return false"><input type="text" placeholder="Nama Kamu" required><input type="email" placeholder="Email Kamu" required><textarea rows="5" placeholder="Pesan..." required></textarea><button type="submit" class="magnetic-btn">Send 🚀</button></form></div></div></section>` }
+function contactForm(){ return `<section id="contact"><div class="container"><h2 class="section-title">Contact</h2><div class="contact-grid"><div><div class="contact-item glass-card"><div class="contact-icon">📧</div><div><h3>Email</h3><p style="color:var(--muted)">${DATA.email}</p></div></div></div><form class="contact-form glass-card" onsubmit="alert('Terkirim!');return false"><input type="text" placeholder="Nama Kamu" required><input type="email" placeholder="Email Kamu" required><textarea rows="5" placeholder="Pesan..." required></textarea><button type="submit" class="magnetic-btn">Send 🚀</button></form></div></div></section>` }
 function Footer(){ return `<footer><div class="social-links"><a href="https://github.com/${DATA.githubs[0]}" target="_blank">GitHub</a></div><p style="color:var(--muted)">© 2026 ${DATA.nama}</p></footer>`; }
 
 function init(){ 
