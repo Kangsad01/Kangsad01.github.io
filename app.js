@@ -6,7 +6,7 @@ const DATA = {
   foto: "https://avatars.githubusercontent.com/Kangsad01",
   email: "drakblue3@gmail.com",
   websiteScreenshot: "https://avatars.githubusercontent.com/Kangsad01",
-  music: "https://cdn.pixabay.com/audio/1/1/lofi-116199.mp3", // LOFI CHILL
+  music: "https://cdn.pixabay.com/audio/1/1/lofi-116199.mp3",
   stats: [{number: 20, label: "Repositories"}, {number: 3, label: "Years Coding"}, {number: 100, label: "Bot Users"}],
   tech: [
     {name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"},
@@ -47,11 +47,12 @@ function musicPlayer(){
   player.innerHTML = `<button id="play-btn">▶️</button><audio id="bg-music" loop src="${DATA.music}"></audio><span style="font-size:0.9rem">Lofi</span>`;
   document.body.appendChild(player);
   const audio = document.getElementById('bg-music');
+  audio.volume = 0.3; // KECILIN VOLUMENYA
   const btn = document.getElementById('play-btn');
   let playing = false;
   btn.onclick = () => {
     if(playing){ audio.pause(); btn.innerHTML = '▶️'; }
-    else{ audio.play(); btn.innerHTML = '⏸️'; }
+    else{ audio.play().catch(e => alert('Klik tombol play untuk mulai musik')); btn.innerHTML = '⏸️'; }
     playing = !playing;
   }
 }
@@ -70,10 +71,15 @@ function particleBackground(){
   document.body.appendChild(canvas); 
   const ctx = canvas.getContext('2d'); 
   canvas.width = window.innerWidth; 
-  canvas.height = document.body.scrollHeight; 
+  canvas.height = window.innerHeight; // FIX: JANGAN SCROLLHEIGHT
+  
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  })
   
   const particleSize = window.innerWidth > 1024? 4 : 2;
-  const particleCount = window.innerWidth > 1024? 150 : 100;
+  const particleCount = window.innerWidth > 1024? 120 : 80;
   
   for(let i = 0; i < particleCount; i++){ 
     particlesArray.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * particleSize + 1, speedX: Math.random() * 0.5 - 0.25, speedY: Math.random() * 0.5 - 0.25 }) 
@@ -121,24 +127,7 @@ function Terminal(){ return `<section><div class="container"><div class="termina
 function About(){ const statsHTML = DATA.stats.map(s => `<div class="stat-box glass-card"><h3 class="counter" data-target="${s.number}">0</h3><p>${s.label}</p></div>`).join(''); return `<section id="about"><div class="container"><h2 class="section-title">About</h2><div class="about-grid"><img src="${DATA.foto}" class="about-img"><div><p style="font-size:1.3rem;line-height:1.8;color:var(--muted)">${DATA.about}</p><div class="stats-grid">${statsHTML}</div></div></div></div></section>`; }
 function Projects(){ return `<section id="projects"><div class="container"><h2 class="section-title">All My Projects</h2><div class="project-grid" id="projects-grid"></div></div></section>`; }
 function TechStack(){ const techHTML = DATA.tech.map((t,i) => `<div class="tech-card glass-card" style="transition-delay:${i*0.1}s"><img src="${t.icon}"><h3>${t.name}</h3></div>`).join(''); return `<section id="tech"><div class="container"><h2 class="section-title">Tech Stack</h2><div class="tech-grid">${techHTML}</div></section>`; }
-
-function contactForm(){ 
-  return `<section id="contact"><div class="container"><h2 class="section-title">Let's Work Together</h2><div class="contact-grid">
-    <div class="contact-card">
-      <div class="contact-item glass-card"><div class="contact-icon">📧</div><div><h3>Email</h3><p style="color:var(--muted)">${DATA.email}</p></div></div>
-      <div class="contact-item glass-card"><div class="contact-icon">💻</div><div><h3>GitHub</h3><p style="color:var(--muted)">@${DATA.githubs[0]}</p></div></div>
-      <div class="contact-item glass-card"><div class="contact-icon">📍</div><div><h3>Location</h3><p style="color:var(--muted)">Indonesia</p></div></div>
-    </div>
-    <form class="contact-form glass-card" onsubmit="alert('Pesan terkirim! Nanti aku balas via email');return false">
-      <h3 style="margin-bottom:1rem">Kirim Pesan</h3>
-      <input type="text" placeholder="Nama Kamu" required>
-      <input type="email" placeholder="Email Kamu" required>
-      <textarea rows="5" placeholder="Ceritain project kamu..." required></textarea>
-      <button type="submit" class="magnetic-btn">Send Message 🚀</button>
-    </form>
-  </div></div></section>` 
-}
-
+function contactForm(){ return `<section id="contact"><div class="container"><h2 class="section-title">Let's Work Together</h2><div class="contact-grid"><div class="contact-card"><div class="contact-item glass-card"><div class="contact-icon">📧</div><div><h3>Email</h3><p style="color:var(--muted)">${DATA.email}</p></div></div><div class="contact-item glass-card"><div class="contact-icon">💻</div><div><h3>GitHub</h3><p style="color:var(--muted)">@${DATA.githubs[0]}</p></div></div><div class="contact-item glass-card"><div class="contact-icon">📍</div><div><h3>Location</h3><p style="color:var(--muted)">Indonesia</p></div></div></div><form class="contact-form glass-card" onsubmit="alert('Pesan terkirim! Nanti aku balas via email');return false"><h3 style="margin-bottom:1rem">Kirim Pesan</h3><input type="text" placeholder="Nama Kamu" required><input type="email" placeholder="Email Kamu" required><textarea rows="5" placeholder="Ceritain project kamu..." required></textarea><button type="submit" class="magnetic-btn">Send Message 🚀</button></form></div></div></section>` }
 function Footer(){ return `<footer><div class="container"><div class="social-links"><a href="https://github.com/${DATA.githubs[0]}" target="_blank">GH</a><a href="https://github.com/${DATA.githubs[1]}" target="_blank">TEAM</a><a href="mailto:${DATA.email}">@</a></div><p style="color:var(--muted);position:relative;z-index:2">© 2026 ${DATA.nama}. Crafted with 💖 + Code</p></div></footer>`; }
 
 function init(){ 
@@ -150,7 +139,7 @@ function init(){
   backToTop(); 
   document.body.innerHTML = Navbar() + Hero() + Terminal() + About() + Projects() + TechStack() + contactForm() + Footer(); 
   themeToggle();
-  musicPlayer(); 
+  musicPlayer();
   particleBackground();
   typeWriter(document.getElementById('role-text'), DATA.role); 
   fetchAllProjects(); 
