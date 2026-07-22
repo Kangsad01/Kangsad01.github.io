@@ -202,6 +202,49 @@ function premiumInteractions(){
   });
 }
 
+function glitchEffect(){
+  const heroTitle = document.querySelector('.hero-title');
+  if(!heroTitle) return;
+  const originalText = heroTitle.innerText;
+  
+  heroTitle.addEventListener('mouseenter', () => {
+    let i = 0;
+    const interval = setInterval(() => {
+      heroTitle.innerText = originalText.split('').map((char, idx) => 
+        idx === i ? String.fromCharCode(Math.random()*26+65) : char
+      ).join('');
+      i++;
+      if(i > originalText.length) { clearInterval(interval); heroTitle.innerText = originalText; }
+    }, 50);
+  });
+}
+
+function scrollSnapParallax(){
+  document.documentElement.style.scrollBehavior = 'smooth';
+  document.querySelectorAll('section').forEach(s => s.style.scrollSnapAlign = 'start');
+  document.body.style.scrollSnapType = 'y mandatory';
+  
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    document.getElementById('liquid-bg').style.transform = `translateY(${scrolled * 0.5}px)`;
+  });
+}
+
+async function githubStats(){
+  try{
+    const res = await fetch('https://api.github.com/users/Kangsad01');
+    const data = await res.json();
+    const statsDiv = document.createElement('div');
+    statsDiv.className = 'glass-card';
+    statsDiv.style.cssText = 'text-align:center;padding:1.5rem';
+    statsDiv.innerHTML = `
+      <h4>Live GitHub</h4>
+      <p>Followers: ${data.followers} | Repos: ${data.public_repos}</p>
+    `;
+    document.querySelector('.stats-grid').appendChild(statsDiv);
+  }catch(e){}
+}
+
 function init(){
   console.log("Init starting...");
   initTheme();
@@ -221,5 +264,8 @@ function init(){
   cursorTrailEffect();
   matrixRain();
   premiumInteractions();
+  glitchEffect();
+  scrollSnapParallax();
+  githubStats();
 }
 document.addEventListener('DOMContentLoaded', init);
