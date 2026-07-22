@@ -31,7 +31,6 @@ function scrollProgress(){ const progressBar = document.createElement('div'); pr
 function backToTop(){ const btn = document.createElement('button'); btn.id='back-to-top'; btn.innerHTML='↑'; document.body.appendChild(btn); window.addEventListener('scroll', () => { if(window.scrollY > 500){ btn.classList.add('show') } else{ btn.classList.remove('show') } }); btn.onclick = () => { window.scrollTo({top:0, behavior:'smooth'}) }; }
 function magneticButtons(){ document.querySelectorAll('.magnetic-btn').forEach(btn => { btn.addEventListener('mousemove', e => { const rect = btn.getBoundingClientRect(); const x = e.clientX - rect.left - rect.width/2; const y = e.clientY - rect.top - rect.height/2; btn.style.transform = `translate(${x*0.3}px, ${y*0.3}px) scale(1.05)`; }); btn.addEventListener('mouseleave', () => { btn.style.transform = 'translate(0,0) scale(1)' }); }) }
 function terminalType(){ const lines = ['git clone https://github.com/Kangsad01','npm install','Server running on port 3000','Portfolio loaded ✓']; const el = document.getElementById('terminal-text'); if(!el) return; let i=0, j=0; function type(){ if(j < lines[i].length){ el.innerHTML += lines[i][j++]; setTimeout(type, 40); } else { el.innerHTML += '<br>'; i++; j=0; if(i < lines.length) setTimeout(type, 600); } } type(); }
-function liquidBackground(){ const canvas = document.createElement('canvas'); canvas.id='liquid-bg'; document.body.appendChild(canvas); const ctx = canvas.getContext('2d'); canvas.width=window.innerWidth; canvas.height=window.innerHeight; window.addEventListener('resize', ()=>{canvas.width=window.innerWidth; canvas.height=window.innerHeight}); function animate(){ const bgColor = getCSSVar('--bg'); ctx.clearRect(0,0,canvas.width,canvas.height); const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width); gradient.addColorStop(0,'rgba(56,189,248,0.1)'); gradient.addColorStop(1, bgColor); ctx.fillStyle = gradient; ctx.fillRect(0,0,canvas.width,canvas.height); requestAnimationFrame(animate); } animate(); }
 function particleBackground(){ const canvas = document.createElement('canvas'); canvas.id = 'particles'; document.body.appendChild(canvas); const ctx = canvas.getContext('2d'); function resize(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; } resize(); window.addEventListener('resize', resize); for(let i = 0; i < 120; i++){ particlesArray.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 3 + 1, speedX: Math.random() * 0.6 - 0.3, speedY: Math.random() * 0.6 - 0.3 }) } window.addEventListener('mousemove', e => {mouse.x = e.x; mouse.y = e.y}); function animate(){ ctx.clearRect(0, 0, canvas.width, canvas.height); particlesArray.forEach(p => { const dx = mouse.x - p.x; const dy = mouse.y - p.y; const dist = Math.sqrt(dx*dx + dy*dy); if(dist < mouse.radius){ p.x -= dx/dist * 2; p.y -= dy/dist * 2; } p.x += p.speedX; p.y += p.speedY; if(p.x < 0 || p.x > canvas.width) p.speedX *= -1; if(p.y < 0 || p.y > canvas.height) p.speedY *= -1; ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fillStyle = 'rgba(56,189,248,0.5)'; ctx.fill(); }); requestAnimationFrame(animate); } animate(); }
 function typeWriter(el, texts){ let i = 0, j = 0, isDeleting = false; function type(){ const current = texts[i]; if(isDeleting){ el.innerHTML = current.substring(0, j-1) + '<span style="border-right:3px solid var(--accent)"></span>';j-- } else{ el.innerHTML = current.substring(0, j+1) + '<span style="border-right:3px solid var(--accent)"></span>';j++ } if(!isDeleting && j === current.length){ isDeleting = true; setTimeout(type, 2500) } else if(isDeleting && j === 0){ isDeleting = false; i = (i + 1) % texts.length; setTimeout(type, 500) } else{ setTimeout(type, isDeleting? 40 : 80) } } type(); }
 function scrollReveal(){ const observer = new IntersectionObserver(entries => { entries.forEach((entry, i) => { if(entry.isIntersecting){ setTimeout(()=>{entry.target.classList.add('revealed')}, i * 100) } }) }, {threshold: 0.1}); document.querySelectorAll('.section-title,.glass-card').forEach(el => { observer.observe(el); }); }
@@ -159,11 +158,40 @@ function matrixRain(){
   draw();
 }
 
+function tiltCards(){
+  document.querySelectorAll('.glass-card').forEach(card => {
+    card.style.transformStyle = 'preserve-3d';
+    card.style.transition = 'transform 0.3s ease';
+    
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const rotateX = (y - centerY) / 10;
+      const rotateY = (centerX - x) / 10;
+      
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
+      
+      const glare = `radial-gradient(circle at ${x}px ${y}px, rgba(56,189,248,0.15), transparent 70%)`;
+      card.style.background = `var(--card), ${glare}`;
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+      card.style.background = 'var(--card)';
+    });
+  });
+}
+
 function init(){
   console.log("Init starting...");
   initTheme();
   document.body.innerHTML = Navbar() + Hero() + Terminal() + About() + Projects() + TechStack() + contactForm() + Footer();
-  liquidBackground();
+  tiltCards();
   particleBackground();
   mouseGlow();
   scrollProgress();
