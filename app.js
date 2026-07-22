@@ -54,6 +54,51 @@ function TechStack(){ const techHTML = DATA.tech.map((t,i) => `<div class="tech-
 function contactForm(){ return `<section id="contact"><div class="container"><h2 class="section-title">Contact</h2><div class="contact-grid"><div><div class="contact-item glass-card"><div class="contact-icon">📧</div><div><h3>Email</h3><p>${DATA.email}</p></div></div></div><form class="contact-form glass-card" onsubmit="handleFormSubmit(event)"><input type="text" name="name" placeholder="Your Name" required><input type="email" name="email" placeholder="Your Email" required><textarea name="message" rows="5" placeholder="Your Message..." required></textarea><button type="submit" class="magnetic-btn">Send Message</button></form></div></div></section>` }
 function Footer(){ return `<footer><div class="social-links"><a href="https://github.com/${DATA.githubs[0]}" target="_blank">GitHub</a></div><p>© 2026 ${DATA.nama} | Built with Code</p></footer>`; }
 
+function commandPalette(){
+  const palette = document.createElement('div');
+  palette.id = 'command-palette';
+  palette.style.cssText = 'position:fixed;top:20%;left:50%;transform:translateX(-50%);width:90%;max-width:600px;background:var(--card);backdrop-filter:blur(30px);border:1px solid var(--border);border-radius:20px;padding:1rem;z-index:9999;display:none;box-shadow:0 0 50px rgba(56,189,248,0.3)';
+  palette.innerHTML = `
+    <input id="cmd-input" placeholder="Type a command... /about /projects /contact /theme" style="width:100%;padding:1rem;border-radius:12px;border:2px solid var(--border);background:transparent;color:var(--text);font-size:1.1rem;outline:none">
+    <p style="font-size:0.9rem;color:var(--muted);margin-top:0.5rem">Tips: Ctrl+K to open. ESC to close</p>
+  `;
+  document.body.appendChild(palette);
+
+  const input = document.getElementById('cmd-input');
+  document.addEventListener('keydown', e => {
+    if(e.ctrlKey && e.key === 'k'){ e.preventDefault(); palette.style.display = 'block'; input.focus(); }
+    if(e.key === 'Escape'){ palette.style.display = 'none'; }
+  });
+
+  input.addEventListener('keydown', e => {
+    if(e.key === 'Enter'){
+      const val = input.value.toLowerCase();
+      if(val.includes('about')) document.getElementById('about').scrollIntoView({behavior:'smooth'});
+      if(val.includes('projects')) document.getElementById('projects').scrollIntoView({behavior:'smooth'});
+      if(val.includes('contact')) document.getElementById('contact').scrollIntoView({behavior:'smooth'});
+      if(val.includes('theme')) document.querySelector('.theme-toggle').click();
+      palette.style.display = 'none'; input.value = '';
+    }
+  });
+}
+
+function konamiCode(){
+  const code = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+  let pos = 0;
+  document.addEventListener('keydown', e => {
+    if(e.key === code[pos]){ pos++; if(pos === code.length){ activateSecretMode(); pos = 0; } }
+    else { pos = 0; }
+  });
+}
+
+function activateSecretMode(){
+  document.body.style.animation = 'rainbow 3s linear infinite';
+  const style = document.createElement('style');
+  style.innerHTML = `@keyframes rainbow{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}`;
+  document.head.appendChild(style);
+  alert('🎉 SECRET MODE UNLOCKED! Rainbow Mode Active');
+}
+
 function init(){
   console.log("Init starting...");
   initTheme();
@@ -69,5 +114,7 @@ function init(){
   typeWriter(document.getElementById('role-text'), DATA.role);
   terminalType();
   fetchAllProjects();
+  commandPalette();
+  konamiCode();
 }
 document.addEventListener('DOMContentLoaded', init);
