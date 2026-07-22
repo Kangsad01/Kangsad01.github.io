@@ -245,6 +245,60 @@ async function githubStats(){
   }catch(e){}
 }
 
+function interactiveTerminal(){
+  const el = document.getElementById('terminal-text');
+  const input = document.createElement('div');
+  input.innerHTML = '> <span id="cmd" contenteditable="true" style="outline:none"></span>';
+  el.parentElement.appendChild(input);
+  
+  document.getElementById('cmd').addEventListener('keydown', e=>{
+    if(e.key === 'Enter'){
+      const cmd = e.target.innerText.toLowerCase();
+      if(cmd === 'help') el.innerHTML += '<br>> help, about, projects, contact, clear';
+      if(cmd === 'about') document.getElementById('about').scrollIntoView({behavior:'smooth'});
+      if(cmd === 'projects') document.getElementById('projects').scrollIntoView({behavior:'smooth'});
+      if(cmd === 'clear') el.innerHTML = '';
+      e.target.innerText = '';
+    }
+  });
+}
+
+function loadingScreen(){
+  const load = document.createElement('div');
+  load.id = 'loader';
+  load.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;font-family:monospace;color:var(--accent);font-size:1.5rem';
+  load.innerHTML = 'Initializing Kangsad01.exe...<br>Loading Modules...';
+  document.body.appendChild(load);
+  setTimeout(()=>{ load.style.opacity=0; setTimeout(()=>load.remove(),500) }, 2000);
+}
+
+function copyEmailToast(){
+  document.querySelector('.contact-item p').addEventListener('click', e=>{
+    navigator.clipboard.writeText(DATA.email);
+    const toast = document.createElement('div');
+    toast.innerText = 'Email Copied! 📋';
+    toast.style.cssText = 'position:fixed;bottom:30px;right:30px;background:var(--accent);color:#000;padding:1rem 2rem;border-radius:12px;z-index:9999;animation:slideUp 0.3s';
+    document.body.appendChild(toast);
+    setTimeout(()=>toast.remove(), 2000);
+  });
+}
+
+function nameEasterEgg(){
+  let buffer = '';
+  document.addEventListener('keydown', e=>{
+    buffer += e.key.toLowerCase();
+    buffer = buffer.slice(-7);
+    if(buffer === 'kangsad'){
+      for(let i=0;i<50;i++){
+        const conf = document.createElement('div');
+        conf.style.cssText = `position:fixed;width:10px;height:10px;background:hsl(${Math.random()*360},100%,50%);top:0;left:${Math.random()*100}%;z-index:9999;animation:fall 2s linear`;
+        document.body.appendChild(conf);
+        setTimeout(()=>conf.remove(),2000);
+      }
+    }
+  });
+}
+
 function init(){
   console.log("Init starting...");
   initTheme();
@@ -267,5 +321,9 @@ function init(){
   glitchEffect();
   scrollSnapParallax();
   githubStats();
+  interactiveTerminal();
+  loadingScreen();
+  copyEmailToast();
+  nameEasterEgg();
 }
 document.addEventListener('DOMContentLoaded', init);
