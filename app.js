@@ -7,6 +7,7 @@ const DATA = {
   email: "drakblue3@gmail.com",
   websiteScreenshot: "https://avatars.githubusercontent.com/Kangsad01",
   music: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+  formspree: "https://formspree.io/f/xwvgbaov",
   stats: [{number: 20, label: "Repositories"}, {number: 3, label: "Years Coding"}, {number: 100, label: "Bot Users"}],
   tech: [
     {name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"},
@@ -17,7 +18,7 @@ const DATA = {
 }
 
 let particlesArray = [];
-let mouse = {x: null, y: null, radius: 150};
+let mouse = {x: null, y: null, radius: 200};
 
 function getCSSVar(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
 function initTheme(){ const saved = localStorage.getItem('theme') || 'dark'; document.documentElement.setAttribute('data-theme', saved); }
@@ -33,13 +34,35 @@ function particleBackground(){ const canvas = document.createElement('canvas'); 
 function typeWriter(el, texts){ let i = 0, j = 0, isDeleting = false; function type(){ const current = texts[i]; if(isDeleting){ el.innerHTML = current.substring(0, j-1) + '<span style="border-right:3px solid var(--accent)"></span>';j-- } else{ el.innerHTML = current.substring(0, j+1) + '<span style="border-right:3px solid var(--accent)"></span>';j++ } if(!isDeleting && j === current.length){ isDeleting = true; setTimeout(type, 2500) } else if(isDeleting && j === 0){ isDeleting = false; i = (i + 1) % texts.length; setTimeout(type, 500) } else{ setTimeout(type, isDeleting? 40 : 80) } } type(); }
 function scrollReveal(){ const observer = new IntersectionObserver(entries => { entries.forEach((entry, i) => { if(entry.isIntersecting){ setTimeout(()=>{entry.target.classList.add('revealed')}, i * 100) } }) }, {threshold: 0.1}); document.querySelectorAll('.section-title,.glass-card').forEach(el => { observer.observe(el); }); }
 async function fetchAllProjects(){ const projectsContainer = document.getElementById('projects-grid'); if(!projectsContainer) return; let allRepos = [{ title: "PORTFOLIO WEBSITE", desc: "Website portfolio dengan tema maskulin dan animasi premium.", img: DATA.websiteScreenshot, link: "https://kangsad01.github.io" }]; for(const user of DATA.githubs){ try{ const res = await fetch('https://api.github.com/users/' + user + '/repos?sort=updated&per_page=10'); const repos = await res.json(); const mapped = repos.map(repo => ({ title: repo.name.toUpperCase(), desc: repo.description || "No description.", img: 'https://opengraph.githubassets.com/1/' + user + '/' + repo.name, link: repo.html_url })); allRepos = allRepos.concat(mapped); }catch(e){} } projectsContainer.innerHTML = allRepos.map((p,i) => `<div class="glass-card" style="transition-delay:${i*0.08}s"><img src="${p.img}" class="project-img" onerror="this.src='https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600'"><h3 style="font-size:1.5rem;margin-bottom:1rem">${p.title}</h3><p style="margin-bottom:1.5rem">${p.desc}</p><a href="${p.link}" target="_blank" class="magnetic-btn">View Code</a></div>`).join(''); magneticButtons(); scrollReveal(); }
+
+async function handleFormSubmit(e){
+  e.preventDefault(); const form = e.target; const btn = form.querySelector('button'); btn.innerHTML = 'Sending...'; btn.disabled = true;
+  try{
+    const res = await fetch(DATA.formspree, { method: 'POST', body: new FormData(form), headers: {'Accept': 'application/json'} });
+    if(res.ok){ alert('Message Sent! ✅'); form.reset(); } else { alert('Gagal kirim. Coba lagi'); }
+  } catch(err){ alert('Error: ' + err.message); }
+  btn.innerHTML = 'Send Message'; btn.disabled = false;
+}
+
 function Navbar(){ return `<nav><div class="logo">${DATA.nama}</div></nav>`; }
 function Hero(){ return `<section class="hero"><div class="container"><h1 class="hero-title">${DATA.nama}</h1><p id="role-text" style="font-size:1.5rem;margin-bottom:2rem"></p><a href="#projects" class="magnetic-btn">View Projects</a></div></section>`; }
 function Terminal(){ return `<section><div class="container"><div class="glass-card"><div style="display:flex;gap:8px;margin-bottom:1rem"><div style="width:12px;height:12px;border-radius:50%;background:#ff5f56"></div><div style="width:12px;height:12px;border-radius:50%;background:#ffbd2e"></div><div style="width:12px;height:12px;border-radius:50%;background:#27c93f"></div></div><div id="terminal-text" style="font-family:monospace;color:var(--accent)"></div></div></div></section>`; }
-function About(){ const statsHTML = DATA.stats.map(s => `<div class="glass-card" style="text-align:center"><h3 style="font-size:3rem;color:var(--accent)">${s.number}+</h3><p style="font-weight:600">${s.label}</p></div>`).join(''); return `<section id="about"><div class="container"><h2 class="section-title">About Me</h2><div style="display:grid;grid-template-columns:1fr 2fr;gap:3rem;align-items:center"><img src="${DATA.foto}" style="width:100%;border-radius:20px;border:2px solid var(--accent)"><div><p style="font-size:1.2rem;line-height:1.8">${DATA.about}</p><div class="stats-grid" style="margin-top:2rem">${statsHTML}</div></div></div></div></section>`; }
+function About(){ const statsHTML = DATA.stats.map(s => `<div class="glass-card" style="text-align:center"><h3 style="font-size:3rem;color:var(--text)">${s.number}+</h3><p style="font-weight:600">${s.label}</p></div>`).join(''); return `<section id="about"><div class="container"><h2 class="section-title">About Me</h2><div class="about-grid"><img src="${DATA.foto}" class="about-img"><div><p style="font-size:1.2rem;line-height:1.8">${DATA.about}</p><div class="stats-grid" style="margin-top:2rem">${statsHTML}</div></div></div></div></section>`; }
 function Projects(){ return `<section id="projects"><div class="container"><h2 class="section-title">Projects</h2><div class="project-grid" id="projects-grid"></div></div></section>`; }
-function TechStack(){ const techHTML = DATA.tech.map((t,i) => `<div class="tech-card glass-card" style="transition-delay:${i*0.1}s"><img src="${t.icon}"><h3>${t.name}</h3></div>`).join(''); return `<section id="tech"><div class="container"><h2 class="section-title">Tech Stack</h2><div class="tech-grid">${techHTML}</div></section>`; }
-function contactForm(){ return `<section id="contact"><div class="container"><h2 class="section-title">Contact</h2><div class="contact-grid"><div><div class="contact-item glass-card"><div class="contact-icon">📧</div><div><h3>Email</h3><p>${DATA.email}</p></div></div></div><form class="contact-form glass-card" onsubmit="alert('Message Sent!');return false"><input type="text" placeholder="Your Name" required><input type="email" placeholder="Your Email" required><textarea rows="5" placeholder="Your Message..." required></textarea><button type="submit" class="magnetic-btn">Send Message</button></form></div></div></section>` }
+function TechStack(){ const techHTML = DATA.tech.map((t,i) => `<div class="tech-card glass-card" style="transition-delay:${i*0.1}s"><img src="${t.icon}"><h3>${t.name}</h3></div>`).join(''); return `<section id="tech"><div class="container"><h2 class="section-title">Tech Stack</h2><div class="tech-grid">${techHTML}</div></div></section>`; }
+function contactForm(){ return `<section id="contact"><div class="container"><h2 class="section-title">Contact</h2><div class="contact-grid"><div><div class="contact-item glass-card"><div class="contact-icon">📧</div><div><h3>Email</h3><p>${DATA.email}</p></div></div></div><form class="contact-form glass-card" onsubmit="handleFormSubmit(event)"><input type="text" name="name" placeholder="Your Name" required><input type="email" name="email" placeholder="Your Email" required><textarea name="message" rows="5" placeholder="Your Message..." required></textarea><button type="submit" class="magnetic-btn">Send Message</button></form></div></div></section>` }
 function Footer(){ return `<footer><div class="social-links"><a href="https://github.com/${DATA.githubs[0]}" target="_blank">GitHub</a></div><p>© 2026 ${DATA.nama} | Built with Code</p></footer>`; }
-function init(){ initTheme(); document.body.innerHTML = Navbar() + Hero() + Terminal() + About() + Projects() + TechStack() + contactForm() + Footer(); liquidBackground(); particleBackground(); mouseGlow(); scrollProgress(); backToTop(); themeToggle(); autoMusic(); typeWriter(document.getElementById('role-text'), DATA.role); fetchAllProjects(); magneticButtons(); scrollReveal(); setTimeout(terminalType, 500); }
+
+function init(){
+  console.log("Init starting...");
+  initTheme();
+  document.body.innerHTML = Navbar() + Hero() + About() + Projects() + TechStack() + contactForm() + Footer();
+  particleBackground();
+  scrollProgress();
+  backToTop();
+  themeToggle();
+  scrollReveal();
+  typeWriter(document.getElementById('role-text'), DATA.role);
+  fetchAllProjects();
+}
 document.addEventListener('DOMContentLoaded', init);
