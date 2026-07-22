@@ -9,6 +9,34 @@ const DATA = {
   music: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
   formspree: "https://formspree.io/f/xwvgbaov",
   stats: [{number: 20, label: "Repositories"}, {number: 3, label: "Years Coding"}, {number: 100, label: "Bot Users"}],
+
+  projects: [
+    {
+      title: "KANGSAD01.GITHUB.IO",
+      desc: "Website portfolio pribadi dengan tema glassmorphism, dark/light mode, dan partikel interaktif.",
+      img: "https://avatars.githubusercontent.com/Kangsad01",
+      link: "https://github.com/Kangsad01/Kangsad01.github.io"
+    },
+    {
+      title: "WHATSAPP BOT MULTI-DEVICE",
+      desc: "Bot WhatsApp berbasis Node.js dengan fitur auto-reply, database MongoDB, dan panel admin.",
+      img: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600",
+      link: "https://github.com/Kangsad01"
+    },
+    {
+      title: "SADTEAMS PANEL",
+      desc: "Web panel untuk manajemen bot dan server. Dilengkapi auth, dashboard, dan API.",
+      img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600",
+      link: "https://github.com/sadteams"
+    },
+    {
+      title: "AUTO FARM BOT",
+      desc: "Bot automation untuk game. Support multi-akun, scheduling, dan anti-detect.",
+      img: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600",
+      link: "https://github.com/sadteams"
+    }
+  ],
+
   tech: [
     {name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"},
     {name: "MongoDB", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg"},
@@ -33,7 +61,21 @@ function liquidBackground(){ const canvas = document.createElement('canvas'); ca
 function particleBackground(){ const canvas = document.createElement('canvas'); canvas.id = 'particles'; document.body.appendChild(canvas); const ctx = canvas.getContext('2d'); function resize(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; } resize(); window.addEventListener('resize', resize); for(let i = 0; i < 120; i++){ particlesArray.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 3 + 1, speedX: Math.random() * 0.6 - 0.3, speedY: Math.random() * 0.6 - 0.3 }) } window.addEventListener('mousemove', e => {mouse.x = e.x; mouse.y = e.y}); function animate(){ ctx.clearRect(0, 0, canvas.width, canvas.height); particlesArray.forEach(p => { const dx = mouse.x - p.x; const dy = mouse.y - p.y; const dist = Math.sqrt(dx*dx + dy*dy); if(dist < mouse.radius){ p.x -= dx/dist * 2; p.y -= dy/dist * 2; } p.x += p.speedX; p.y += p.speedY; if(p.x < 0 || p.x > canvas.width) p.speedX *= -1; if(p.y < 0 || p.y > canvas.height) p.speedY *= -1; ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fillStyle = 'rgba(56,189,248,0.5)'; ctx.fill(); }); requestAnimationFrame(animate); } animate(); }
 function typeWriter(el, texts){ let i = 0, j = 0, isDeleting = false; function type(){ const current = texts[i]; if(isDeleting){ el.innerHTML = current.substring(0, j-1) + '<span style="border-right:3px solid var(--accent)"></span>';j-- } else{ el.innerHTML = current.substring(0, j+1) + '<span style="border-right:3px solid var(--accent)"></span>';j++ } if(!isDeleting && j === current.length){ isDeleting = true; setTimeout(type, 2500) } else if(isDeleting && j === 0){ isDeleting = false; i = (i + 1) % texts.length; setTimeout(type, 500) } else{ setTimeout(type, isDeleting? 40 : 80) } } type(); }
 function scrollReveal(){ const observer = new IntersectionObserver(entries => { entries.forEach((entry, i) => { if(entry.isIntersecting){ setTimeout(()=>{entry.target.classList.add('revealed')}, i * 100) } }) }, {threshold: 0.1}); document.querySelectorAll('.section-title,.glass-card').forEach(el => { observer.observe(el); }); }
-async function fetchAllProjects(){ const projectsContainer = document.getElementById('projects-grid'); if(!projectsContainer) return; let allRepos = [{ title: "PORTFOLIO WEBSITE", desc: "Website portfolio dengan tema maskulin dan animasi premium.", img: DATA.websiteScreenshot, link: "https://kangsad01.github.io" }]; for(const user of DATA.githubs){ try{ const res = await fetch('https://api.github.com/users/' + user + '/repos?sort=updated&per_page=10'); const repos = await res.json(); const mapped = repos.map(repo => ({ title: repo.name.toUpperCase(), desc: repo.description || "No description.", img: 'https://opengraph.githubassets.com/1/' + user + '/' + repo.name, link: repo.html_url })); allRepos = allRepos.concat(mapped); }catch(e){} } projectsContainer.innerHTML = allRepos.map((p,i) => `<div class="glass-card" style="transition-delay:${i*0.08}s"><img src="${p.img}" class="project-img" onerror="this.src='https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600'"><h3 style="font-size:1.5rem;margin-bottom:1rem">${p.title}</h3><p style="margin-bottom:1.5rem">${p.desc}</p><a href="${p.link}" target="_blank" class="magnetic-btn">View Code</a></div>`).join(''); magneticButtons(); scrollReveal(); }
+
+function loadProjects(){
+  const projectsContainer = document.getElementById('projects-grid');
+  if(!projectsContainer) return;
+  projectsContainer.innerHTML = DATA.projects.map((p,i) => `
+    <div class="glass-card" style="transition-delay:${i*0.08}s">
+      <img src="${p.img}" class="project-img" onerror="this.src='https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600'">
+      <h3 style="font-size:1.5rem;margin-bottom:1rem">${p.title}</h3>
+      <p style="margin-bottom:1.5rem">${p.desc}</p>
+      <a href="${p.link}" target="_blank" class="magnetic-btn">View Code</a>
+    </div>`
+  ).join('');
+  magneticButtons();
+  scrollReveal();
+}
 
 async function handleFormSubmit(e){
   e.preventDefault(); const form = e.target; const btn = form.querySelector('button'); btn.innerHTML = 'Sending...'; btn.disabled = true;
@@ -56,13 +98,17 @@ function Footer(){ return `<footer><div class="social-links"><a href="https://gi
 function init(){
   console.log("Init starting...");
   initTheme();
-  document.body.innerHTML = Navbar() + Hero() + About() + Projects() + TechStack() + contactForm() + Footer();
+  document.body.innerHTML = Navbar() + Hero() + Terminal() + About() + Projects() + TechStack() + contactForm() + Footer();
+  liquidBackground();
   particleBackground();
+  mouseGlow();
   scrollProgress();
   backToTop();
   themeToggle();
+  autoMusic();
   scrollReveal();
   typeWriter(document.getElementById('role-text'), DATA.role);
-  fetchAllProjects();
+  terminalType();
+  loadProjects();
 }
 document.addEventListener('DOMContentLoaded', init);
