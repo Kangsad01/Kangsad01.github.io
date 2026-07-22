@@ -23,7 +23,15 @@ let mouse = {x: null, y: null, radius: 200};
 let cursorTrail = [];
 
 function getCSSVar(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
-function initTheme(){ const saved = localStorage.getItem('theme') || 'dark'; document.documentElement.setAttribute('data-theme', saved); }
+function initTheme(){
+  const savedTheme = localStorage.getItem('theme');
+  
+  if(savedTheme){
+    document.body.classList.toggle('dark', savedTheme === 'dark');
+  } else {
+    autoThemeByTime();
+  }
+}
 function themeToggle(){ const btn = document.createElement('button'); btn.className = 'theme-toggle'; btn.innerHTML = localStorage.getItem('theme') === 'light'? '☀️' : '🌙'; document.body.appendChild(btn); btn.onclick = function(){ const html = document.documentElement; const newTheme = html.getAttribute('data-theme') === 'dark'? 'light' : 'dark'; html.setAttribute('data-theme', newTheme); localStorage.setItem('theme', newTheme); btn.innerHTML = newTheme === 'light'? '☀️' : '🌙'; } }
 function autoMusic(){ const audio = new Audio(DATA.music); audio.loop = true; audio.volume = 0.08; document.body.addEventListener('click', () => { audio.play().catch(()=>{}) }, {once:true}); }
 function mouseGlow(){ const glow = document.createElement('div'); glow.id='glow'; glow.style.cssText='position:fixed;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(56,189,248,0.2)0%,transparent 70%);pointer-events:none;z-index:1'; document.body.appendChild(glow); document.addEventListener('mousemove', e => { glow.style.left = (e.clientX - 250) + 'px'; glow.style.top = (e.clientY - 250) + 'px'; }) }
@@ -309,9 +317,32 @@ async function githubHeatmap3D(){
   }
 }
 
+function autoThemeByTime(){
+  const hour = new Date().getHours();
+  const isNight = hour >= 18 || hour < 6;
+
+  if(isNight){
+    document.body.classList.add('dark');
+    localStorage.setItem('theme', 'dark');
+  } else {
+    document.body.classList.remove('dark');
+    localStorage.setItem('theme', 'light');
+  }
+
+  const themeToggle = document.querySelector('.theme-toggle');
+  if(themeToggle){
+    themeToggle.innerHTML = isNight ? '☀️' : '🌙';
+  }
+
+  console.log(`Auto Theme: ${isNight ? 'Dark' : 'Light'} - Jam ${hour}`);
+}
+
+setInterval(autoThemeByTime, 60000);
+
 function init(){
   console.log("Init starting...");
   initTheme();
+  autoThemeByTime(); 
   document.body.innerHTML = Navbar() + Hero() + Terminal() + About() + Projects() + TechStack() + contactForm() + Footer();
   particleBackground();
   mouseGlow();
