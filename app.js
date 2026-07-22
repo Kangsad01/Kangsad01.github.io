@@ -219,17 +219,6 @@ function glitchEffect(){
   });
 }
 
-function scrollSnapParallax(){
-  document.documentElement.style.scrollBehavior = 'smooth';
-  document.querySelectorAll('section').forEach(s => s.style.scrollSnapAlign = 'start');
-  document.body.style.scrollSnapType = 'y mandatory';
-  
-  window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    document.getElementById('liquid-bg').style.transform = `translateY(${scrolled * 0.5}px)`;
-  });
-}
-
 async function githubStats(){
   try{
     const res = await fetch('https://api.github.com/users/Kangsad01');
@@ -320,7 +309,7 @@ async function githubHeatmap3D(){
   }
 }
 
-const GEMINI_API_KEY = "AQ.Ab8RN6LYYw_zgI2SRGMuD2i1Cc54hezDsPtv4j46c8P3iWUO3A";
+const GEMINI_API_KEY = "AQ.Ab8RN6I53UWLZTGNg7N9Er8A1MLylu0s3IO4Xgkqzg--2jlrnQ";
 
 async function aiChatbot(){
   const chatBtn = document.createElement('div');
@@ -409,7 +398,6 @@ function init(){
   matrixRain();
   premiumInteractions();
   glitchEffect();
-  scrollSnapParallax();
   githubStats();
   interactiveTerminal();
   loadingScreen();
