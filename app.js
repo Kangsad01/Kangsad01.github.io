@@ -55,19 +55,50 @@ async function handleFormSubmit(e){
   try{
     const res = await fetch(DATA.formspree, { method: 'POST', body: new FormData(form), headers: {'Accept': 'application/json'} });
     if(res.ok){ alert('Message Sent! ✅'); form.reset(); } else { alert('Gagal kirim. Coba lagi'); }
-  } catch(err){ // INI TADI YANG KURANG }
-    alert('Error: ' + err.message);
-  }
+  } catch(err){ alert('Error: ' + err.message); }
   btn.innerHTML = 'Send Message'; btn.disabled = false;
 }
 
 async function fetchAllProjects(){
   const projectsContainer = document.getElementById('projects-grid'); if(!projectsContainer) return;
-  let allRepos = [{ title: "PORTFOLIO WEBSITE", desc: "Website portfolio dengan tema maskulin dan animasi premium.", img: DATA.websiteScreenshot, link: "https://kangsad01.github.io" }];
+
+  projectsContainer.innerHTML = `<p style="text-align:center">Loading projects...</p>`; // LOADING
+
+  let allRepos = [
+    { title: "PORTFOLIO WEBSITE", desc: "Website portfolio dengan tema maskulin dan animasi premium.", img: DATA.websiteScreenshot, link: "https://kangsad01.github.io" },
+    { title: "WHATSAPP BOT", desc: "Bot multi-device dengan fitur automation dan database.", img: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600", link: "https://github.com/Kangsad01" }
+  ]; // FALLBACK BIAR GAK KOSONG
+
   for(const user of DATA.githubs){
-    try{ const res = await fetch('https://api.github.com/users/' + user + '/repos?sort=updated&per_page=10'); const repos = await res.json(); const mapped = repos.map(repo => ({ title: repo.name.toUpperCase(), desc: repo.description || "No description.", img: 'https://opengraph.githubassets.com/1/' + user + '/' + repo.name, link: repo.html_url })); allRepos = allRepos.concat(mapped); }catch(e){ console.log("Github error", e) }
+    try{
+      const res = await fetch('https://api.github.com/users/' + user + '/repos?sort=updated&per_page=6');
+      if(!res.ok) throw new Error("GitHub API error");
+      const repos = await res.json();
+      const mapped = repos.filter(r =>!r.fork).map(repo => ({ // filter fork
+        title: repo.name.toUpperCase(),
+        desc: repo.description || "No description.",
+        img: 'https://opengraph.githubassets.com/1/' + user + '/' + repo.name,
+        link: repo.html_url
+      }));
+      allRepos = allRepos.concat(mapped);
+    }catch(e){
+      console.log("Github error", e)
+    }
   }
-  projectsContainer.innerHTML = allRepos.map((p,i) => `<div class="glass-card" style="transition-delay:${i*0.08}s"><img src="${p.img}" class="project-img" onerror="this.src='https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600'"><h3>${p.title}</h3><p style="margin-bottom:1.5rem">${p.desc}</p><a href="${p.link}" target="_blank" class="magnetic-btn">View Code</a></div>`).join('');
+
+  if(allRepos.length === 0){
+    projectsContainer.innerHTML = `<p style="text-align:center">Gagal load dari GitHub. Cek koneksi.</p>`;
+    return;
+  }
+
+  projectsContainer.innerHTML = allRepos.map((p,i) => `
+    <div class="glass-card" style="transition-delay:${i*0.08}s">
+      <img src="${p.img}" class="project-img" onerror="this.src='https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600'">
+      <h3>${p.title}</h3>
+      <p style="margin-bottom:1.5rem">${p.desc}</p>
+      <a href="${p.link}" target="_blank" class="magnetic-btn">View Code</a>
+    </div>`
+  ).join('');
 }
 
 function Navbar(){ return `<nav><div class="logo">${DATA.nama}</div></nav>`; }
