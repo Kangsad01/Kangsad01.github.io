@@ -23,16 +23,25 @@ let mouse = {x: null, y: null, radius: 200};
 let cursorTrail = [];
 
 function getCSSVar(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+function setTheme(theme){
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('theme', theme);
+  
+  const themeToggle = document.querySelector('.theme-toggle');
+  if(themeToggle) themeToggle.innerHTML = theme === 'dark' ? '☀️' : '🌙';
+}
+
 function initTheme(){
   const savedTheme = localStorage.getItem('theme');
+  
   if(savedTheme){
-    document.body.classList.toggle('dark', savedTheme === 'dark');
-    const themeToggle = document.querySelector('.theme-toggle');
-    if(themeToggle) themeToggle.innerHTML = savedTheme === 'dark' ? '☀️' : '🌙';
+    setTheme(savedTheme);
   } else {
     autoThemeByTime();
   }
 }
+
+setInterval(autoThemeByTime, 60000);
 function themeToggle(){ const btn = document.createElement('button'); btn.className = 'theme-toggle'; btn.innerHTML = localStorage.getItem('theme') === 'light'? '☀️' : '🌙'; document.body.appendChild(btn); btn.onclick = function(){ const html = document.documentElement; const newTheme = html.getAttribute('data-theme') === 'dark'? 'light' : 'dark'; html.setAttribute('data-theme', newTheme); localStorage.setItem('theme', newTheme); btn.innerHTML = newTheme === 'light'? '☀️' : '🌙'; } }
 function autoMusic(){ const audio = new Audio(DATA.music); audio.loop = true; audio.volume = 0.08; document.body.addEventListener('click', () => { audio.play().catch(()=>{}) }, {once:true}); }
 function mouseGlow(){ const glow = document.createElement('div'); glow.id='glow'; glow.style.cssText='position:fixed;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(56,189,248,0.2)0%,transparent 70%);pointer-events:none;z-index:1'; document.body.appendChild(glow); document.addEventListener('mousemove', e => { glow.style.left = (e.clientX - 250) + 'px'; glow.style.top = (e.clientY - 250) + 'px'; }) }
@@ -340,21 +349,14 @@ function showThemeNotif(text, icon){
 function autoThemeByTime(){
   const hour = new Date().getHours();
   const isNight = hour >= 18 || hour < 6;
-  const currentTheme = document.body.classList.contains('dark') ? 'dark' : 'light';
   const newTheme = isNight ? 'dark' : 'light';
+  const currentTheme = document.documentElement.getAttribute('data-theme');
 
   if(currentTheme !== newTheme){
-    if(isNight){
-      document.body.classList.add('dark');
-      showThemeNotif('Switched to Dark Mode', '🌙');
-    } else {
-      document.body.classList.remove('dark');
-      showThemeNotif('Switched to Light Mode', '☀️');
+    setTheme(newTheme);
+    if(currentTheme) {
+      showThemeNotif(isNight ? 'Switched to Dark Mode' : 'Switched to Light Mode', isNight ? '🌙' : '☀️');
     }
-    localStorage.setItem('theme', newTheme);
-    
-    const themeToggle = document.querySelector('.theme-toggle');
-    if(themeToggle) themeToggle.innerHTML = isNight ? '☀️' : '🌙';
   }
 }
 
