@@ -1,20 +1,26 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kangsad01 - Frontend Developer</title>
-  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700,900&display=swap" rel="stylesheet">
+  <title>Kangsad01 - Bot Developer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="data:,">
   <style>
-    body{margin:0;background:#030303}
+    body{margin:0}
     #app{opacity:0;transition:opacity .5s}
     #app.loaded{opacity:1}
   </style>
 </head>
 <body>
+  <div id="particles"></div>
   <div id="app"></div>
+  
+  <button class="theme-toggle">🌙</button>
+  <div id="progress-bar"></div>
+  <button id="back-to-top">↑</button>
+
   <script src="app.js"></script>
 </body>
 </html>
