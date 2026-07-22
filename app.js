@@ -25,9 +25,10 @@ let cursorTrail = [];
 function getCSSVar(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
 function initTheme(){
   const savedTheme = localStorage.getItem('theme');
-  
   if(savedTheme){
     document.body.classList.toggle('dark', savedTheme === 'dark');
+    const themeToggle = document.querySelector('.theme-toggle');
+    if(themeToggle) themeToggle.innerHTML = savedTheme === 'dark' ? '☀️' : '🌙';
   } else {
     autoThemeByTime();
   }
@@ -317,24 +318,44 @@ async function githubHeatmap3D(){
   }
 }
 
+function showThemeNotif(text, icon){
+  const notif = document.createElement('div');
+  notif.style.cssText = `
+    position:fixed;top:30px;right:30px;background:var(--accent);color:#000;
+    padding:1rem 1.5rem;border-radius:12px;font-weight:600;z-index:9999;
+    transform:translateX(400px);transition:transform 0.4s ease;
+    box-shadow:0 10px 30px rgba(56,189,248,0.3)
+  `;
+  notif.innerHTML = `${icon} ${text}`;
+  document.body.appendChild(notif);
+
+  setTimeout(() => notif.style.transform = 'translateX(0)', 100);
+
+  setTimeout(() => {
+    notif.style.transform = 'translateX(400px)';
+    setTimeout(() => notif.remove(), 400);
+  }, 3000);
+}
+
 function autoThemeByTime(){
   const hour = new Date().getHours();
   const isNight = hour >= 18 || hour < 6;
+  const currentTheme = document.body.classList.contains('dark') ? 'dark' : 'light';
+  const newTheme = isNight ? 'dark' : 'light';
 
-  if(isNight){
-    document.body.classList.add('dark');
-    localStorage.setItem('theme', 'dark');
-  } else {
-    document.body.classList.remove('dark');
-    localStorage.setItem('theme', 'light');
+  if(currentTheme !== newTheme){
+    if(isNight){
+      document.body.classList.add('dark');
+      showThemeNotif('Switched to Dark Mode', '🌙');
+    } else {
+      document.body.classList.remove('dark');
+      showThemeNotif('Switched to Light Mode', '☀️');
+    }
+    localStorage.setItem('theme', newTheme);
+    
+    const themeToggle = document.querySelector('.theme-toggle');
+    if(themeToggle) themeToggle.innerHTML = isNight ? '☀️' : '🌙';
   }
-
-  const themeToggle = document.querySelector('.theme-toggle');
-  if(themeToggle){
-    themeToggle.innerHTML = isNight ? '☀️' : '🌙';
-  }
-
-  console.log(`Auto Theme: ${isNight ? 'Dark' : 'Light'} - Jam ${hour}`);
 }
 
 setInterval(autoThemeByTime, 60000);
