@@ -20,6 +20,7 @@ const DATA = {
 
 let particlesArray = [];
 let mouse = {x: null, y: null, radius: 200};
+let cursorTrail = [];
 
 function getCSSVar(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
 function initTheme(){ const saved = localStorage.getItem('theme') || 'dark'; document.documentElement.setAttribute('data-theme', saved); }
@@ -90,13 +91,72 @@ function konamiCode(){
     else { pos = 0; }
   });
 }
+                        
+function cursorTrailEffect(){
+  const canvas = document.createElement('canvas');
+  canvas.id = 'cursor-trail';
+  canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2';
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+  window.addEventListener('resize', ()=>{canvas.width=window.innerWidth; canvas.height=window.innerHeight});
 
-function activateSecretMode(){
-  document.body.style.animation = 'rainbow 3s linear infinite';
-  const style = document.createElement('style');
-  style.innerHTML = `@keyframes rainbow{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}`;
-  document.head.appendChild(style);
-  alert('🎉 SECRET MODE UNLOCKED! Rainbow Mode Active');
+  document.addEventListener('mousemove', e => {
+    cursorTrail.push({x:e.clientX, y:e.clientY, life:20});
+    if(cursorTrail.length > 20) cursorTrail.shift();
+  });
+
+  function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    cursorTrail.forEach((p,i)=>{
+      p.life--;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.life/2, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(56,189,248,${p.life/20})`;
+      ctx.fill();
+    });
+    cursorTrail = cursorTrail.filter(p=>p.life>0);
+    requestAnimationFrame(animate);
+  }
+  animate();
+}
+
+let matrixActive = false;
+function matrixRain(){
+  const canvas = document.createElement('canvas');
+  canvas.id = 'matrix';
+  canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;display:none';
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+
+  const chars = "01KANGSAD01";
+  const fontSize = 14;
+  const columns = canvas.width / fontSize;
+  const drops = Array(Math.floor(columns)).fill(1);
+
+  function draw(){
+    if(!matrixActive) return;
+    ctx.fillStyle = 'rgba(0,0,0,0.05)';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = '#0f0';
+    ctx.font = fontSize + 'px monospace';
+
+    for(let i=0; i<drops.length; i++){
+      const text = chars[Math.floor(Math.random()*chars.length)];
+      ctx.fillText(text, i*fontSize, drops[i]*fontSize);
+      if(drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+      drops[i]++;
+    }
+    requestAnimationFrame(draw);
+  }
+
+  let matrixCode = ['m','a','t','r','i','x']; let pos = 0;
+  document.addEventListener('keydown', e=>{
+    if(e.key.toLowerCase() === matrixCode[pos]){ pos++; if(pos===matrixCode.length){ matrixActive=!matrixActive; canvas.style.display=matrixActive?'block':'none'; pos=0; } }
+    else pos=0;
+  });
+  draw();
 }
 
 function init(){
@@ -116,5 +176,7 @@ function init(){
   fetchAllProjects();
   commandPalette();
   konamiCode();
+  cursorTrailEffect();
+  matrixRain();
 }
 document.addEventListener('DOMContentLoaded', init);
