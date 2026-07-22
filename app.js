@@ -309,75 +309,6 @@ async function githubHeatmap3D(){
   }
 }
 
-const GEMINI_API_KEY = "AQ.Ab8RN6I53UWLZTGNg7N9Er8A1MLylu0s3IO4Xgkqzg--2jlrnQ";
-
-async function aiChatbot(){
-  const chatBtn = document.createElement('div');
-  chatBtn.innerHTML = '💬';
-  chatBtn.style.cssText = 'position:fixed;bottom:30px;right:30px;width:60px;height:60px;background:var(--accent);color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;cursor:pointer;z-index:9998;box-shadow:0 0 20px rgba(56,189,248,0.5)';
-  document.body.appendChild(chatBtn);
-
-  const chatBox = document.createElement('div');
-  chatBox.id = 'ai-chat';
-  chatBox.style.cssText = 'position:fixed;bottom:100px;right:30px;width:350px;height:450px;background:var(--card);backdrop-filter:blur(30px);border:1px solid var(--border);border-radius:20px;display:none;flex-direction:column;z-index:9998;overflow:hidden';
-  chatBox.innerHTML = `
-    <div style="padding:1rem;background:var(--accent);color:#000;font-weight:700">AI Assistant Kangsad01</div>
-    <div id="chat-messages" style="flex:1;padding:1rem;overflow-y:auto;font-size:0.9rem"></div>
-    <div style="display:flex;padding:0.5rem;border-top:1px solid var(--border)">
-      <input id="chat-input" placeholder="Tanya apa aja..." style="flex:1;background:transparent;border:none;color:var(--text);outline:none;padding:0.5rem">
-      <button id="chat-send" style="background:var(--accent);color:#000;border:none;padding:0.5rem 1rem;border-radius:8px;cursor:pointer">Kirim</button>
-    </div>
-  `;
-  document.body.appendChild(chatBox);
-
-  const SYSTEM_PROMPT = `Kamu adalah AI Assistant untuk portfolio Kangsad01. 
-  Nama kamu: Kangsad AI. 
-  Kamu adalah Backend Dev & Bot Developer. 
-  Skill: Node.js, MongoDB, WhatsApp Bot, Automation, Sadteams Panel.
-  Email: drakblue3@gmail.com
-  Jawab dengan gaya santai, singkat, dan profesional. Bahasa Indonesia.`;
-
-  let chatHistory = [{role: "user", parts: [{text: SYSTEM_PROMPT}]}];
-
-  async function getGeminiReply(userMsg){
-    chatHistory.push({role: "user", parts: [{text: userMsg}]});
-    
-    try{
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({contents: chatHistory})
-      });
-      const data = await res.json();
-      const reply = data.candidates[0].content.parts[0].text;
-      chatHistory.push({role: "model", parts: [{text: reply}]});
-      return reply;
-    }catch(e){
-      return "AI lagi error. Coba cek API Key atau coba lagi nanti ya.";
-    }
-  }
-
-  chatBtn.onclick = () => chatBox.style.display = chatBox.style.display === 'flex' ? 'none' : 'flex';
-  document.getElementById('chat-send').onclick = sendMsg;
-  document.getElementById('chat-input').onkeydown = e => { if(e.key==='Enter') sendMsg(); }
-
-  async function sendMsg(){
-    const input = document.getElementById('chat-input');
-    const msg = input.value; if(!msg) return;
-    const messages = document.getElementById('chat-messages');
-    messages.innerHTML += `<div style="text-align:right;margin:0.5rem 0"><span style="background:var(--accent);color:#000;padding:0.5rem 1rem;border-radius:12px;display:inline-block">${msg}</span></div>`;
-    input.value = '';
-    
-    messages.innerHTML += `<div id="loading" style="text-align:left;margin:0.5rem 0"><span>AI lagi ngetik...</span></div>`;
-    messages.scrollTop = messages.scrollHeight;
-
-    const reply = await getGeminiReply(msg);
-    document.getElementById('loading').remove();
-    messages.innerHTML += `<div style="text-align:left;margin:0.5rem 0"><span style="background:var(--bg);padding:0.5rem 1rem;border-radius:12px;display:inline-block">${reply}</span></div>`;
-    messages.scrollTop = messages.scrollHeight;
-  }
-}
-
 function init(){
   console.log("Init starting...");
   initTheme();
@@ -403,7 +334,6 @@ function init(){
   loadingScreen();
   copyEmailToast();
   nameEasterEgg();
-  aiChatbot();
   githubHeatmap3D();
 }
 document.addEventListener('DOMContentLoaded', init);
