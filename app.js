@@ -52,7 +52,12 @@ function typeWriter(el, texts){
 
 async function handleFormSubmit(e){
   e.preventDefault(); const form = e.target; const btn = form.querySelector('button'); btn.innerHTML = 'Sending...'; btn.disabled = true;
-  try{ const res = await fetch(DATA.formspree, { method: 'POST', body: new FormData(form), headers: {'Accept': 'application/json'} }); if(res.ok){ alert('Message Sent! ✅'); form.reset(); } else { alert('Gagal kirim. Coba lagi'); }catch(err){ alert('Error: ' + err.message); }
+  try{
+    const res = await fetch(DATA.formspree, { method: 'POST', body: new FormData(form), headers: {'Accept': 'application/json'} });
+    if(res.ok){ alert('Message Sent! ✅'); form.reset(); } else { alert('Gagal kirim. Coba lagi'); }
+  } catch(err){ // INI TADI YANG KURANG }
+    alert('Error: ' + err.message);
+  }
   btn.innerHTML = 'Send Message'; btn.disabled = false;
 }
 
@@ -60,7 +65,7 @@ async function fetchAllProjects(){
   const projectsContainer = document.getElementById('projects-grid'); if(!projectsContainer) return;
   let allRepos = [{ title: "PORTFOLIO WEBSITE", desc: "Website portfolio dengan tema maskulin dan animasi premium.", img: DATA.websiteScreenshot, link: "https://kangsad01.github.io" }];
   for(const user of DATA.githubs){
-    try{ const res = await fetch('https://api.github.com/users/' + user + '/repos?sort=updated&per_page=10'); const repos = await res.json(); const mapped = repos.map(repo => ({ title: repo.name.toUpperCase(), desc: repo.description || "No description.", img: 'https://opengraph.githubassets.com/1/' + user + '/' + repo.name, link: repo.html_url })); allRepos = allRepos.concat(mapped); }catch(e){}
+    try{ const res = await fetch('https://api.github.com/users/' + user + '/repos?sort=updated&per_page=10'); const repos = await res.json(); const mapped = repos.map(repo => ({ title: repo.name.toUpperCase(), desc: repo.description || "No description.", img: 'https://opengraph.githubassets.com/1/' + user + '/' + repo.name, link: repo.html_url })); allRepos = allRepos.concat(mapped); }catch(e){ console.log("Github error", e) }
   }
   projectsContainer.innerHTML = allRepos.map((p,i) => `<div class="glass-card" style="transition-delay:${i*0.08}s"><img src="${p.img}" class="project-img" onerror="this.src='https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600'"><h3>${p.title}</h3><p style="margin-bottom:1.5rem">${p.desc}</p><a href="${p.link}" target="_blank" class="magnetic-btn">View Code</a></div>`).join('');
 }
@@ -74,13 +79,14 @@ function contactForm(){ return `<section id="contact"><div class="container"><h2
 function Footer(){ return `<footer><div class="social-links"><a href="https://github.com/${DATA.githubs[0]}" target="_blank">GitHub</a></div><p>© 2026 ${DATA.nama} | Built with Code</p></footer>`; }
 
 function init(){
+  console.log("Init starting...");
   initTheme();
   document.body.innerHTML = Navbar() + Hero() + About() + Projects() + TechStack() + contactForm() + Footer();
   particleBackground();
   scrollProgress();
   backToTop();
   themeToggle();
-  scrollReveal(); // INI YANG BIKIN MUNCUL
+  scrollReveal();
   typeWriter(document.getElementById('role-text'), DATA.role);
   fetchAllProjects();
 }
