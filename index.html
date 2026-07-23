@@ -3,13 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
   <title>Kangsad01 - WhatsApp Bot Developer | Node.js & Automation</title>
   <meta name="description" content="Portfolio Kangsad01 - Developer Bot WhatsApp, Automation, dan Database. 45+ Repositories, 3 Tahun Coding. Open Source & Free to Contribute.">
+  <meta name="author" content="Kangsad01">
+  <meta name="keywords" content="Kangsad01, WhatsApp Bot Developer, Baileys, Node.js, Bot WhatsApp, Automation">
+  <meta name="theme-color" content="#0a0f1e">
+  <link rel="canonical" href="https://kangsad01.github.io/">
 
-  <link rel="icon" href="https://avatars.githubusercontent.com/Kangsad01">
+  <link rel="icon" type="image/png" href="https://avatars.githubusercontent.com/Kangsad01">
+  <link rel="apple-touch-icon" href="https://avatars.githubusercontent.com/Kangsad01">
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://avatars.githubusercontent.com">
+  <link rel="preconnect" href="https://api.github.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <link rel="preload" href="style.css" as="style">
   <link rel="stylesheet" href="style.css">
 
   <meta property="og:type" content="website">
@@ -28,19 +40,49 @@
   <meta name="twitter:image" content="https://raw.githubusercontent.com/Kangsad01/Kangsad01.github.io/main/thumbnail-github.png">
 
   <style>
-    body{margin:0}
-    #app{opacity:0;transition:opacity .5s}
+    html{background:#0a0f1e}
+    body{margin:0;background:#0a0f1e}
+    #app{opacity:0;transition:opacity .5s ease}
     #app.loaded{opacity:1}
+    #particles{position:fixed;inset:0;z-index:-1;pointer-events:none}
+    #initial-loader{
+      position:fixed;inset:0;z-index:9999;
+      display:grid;place-items:center;
+      background:#0a0f1e;color:#38bdf8;
+      font-family:monospace;font-size:1.1rem;
+    }
   </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Kangsad01",
+    "url": "https://kangsad01.github.io/",
+    "image": "https://avatars.githubusercontent.com/Kangsad01",
+    "jobTitle": "WhatsApp Bot Developer",
+    "sameAs": ["https://github.com/Kangsad01", "https://www.instagram.com/the.sad.boy01"],
+    "knowsAbout": ["Node.js", "Baileys", "WhatsApp Bot", "Automation", "JavaScript"]
+  }
+  </script>
 </head>
 <body>
-  <div id="particles"></div>
+  <div id="initial-loader">Initializing Kangsad01.exe...</div>
+
+  <div id="particles" aria-hidden="true"></div>
   <div id="app"></div>
   
-  <button class="theme-toggle">🌙</button>
-  <div id="progress-bar"></div>
-  <button id="back-to-top">↑</button>
+  <button class="theme-toggle" aria-label="Ganti tema">🌙</button>
+  <div id="progress-bar" role="progressbar" aria-label="Scroll progress"></div>
+  <button id="back-to-top" aria-label="Kembali ke atas">↑</button>
 
-  <script src="app.js"></script>
+  <script src="app.js" defer></script>
+
+  <noscript>
+    <style>#initial-loader{display:none} #app{opacity:1}</style>
+    <div style="padding:2rem;text-align:center;color:white;background:#0a0f1e">
+      Aktifkan JavaScript untuk melihat portfolio Kangsad01.
+    </div>
+  </noscript>
 </body>
 </html>
