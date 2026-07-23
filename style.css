@@ -32,7 +32,7 @@
   margin:0;
   padding:0;
   box-sizing:border-box;
-  transition: background-color .6s ease, color .6s ease, border-color .6s ease, box-shadow .6s ease
+  transition: background-color .6s ease, color .6s ease, border-color .6s ease, box-shadow .6s ease, transform .4s ease
 } 
 
 html{scroll-behavior:smooth}
@@ -200,8 +200,25 @@ p{color:var(--muted);line-height:1.8}
   margin-bottom:1.5rem;
   padding: 10px;
 }
-.tech-card{text-align:center;padding:2rem}
-.tech-card img{width:70px;height:70px;margin-bottom:1rem}
+
+.tech-card{
+  text-align:center;
+  padding:2rem;
+  text-decoration: none;
+  color: var(--text);
+  cursor: pointer;
+  display: block;
+}
+.tech-card img{
+  width:70px;
+  height:70px;
+  margin-bottom:1rem;
+  filter: drop-shadow(0 0 8px var(--shadow-color));
+  transition: transform 0.3s;
+}
+.tech-card:hover img {
+  transform: scale(1.15) rotate(5deg);
+}
 
 .contact-form{display:flex;flex-direction:column;gap:1.2rem}
 .contact-form input,.contact-form textarea{
@@ -271,3 +288,4 @@ footer{text-align:center;padding:4rem 2rem;border-top:1px solid var(--border)}
  .hero-title{font-size:3.5rem}
  .section-title{font-size:2.5rem}
  .contact-grid,.stats-grid,.about-grid{grid-template-columns:1fr}
+}
