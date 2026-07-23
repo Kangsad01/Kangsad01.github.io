@@ -13,12 +13,27 @@ const DATA = {
   stats: [{number: 20, label: "Repositories"}, {number: 3, label: "Years Coding"}, {number: 100, label: "Bot Users"}],
 
   tech: [
-    {name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"},
-    {name: "MongoDB", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg"},
-    {name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"},
-    {name: "WhatsApp bot", icon: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/whatsapp.svg"}
-  ],
-
+  {
+    name: "Node.js", 
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg",
+    link: "https://en.wikipedia.org/wiki/Node.js"
+  },
+  {
+    name: "MongoDB", 
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg",
+    link: "https://en.wikipedia.org/wiki/MongoDB"
+  },
+  {
+    name: "JavaScript", 
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
+    link: "https://en.wikipedia.org/wiki/JavaScript"
+  },
+  {
+    name: "WhatsApp bot", 
+    icon: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/whatsapp.svg",
+    link: "https://en.wikipedia.org/wiki/WhatsApp"
+  }
+],
   socials: [
     {name: "GitHub", url: "https://github.com/Kangsad01", icon: "💻"},
     {name: "Instagram", url: "https://www.instagram.com/the.sad.boy01", icon: "📷"},
@@ -76,8 +91,16 @@ function About(){
 }
 
 function Projects(){ return `<section id="projects"><div class="container"><h2 class="section-title">Projects</h2><div class="project-grid" id="projects-grid"></div></div></section>`; }
-function TechStack(){ const techHTML = DATA.tech.map((t,i) => `<div class="tech-card glass-card" style="transition-delay:${i*0.1}s"><img src="${t.icon}"><h3>${t.name}</h3></div>`).join(''); return `<section id="tech"><div class="container"><h2 class="section-title">Tech Stack</h2><div class="tech-grid">${techHTML}</div></div></section>`; }
-
+function TechStack(){ 
+  const techHTML = DATA.tech.map((t,i) => `
+    <a href="${t.link}" target="_blank" class="tech-card glass-card" style="transition-delay:${i*0.1}s; text-decoration:none; color:inherit">
+      <img src="${t.icon}" alt="${t.name}">
+      <h3>${t.name}</h3>
+    </a>
+  `).join(''); 
+  
+  return `<section id="tech"><div class="container"><h2 class="section-title">Tech Stack</h2><div class="tech-grid">${techHTML}</div></div></section>`; 
+}
 function contactForm(){
   const socialHTML = DATA.socials.map(s => `
     <a href="${s.url}" target="_blank" class="contact-item glass-card">
