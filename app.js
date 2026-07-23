@@ -16,7 +16,7 @@ const DATA = {
     {name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"},
     {name: "MongoDB", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg"},
     {name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"},
-    {name: "WhatsApp", icon: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/whatsapp.svg"}
+    {name: "WhatsApp bot", icon: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/whatsapp.svg"}
   ],
 
   socials: [
@@ -295,7 +295,7 @@ function interactiveTerminal(){
 function loadingScreen(){
   const load = document.createElement('div');
   load.id = 'loader';
-  load.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;font-family:monospace;color:var(--accent);font-size:1.5rem';
+  load.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:#0a0f1e;z-index:9999;display:flex;align-items:center;justify-content:center;font-family:monospace;color:#38bdf8;font-size:1.5rem'; // ganti var(--bg) jadi #0a0f1e
   load.innerHTML = 'Initializing Kangsad01.exe...<br>Loading Modules...';
   document.body.appendChild(load);
   setTimeout(()=>{ load.style.opacity=0; setTimeout(()=>load.remove(),500) }, 2000);
