@@ -2,12 +2,14 @@ const DATA = {
   nama: "Kangsad01",
   githubs: ["Kangsad01", "sadteams"],
   role: ["WhatsApp Bot Developer", "Backend Engineer", "Automation Expert"],
-  about: "Aku suka bikin bot dan tools yang bener-bener dipake orang. Fokus di automation, database, dan UI yang clean.",
+  about: `Aku suka bikin bot dan tools yang bener-bener dipake orang. Fokus di automation, database, dan UI yang clean.
+  Follow IG @the.sad.boy01 buat update project & tutorial.`,
   foto: "https://avatars.githubusercontent.com/Kangsad01",
   email: "drakblue3@gmail.com",
   websiteScreenshot: "https://avatars.githubusercontent.com/Kangsad01",
   music: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
   formspree: "https://formspree.io/f/xwvgbaov",
+  instagram: "https://www.instagram.com/the.sad.boy01", // TAMBAH INI
   stats: [{number: 20, label: "Repositories"}, {number: 3, label: "Years Coding"}, {number: 100, label: "Bot Users"}],
 
   tech: [
@@ -15,6 +17,12 @@ const DATA = {
     {name: "MongoDB", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg"},
     {name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"},
     {name: "WhatsApp", icon: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/whatsapp.svg"}
+  ],
+
+  socials: [
+    {name: "GitHub", url: "https://github.com/Kangsad01", icon: "💻"},
+    {name: "Instagram", url: "https://www.instagram.com/the.sad.boy01", icon: "📷"},
+    {name: "WhatsApp", url: "https://wa.me/62895336282144", icon: "📱"}
   ]
 }
 
@@ -26,19 +34,14 @@ function getCSSVar(name){ return getComputedStyle(document.documentElement).getP
 function setTheme(theme){
   document.documentElement.setAttribute('data-theme', theme);
   localStorage.setItem('theme', theme);
-  
   const themeToggle = document.querySelector('.theme-toggle');
-  if(themeToggle) themeToggle.innerHTML = theme === 'dark' ? '☀️' : '🌙';
+  if(themeToggle) themeToggle.innerHTML = theme === 'dark'? '☀️' : '🌙';
 }
 
 function initTheme(){
   const savedTheme = localStorage.getItem('theme');
-  
-  if(savedTheme){
-    setTheme(savedTheme);
-  } else {
-    autoThemeByTime();
-  }
+  if(savedTheme){ setTheme(savedTheme); }
+  else { autoThemeByTime(); }
 }
 
 setInterval(autoThemeByTime, 60000);
@@ -66,11 +69,30 @@ async function handleFormSubmit(e){
 function Navbar(){ return `<nav><div class="logo">${DATA.nama}</div></nav>`; }
 function Hero(){ return `<section class="hero"><div class="container"><h1 class="hero-title">${DATA.nama}</h1><p id="role-text" style="font-size:1.5rem;margin-bottom:2rem"></p><a href="#projects" class="magnetic-btn">View Projects</a></div></section>`; }
 function Terminal(){ return `<section><div class="container"><div class="glass-card"><div style="display:flex;gap:8px;margin-bottom:1rem"><div style="width:12px;height:12px;border-radius:50%;background:#ff5f56"></div><div style="width:12px;height:12px;border-radius:50%;background:#ffbd2e"></div><div style="width:12px;height:12px;border-radius:50%;background:#27c93f"></div></div><div id="terminal-text" style="font-family:monospace;color:var(--accent)"></div></div></div></section>`; }
-function About(){ const statsHTML = DATA.stats.map(s => `<div class="glass-card" style="text-align:center"><h3 style="font-size:3rem;color:var(--text)">${s.number}+</h3><p style="font-weight:600">${s.label}</p></div>`).join(''); return `<section id="about"><div class="container"><h2 class="section-title">About Me</h2><div class="about-grid"><img src="${DATA.foto}" class="about-img"><div><p style="font-size:1.2rem;line-height:1.8">${DATA.about}</p><div class="stats-grid" style="margin-top:2rem">${statsHTML}</div></div></div></div></section>`; }
+
+function About(){
+  const statsHTML = DATA.stats.map(s => `<div class="glass-card" style="text-align:center"><h3 style="font-size:3rem;color:var(--text)">${s.number}+</h3><p style="font-weight:600">${s.label}</p></div>`).join('');
+  return `<section id="about"><div class="container"><h2 class="section-title">About Me</h2><div class="about-grid"><img src="${DATA.foto}" class="about-img"><div><p style="font-size:1.2rem;line-height:1.8">${DATA.about}</p><a href="${DATA.instagram}" target="_blank" class="magnetic-btn" style="margin-top:1rem">Follow @the.sad.boy01</a><div class="stats-grid" style="margin-top:2rem">${statsHTML}</div></div></div></div></section>`;
+}
+
 function Projects(){ return `<section id="projects"><div class="container"><h2 class="section-title">Projects</h2><div class="project-grid" id="projects-grid"></div></div></section>`; }
 function TechStack(){ const techHTML = DATA.tech.map((t,i) => `<div class="tech-card glass-card" style="transition-delay:${i*0.1}s"><img src="${t.icon}"><h3>${t.name}</h3></div>`).join(''); return `<section id="tech"><div class="container"><h2 class="section-title">Tech Stack</h2><div class="tech-grid">${techHTML}</div></div></section>`; }
-function contactForm(){ return `<section id="contact"><div class="container"><h2 class="section-title">Contact</h2><div class="contact-grid"><div><div class="contact-item glass-card"><div class="contact-icon">📧</div><div><h3>Email</h3><p>${DATA.email}</p></div></div></div><form class="contact-form glass-card" onsubmit="handleFormSubmit(event)"><input type="text" name="name" placeholder="Your Name" required><input type="email" name="email" placeholder="Your Email" required><textarea name="message" rows="5" placeholder="Your Message..." required></textarea><button type="submit" class="magnetic-btn">Send Message</button></form></div></div></section>` }
-function Footer(){ return `<footer><div class="social-links"><a href="https://github.com/${DATA.githubs[0]}" target="_blank">GitHub</a></div><p>© 2026 ${DATA.nama} | Built with Code</p></footer>`; }
+
+function contactForm(){
+  const socialHTML = DATA.socials.map(s => `
+    <a href="${s.url}" target="_blank" class="contact-item glass-card">
+      <div class="contact-icon">${s.icon}</div>
+      <div><h3>${s.name}</h3><p>${s.name === 'Instagram'? '@the.sad.boy01' : s.name === 'WhatsApp'? 'Chat Me' : 'View Profile'}</p></div>
+    </a>
+  `).join('');
+
+  return `<section id="contact"><div class="container"><h2 class="section-title">Contact</h2><div class="contact-grid">${socialHTML}<form class="contact-form glass-card" onsubmit="handleFormSubmit(event)"><input type="text" name="name" placeholder="Your Name" required><input type="email" name="email" placeholder="Your Email" required><textarea name="message" rows="5" placeholder="Your Message..." required></textarea><button type="submit" class="magnetic-btn">Send Message</button></form></div></div></section>`
+}
+
+function Footer(){
+  const socialLinks = DATA.socials.map(s => `<a href="${s.url}" target="_blank">${s.name}</a>`).join('');
+  return `<footer><div class="social-links">${socialLinks}</div><p>© 2026 ${DATA.nama} | Built with Code</p></footer>`;
+}
 
 function commandPalette(){
   const palette = document.createElement('div');
@@ -108,7 +130,7 @@ function konamiCode(){
     else { pos = 0; }
   });
 }
-                        
+
 function cursorTrailEffect(){
   const canvas = document.createElement('canvas');
   canvas.id = 'cursor-trail';
@@ -194,25 +216,25 @@ function premiumInteractions(){
   document.querySelectorAll('.glass-card').forEach(card => {
     card.style.transformStyle = 'preserve-3d';
     card.style.transition = 'transform 0.3s cubic-bezier(0.03,0.98,0.52,0.99)';
-    
+
     card.addEventListener('mousemove', e => {
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      
+
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
-      
+
       const rotateX = (y - centerY) / 15;
       const rotateY = (centerX - x) / 15;
-      
+
       card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
-      
+
       const glareX = (x / rect.width) * 100;
       const glareY = (y / rect.height) * 100;
       card.style.background = `linear-gradient(${glareX}deg, rgba(56,189,248,0.1) 0%, var(--card) 50%, rgba(255,255,255,0.05) 100%)`;
     });
-    
+
     card.addEventListener('mouseleave', () => {
       card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
       card.style.background = 'var(--card)';
@@ -224,12 +246,12 @@ function glitchEffect(){
   const heroTitle = document.querySelector('.hero-title');
   if(!heroTitle) return;
   const originalText = heroTitle.innerText;
-  
+
   heroTitle.addEventListener('mouseenter', () => {
     let i = 0;
     const interval = setInterval(() => {
-      heroTitle.innerText = originalText.split('').map((char, idx) => 
-        idx === i ? String.fromCharCode(Math.random()*26+65) : char
+      heroTitle.innerText = originalText.split('').map((char, idx) =>
+        idx === i? String.fromCharCode(Math.random()*26+65) : char
       ).join('');
       i++;
       if(i > originalText.length) { clearInterval(interval); heroTitle.innerText = originalText; }
@@ -257,7 +279,7 @@ function interactiveTerminal(){
   const input = document.createElement('div');
   input.innerHTML = '> <span id="cmd" contenteditable="true" style="outline:none"></span>';
   el.parentElement.appendChild(input);
-  
+
   document.getElementById('cmd').addEventListener('keydown', e=>{
     if(e.key === 'Enter'){
       const cmd = e.target.innerText.toLowerCase();
@@ -349,13 +371,13 @@ function showThemeNotif(text, icon){
 function autoThemeByTime(){
   const hour = new Date().getHours();
   const isNight = hour >= 18 || hour < 6;
-  const newTheme = isNight ? 'dark' : 'light';
+  const newTheme = isNight? 'dark' : 'light';
   const currentTheme = document.documentElement.getAttribute('data-theme');
 
-  if(currentTheme !== newTheme){
+  if(currentTheme!== newTheme){
     setTheme(newTheme);
     if(currentTheme) {
-      showThemeNotif(isNight ? 'Switched to Dark Mode' : 'Switched to Light Mode', isNight ? '🌙' : '☀️');
+      showThemeNotif(isNight? 'Switched to Dark Mode' : 'Switched to Light Mode', isNight? '🌙' : '☀️');
     }
   }
 }
@@ -365,7 +387,7 @@ setInterval(autoThemeByTime, 60000);
 function init(){
   console.log("Init starting...");
   initTheme();
-  autoThemeByTime(); 
+  autoThemeByTime();
   document.body.innerHTML = Navbar() + Hero() + Terminal() + About() + Projects() + TechStack() + contactForm() + Footer();
   particleBackground();
   mouseGlow();
